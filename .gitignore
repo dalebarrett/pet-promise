@@ -14,3 +14,4 @@ server.js.bak
 # OS
 .DS_Store
 Thumbs.db
+.vercel

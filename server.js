@@ -2,7 +2,7 @@ require('dotenv').config();
 const express = require('express');
 const nodemailer = require('nodemailer');
 const { v4: uuidv4 } = require('uuid');
-const { createClient: createLibsql } = require('@libsql/client');
+const { neon } = require('@neondatabase/serverless');
 const { put: blobPut, del: blobDel } = require('@vercel/blob');
 const { randomBytes } = require('crypto');
 const { clerkMiddleware, getAuth, clerkClient } = require('@clerk/express');
@@ -33,103 +33,107 @@ const upload = multer({
   },
 });
 
-// ── Database: @libsql/client (Turso-compatible cloud SQLite) ─────────────────
-// Local dev:  set TURSO_DATABASE_URL=file:plans.db  (default)
-// Production: set TURSO_DATABASE_URL=libsql://... + TURSO_AUTH_TOKEN
-const _libsql = createLibsql({
-  url: process.env.TURSO_DATABASE_URL || `file:${process.env.DB_PATH || 'plans.db'}`,
-  authToken: process.env.TURSO_AUTH_TOKEN,
-});
+// ── Database: Neon serverless Postgres ───────────────────────────────────────
+// Set DATABASE_URL via Vercel dashboard → Storage → Create Database (Neon)
+// or directly at: https://console.neon.tech
+const _sql = neon(process.env.DATABASE_URL || 'postgres://localhost/petpromise');
 
-// Thin sync-compatible wrapper — all methods return Promises
+// Thin wrapper: converts ? placeholders → $1,$2,... and exposes .get/.all/.run
 const db = {
-  prepare(sql) {
+  prepare(rawSql) {
+    let n = 0;
+    const pgSql = rawSql.replace(/\?/g, () => `$${++n}`);
     return {
-      run:  (...args) => _libsql.execute({ sql, args }),
-      get:  (...args) => _libsql.execute({ sql, args }).then(r => r.rows[0] ?? null),
-      all:  (...args) => _libsql.execute({ sql, args }).then(r => [...r.rows]),
+      run: async (...args) => { await _sql.query(pgSql, args); },
+      get: async (...args) => { const r = await _sql.query(pgSql, args); return r.rows[0] ?? null; },
+      all: async (...args) => { const r = await _sql.query(pgSql, args); return r.rows; },
     };
   },
-  exec: (sql) => _libsql.executeMultiple(sql),
+  // Execute multiple semicolon-delimited statements one by one
+  exec: async (multisql) => {
+    const stmts = multisql.split(';').map(s => s.trim()).filter(Boolean);
+    for (const stmt of stmts) await _sql.query(stmt, []);
+  },
 };
 
-// ── DB initialisation (async — resolved before any request is handled) ─────────
+// ── DB initialisation (runs once; awaited by middleware before first request) ──
 const dbReady = (async () => {
-
-await db.exec(`
-  CREATE TABLE IF NOT EXISTS plans (
-    id              TEXT PRIMARY KEY,
-    state_json      TEXT NOT NULL,
-    caregiver_name  TEXT,
-    caregiver_email TEXT,
-    clinic_slug     TEXT,
-    created_at      INTEGER DEFAULT (unixepoch())
-  );
-  CREATE TABLE IF NOT EXISTS clinics (
-    id              TEXT PRIMARY KEY,
-    slug            TEXT UNIQUE NOT NULL,
-    name            TEXT NOT NULL,
-    contact_email   TEXT,
-    website         TEXT,
-    revenue_share   INTEGER DEFAULT 20,
-    created_at      INTEGER DEFAULT (unixepoch())
-  );
-  CREATE TABLE IF NOT EXISTS medical_records (
-    id            TEXT PRIMARY KEY,
-    plan_id       TEXT NOT NULL,
-    original_name TEXT NOT NULL,
-    mime_type     TEXT,
-    size_bytes    INTEGER,
-    stored_path   TEXT NOT NULL,
-    created_at    INTEGER DEFAULT (unixepoch())
-  );
-  CREATE TABLE IF NOT EXISTS clinic_users (
-    id            TEXT PRIMARY KEY,
-    clinic_id     TEXT NOT NULL,
-    email         TEXT UNIQUE NOT NULL,
-    password_hash TEXT NOT NULL,
-    name          TEXT,
-    role          TEXT DEFAULT 'staff',
-    created_at    INTEGER DEFAULT (unixepoch())
-  );
-  CREATE TABLE IF NOT EXISTS plan_reminders (
-    id              TEXT PRIMARY KEY,
-    plan_id         TEXT NOT NULL,
-    caregiver_email TEXT NOT NULL,
-    pet_name        TEXT,
-    reminder_key    TEXT NOT NULL,
-    label           TEXT NOT NULL,
-    next_due_at     INTEGER NOT NULL,
-    unsubscribe_token TEXT,
-    disabled        INTEGER DEFAULT 0,
-    created_at      INTEGER DEFAULT (unixepoch())
-  );
-  CREATE TABLE IF NOT EXISTS payments (
-    id                  TEXT PRIMARY KEY,
-    plan_id             TEXT NOT NULL,
-    stripe_session_id   TEXT UNIQUE NOT NULL,
-    stripe_customer_id  TEXT,
-    owner_email         TEXT,
-    status              TEXT DEFAULT 'pending',
-    clinic_slug         TEXT,
-    clinic_share_cents  INTEGER DEFAULT 0,
-    paid_at             INTEGER,
-    created_at          INTEGER DEFAULT (unixepoch())
-  );
-  CREATE TABLE IF NOT EXISTS magic_links (
-    id          TEXT PRIMARY KEY,
-    plan_id     TEXT NOT NULL,
-    email       TEXT NOT NULL,
-    token       TEXT UNIQUE NOT NULL,
-    expires_at  INTEGER NOT NULL
-  );
-`);
-
-  // Migrations (safe — ignore if column already exists)
-  try { await db.exec('ALTER TABLE plans ADD COLUMN clinic_slug TEXT'); } catch (_) {}
-  try { await db.exec('ALTER TABLE plans ADD COLUMN owner_clerk_id TEXT'); } catch (_) {}
-  try { await db.exec('ALTER TABLE plan_reminders ADD COLUMN unsubscribe_token TEXT'); } catch (_) {}
-  try { await db.exec('ALTER TABLE plan_reminders ADD COLUMN disabled INTEGER DEFAULT 0'); } catch (_) {}
+  const tables = [
+    `CREATE TABLE IF NOT EXISTS plans (
+      id              TEXT PRIMARY KEY,
+      state_json      TEXT NOT NULL,
+      caregiver_name  TEXT,
+      caregiver_email TEXT,
+      clinic_slug     TEXT,
+      owner_clerk_id  TEXT,
+      created_at      INTEGER DEFAULT (extract(epoch from now())::integer)
+    )`,
+    `CREATE TABLE IF NOT EXISTS clinics (
+      id              TEXT PRIMARY KEY,
+      slug            TEXT UNIQUE NOT NULL,
+      name            TEXT NOT NULL,
+      contact_email   TEXT,
+      website         TEXT,
+      revenue_share   INTEGER DEFAULT 20,
+      created_at      INTEGER DEFAULT (extract(epoch from now())::integer)
+    )`,
+    `CREATE TABLE IF NOT EXISTS medical_records (
+      id            TEXT PRIMARY KEY,
+      plan_id       TEXT NOT NULL,
+      original_name TEXT NOT NULL,
+      mime_type     TEXT,
+      size_bytes    INTEGER,
+      stored_path   TEXT NOT NULL,
+      created_at    INTEGER DEFAULT (extract(epoch from now())::integer)
+    )`,
+    `CREATE TABLE IF NOT EXISTS clinic_users (
+      id            TEXT PRIMARY KEY,
+      clinic_id     TEXT NOT NULL,
+      email         TEXT UNIQUE NOT NULL,
+      name          TEXT,
+      created_at    INTEGER DEFAULT (extract(epoch from now())::integer)
+    )`,
+    `CREATE TABLE IF NOT EXISTS plan_reminders (
+      id                TEXT PRIMARY KEY,
+      plan_id           TEXT NOT NULL,
+      caregiver_email   TEXT NOT NULL,
+      pet_name          TEXT,
+      reminder_key      TEXT NOT NULL,
+      label             TEXT NOT NULL,
+      next_due_at       INTEGER NOT NULL,
+      unsubscribe_token TEXT,
+      disabled          INTEGER DEFAULT 0,
+      created_at        INTEGER DEFAULT (extract(epoch from now())::integer)
+    )`,
+    `CREATE TABLE IF NOT EXISTS payments (
+      id                 TEXT PRIMARY KEY,
+      plan_id            TEXT NOT NULL,
+      stripe_session_id  TEXT UNIQUE NOT NULL,
+      stripe_customer_id TEXT,
+      owner_email        TEXT,
+      status             TEXT DEFAULT 'pending',
+      clinic_slug        TEXT,
+      clinic_share_cents INTEGER DEFAULT 0,
+      paid_at            INTEGER,
+      created_at         INTEGER DEFAULT (extract(epoch from now())::integer)
+    )`,
+    `CREATE TABLE IF NOT EXISTS magic_links (
+      id         TEXT PRIMARY KEY,
+      plan_id    TEXT NOT NULL,
+      email      TEXT NOT NULL,
+      token      TEXT UNIQUE NOT NULL,
+      expires_at INTEGER NOT NULL
+    )`,
+  ];
+  for (const t of tables) await _sql.query(t, []);
+  // Safe column additions (Postgres 9.6+: ADD COLUMN IF NOT EXISTS)
+  const migrations = [
+    'ALTER TABLE plans ADD COLUMN IF NOT EXISTS clinic_slug TEXT',
+    'ALTER TABLE plans ADD COLUMN IF NOT EXISTS owner_clerk_id TEXT',
+    'ALTER TABLE plan_reminders ADD COLUMN IF NOT EXISTS unsubscribe_token TEXT',
+    'ALTER TABLE plan_reminders ADD COLUMN IF NOT EXISTS disabled INTEGER DEFAULT 0',
+  ];
+  for (const m of migrations) await _sql.query(m, []);
 })();
 
 // Ensure DB is initialised before handling any request
@@ -1077,8 +1081,13 @@ app.post('/api/share', async (req, res) => {
   const cleanState = stripMediaDataUrls(state);
 
   await db.prepare(`
-    INSERT OR REPLACE INTO plans (id, state_json, caregiver_name, caregiver_email, clinic_slug, created_at)
-    VALUES (?, ?, ?, ?, ?, unixepoch())
+    INSERT INTO plans (id, state_json, caregiver_name, caregiver_email, clinic_slug, created_at)
+    VALUES (?, ?, ?, ?, ?, extract(epoch from now())::integer)
+    ON CONFLICT (id) DO UPDATE SET
+      state_json = EXCLUDED.state_json,
+      caregiver_name = EXCLUDED.caregiver_name,
+      caregiver_email = EXCLUDED.caregiver_email,
+      clinic_slug = EXCLUDED.clinic_slug
   `).run(id, JSON.stringify(cleanState), name, email, clinicSlug || null);
 
   // Register annual reminders (vet + review types only — event-based ones are future work)
@@ -1405,8 +1414,9 @@ app.post('/api/payment/checkout', async (req, res) => {
   });
 
   // Pre-create pending payment row so we can correlate on webhook
-  await db.prepare(`INSERT OR IGNORE INTO payments (id, plan_id, stripe_session_id, owner_email, status, clinic_slug)
-    VALUES (?, ?, ?, ?, 'pending', ?)`
+  await db.prepare(`INSERT INTO payments (id, plan_id, stripe_session_id, owner_email, status, clinic_slug)
+    VALUES (?, ?, ?, ?, 'pending', ?)
+    ON CONFLICT (stripe_session_id) DO NOTHING`
   ).run(uuidv4(), planId, session.id, ownerEmail || null, req.body.clinicSlug || null);
 
   res.json({ url: session.url });
