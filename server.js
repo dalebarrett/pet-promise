@@ -1,6 +1,6 @@
 require('dotenv').config();
 const express = require('express');
-const nodemailer = require('nodemailer');
+const { Resend } = require('resend');
 const { v4: uuidv4 } = require('uuid');
 const { neon } = require('@neondatabase/serverless');
 const { put: blobPut, del: blobDel } = require('@vercel/blob');
@@ -244,14 +244,13 @@ function requireAdmin(req, res, next) {
   next();
 }
 
-// ── Email ─────────────────────────────────────────────────────────────────────
-function createTransporter() {
-  return nodemailer.createTransport({
-    host: process.env.SMTP_HOST,
-    port: parseInt(process.env.SMTP_PORT || '587'),
-    secure: process.env.SMTP_SECURE === 'true',
-    auth: { user: process.env.SMTP_USER, pass: process.env.SMTP_PASS },
-  });
+// ── Email via Resend ──────────────────────────────────────────────────────────
+const resend = new Resend(process.env.RESEND_API_KEY);
+const EMAIL_FROM = process.env.EMAIL_FROM || 'Pet Protection Promise™ <noreply@petpromise.app>';
+
+async function sendEmail({ to, subject, html }) {
+  const { error } = await resend.emails.send({ from: EMAIL_FROM, to, subject, html });
+  if (error) throw new Error(error.message || JSON.stringify(error));
 }
 
 function buildEmailHtml({ caregiverName, petName, viewUrl, state }) {
@@ -1108,9 +1107,7 @@ app.post('/api/share', async (req, res) => {
   const viewUrl = `${BASE_URL}/view/${id}`;
 
   try {
-    const transporter = createTransporter();
-    await transporter.sendMail({
-      from: process.env.SMTP_FROM || `"Pet Protection Promise™" <${process.env.SMTP_USER}>`,
+    await sendEmail({
       to: email,
       subject: `${petName}'s care plan — you've been named as caregiver`,
       html: buildEmailHtml({ caregiverName: name, petName, viewUrl, state }),
@@ -1325,9 +1322,7 @@ app.post('/api/clinic/plans/:planId/records', requireClinicAuth, upload.single('
     try { petName = JSON.parse(plan.state_json).sections?.profile?.name || petName; } catch {}
     const viewUrl = `${BASE_URL}/view/${plan.id}`;
     try {
-      const transporter = createTransporter();
-      await transporter.sendMail({
-        from: process.env.SMTP_FROM || `"Pet Protection Promise™" <${process.env.SMTP_USER}>`,
+      await sendEmail({
         to: plan.caregiver_email,
         subject: `New medical records added to ${petName}'s care plan`,
         html: `<!DOCTYPE html><html><head><meta charset="UTF-8"></head>
@@ -1355,13 +1350,11 @@ async function sendDueReminders() {
   const due = await db.prepare('SELECT * FROM plan_reminders WHERE next_due_at <= ? AND (disabled IS NULL OR disabled = 0)').all(now);
   if (!due.length) return { sent: 0 };
   console.log(`Sending ${due.length} reminder email(s)…`);
-  const transporter = createTransporter();
   let sent = 0;
   for (const r of due) {
     const viewUrl = `${BASE_URL}/view/${r.plan_id}`;
     try {
-      await transporter.sendMail({
-        from: process.env.SMTP_FROM || `"Pet Protection Promise™" <${process.env.SMTP_USER}>`,
+      await sendEmail({
         to: r.caregiver_email,
         subject: r.reminder_key === 'vet'
           ? `Reminder: ${r.pet_name || 'your pet'}'s annual vet checkup`
@@ -1498,9 +1491,7 @@ async function sendMagicLinkEmail(planId, email) {
   // Build the plan access URL — uses /plan/access to verify the Clerk ticket
   const magicUrl = `${BASE_URL}/plan/access?ticket=${signInToken.token}&planId=${planId}`;
 
-  const transporter = createTransporter();
-  await transporter.sendMail({
-    from: process.env.SMTP_FROM || `"Pet Protection Promise™" <${process.env.SMTP_USER}>`,
+  await sendEmail({
     to: email,
     subject: 'Your Pet Protection Promise™ is active — save this link',
     html: `<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"></head>
@@ -1648,7 +1639,7 @@ if (require.main === module) {
   dbReady.then(() => {
     app.listen(PORT, () => {
       console.log(`Pet Promise → ${BASE_URL}`);
-      if (!process.env.SMTP_HOST) console.warn('⚠  SMTP not configured');
+      if (!process.env.RESEND_API_KEY) console.warn('⚠  RESEND_API_KEY not set — email delivery disabled');
       if (!process.env.ADMIN_KEY) console.warn('⚠  ADMIN_KEY not set');
     });
   }).catch(err => { console.error('DB init failed:', err); process.exit(1); });
