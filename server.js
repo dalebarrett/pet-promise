@@ -45,8 +45,8 @@ const db = {
     const pgSql = rawSql.replace(/\?/g, () => `$${++n}`);
     return {
       run: async (...args) => { await _sql.query(pgSql, args); },
-      get: async (...args) => { const r = await _sql.query(pgSql, args); return r.rows[0] ?? null; },
-      all: async (...args) => { const r = await _sql.query(pgSql, args); return r.rows; },
+      get: async (...args) => { const rows = await _sql.query(pgSql, args); return rows[0] ?? null; },
+      all: async (...args) => { return await _sql.query(pgSql, args); },
     };
   },
   // Execute multiple semicolon-delimited statements one by one
