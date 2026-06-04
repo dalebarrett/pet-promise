@@ -1,0 +1,16 @@
+# Runtime
+node_modules/
+.env
+.env.local
+plans.db
+plans.db-shm
+plans.db-wal
+uploads/
+server.js.bak
+
+# Vercel
+.vercel/
+
+# OS
+.DS_Store
+Thumbs.db

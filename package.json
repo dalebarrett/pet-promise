@@ -1,0 +1,21 @@
+{
+  "name": "pet-promise",
+  "version": "1.0.0",
+  "description": "Pet Protection Promise™ — iFinallyWill backend server",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node --watch server.js"
+  },
+  "dependencies": {
+    "@clerk/express": "^2.1.23",
+    "@libsql/client": "^0.17.3",
+    "@vercel/blob": "^2.4.0",
+    "dotenv": "^16.4.5",
+    "express": "^4.19.2",
+    "multer": "^2.1.1",
+    "nodemailer": "^6.9.13",
+    "stripe": "^22.2.0",
+    "uuid": "^9.0.1"
+  }
+}
