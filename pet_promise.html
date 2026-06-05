@@ -1257,6 +1257,7 @@ body.printing .top,body.printing .rail,body.printing .right,body.printing .expor
     <div class="share-form">
       <input type="text" id="share-name" placeholder="Caregiver's name (auto-filled from Section B)"/>
       <input type="email" id="share-email" placeholder="Caregiver's email"/>
+      <input type="email" id="share-owner-email" placeholder="Your email (optional — get a copy + ack notification)"/>
       <button class="share-btn-primary" onclick="sendShare()">Send the plan</button>
     </div>
     <p class="modal-sub" style="margin-top:14px;font-size:12px">Your caregiver gets read-only access. Updates sync automatically when you change anything.</p>
@@ -2223,6 +2224,7 @@ function openModal(which){
     const caregiverData = state.sections.caregivers || {};
     document.getElementById('share-name').value = caregiverData.primary_name || '';
     document.getElementById('share-email').value = caregiverData.primary_email || '';
+    document.getElementById('share-owner-email').value = '';
     document.getElementById('modal-share').classList.add('open');
   } else if (which === 'updates') {
     renderReminders();
@@ -2260,6 +2262,7 @@ function toggleReminder(key, val){
 async function sendShare(){
   const name = document.getElementById('share-name').value.trim();
   const email = document.getElementById('share-email').value.trim();
+  const ownerEmail = document.getElementById('share-owner-email').value.trim();
   if (!name || !email) { showToast('Fill in name and email'); return; }
 
   const btn = document.querySelector('#modal-share .share-btn-primary');
@@ -2308,7 +2311,7 @@ async function sendShare(){
     const res = await fetch('/api/share', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ name, email, state: shareState, planId: state.planId, clinicSlug: state.clinicSlug }),
+      body: JSON.stringify({ name, email, state: shareState, planId: state.planId, clinicSlug: state.clinicSlug, ownerEmail: ownerEmail || undefined }),
     });
     const data = await res.json();
     closeModal();

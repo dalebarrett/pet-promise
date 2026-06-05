@@ -563,3 +563,185 @@ test.describe('SPA interactions', () => {
     expect(storedState.planId).toBe(planId);
   });
 });
+
+// ─── 13. Emergency card ───────────────────────────────────────────────────────
+test.describe('Emergency card', () => {
+  test('GET /emergency/:id renders mobile-first emergency page', async ({ page }) => {
+    const api = await apiContext();
+    const planId = randomUUID();
+    await api.post('/api/share', {
+      data: {
+        name: 'CG', email: 'cg@x.com', planId,
+        state: {
+          planId, sections: {
+            profile: { name: 'Rex', species: 'Dog' },
+            caregivers: { primary_name: 'Maria Chen', primary_phone: '555-9999', primary_rel: 'Friend' },
+            vet: { vet_name: 'Dr. Smith', vet_phone: '555-1234', vet_clinic: 'Happy Paws' },
+            meds: { med_list: 'Apoquel 16mg\nHeartgard monthly' },
+            emergency: { first_steps: 'Call Maria immediately\nCheck medications cabinet' },
+          },
+        },
+      },
+    });
+
+    await page.goto(BASE + '/emergency/' + planId);
+    const content = await page.content();
+    expect(content).toContain('Rex');
+    expect(content).toContain('Maria Chen');
+    expect(content).toContain('Dr. Smith');
+    expect(content).toContain('Apoquel 16mg');
+    expect(content).toContain('tel:5559999');
+    expect(content).toContain('tel:5551234');
+    expect(content).toContain('View full care plan');
+    // QR code should be present (SVG)
+    expect(content).toContain('<svg');
+  });
+
+  test('GET /emergency/:id returns 404 for unknown plan', async ({ page }) => {
+    await page.goto(BASE + '/emergency/' + randomUUID());
+    const content = await page.content();
+    expect(content.toLowerCase()).toContain('not found');
+  });
+
+  test('GET /api/qr/:planId returns valid SVG', async () => {
+    const api = await apiContext();
+    const planId = randomUUID();
+    const resp = await api.get('/api/qr/' + planId);
+    expect(resp.status()).toBe(200);
+    expect(resp.headers()['content-type']).toContain('svg');
+    const body = await resp.text();
+    expect(body).toContain('<svg');
+    expect(body).toContain('xmlns');
+  });
+
+  test('Viewer has emergency card button and copy link button', async ({ page }) => {
+    const api = await apiContext();
+    const planId = randomUUID();
+    await api.post('/api/share', {
+      data: {
+        name: 'CG', email: 'cg@x.com', planId,
+        state: { planId, sections: { profile: { name: 'Luna' } } },
+      },
+    });
+    await page.goto(BASE + '/view/' + planId);
+    const content = await page.content();
+    expect(content).toContain('Emergency card');
+    expect(content).toContain('Copy link');
+    expect(content).toContain('Share on WhatsApp');
+  });
+
+  test('Viewer shows freshness badge', async ({ page }) => {
+    const api = await apiContext();
+    const planId = randomUUID();
+    await api.post('/api/share', {
+      data: {
+        name: 'CG', email: 'cg@x.com', planId,
+        state: { planId, sections: { profile: { name: 'Pip' } } },
+      },
+    });
+    await page.goto(BASE + '/view/' + planId);
+    const content = await page.content();
+    // Freshness badge should be present (✓ Current for new plans)
+    expect(content).toContain('Current');
+  });
+});
+
+// ─── 14. Caregiver acknowledgment ────────────────────────────────────────────
+test.describe('Caregiver acknowledgment', () => {
+  test('POST /api/plan/:id/acknowledge works on unacknowledged plan', async () => {
+    const api = await apiContext();
+    const planId = randomUUID();
+    await api.post('/api/share', {
+      data: {
+        name: 'CG', email: 'cg@x.com', planId, ownerEmail: 'owner@x.com',
+        state: { planId, sections: { profile: { name: 'Buddy' } } },
+      },
+    });
+    const resp = await api.post('/api/plan/' + planId + '/acknowledge');
+    expect(resp.status()).toBe(200);
+    const body = await resp.json();
+    expect(body.success).toBe(true);
+  });
+
+  test('Second acknowledgment returns alreadyAcknowledged:true', async () => {
+    const api = await apiContext();
+    const planId = randomUUID();
+    await api.post('/api/share', {
+      data: {
+        name: 'CG', email: 'cg@x.com', planId,
+        state: { planId, sections: { profile: { name: 'Buddy' } } },
+      },
+    });
+    await api.post('/api/plan/' + planId + '/acknowledge');
+    const resp2 = await api.post('/api/plan/' + planId + '/acknowledge');
+    const body = await resp2.json();
+    expect(body.alreadyAcknowledged).toBe(true);
+  });
+
+  test('Viewer shows ack button when not yet acknowledged', async ({ page }) => {
+    const api = await apiContext();
+    const planId = randomUUID();
+    await api.post('/api/share', {
+      data: {
+        name: 'CG', email: 'cg@x.com', planId,
+        state: { planId, sections: { profile: { name: 'Mochi' } } },
+      },
+    });
+    await page.goto(BASE + '/view/' + planId);
+    const content = await page.content();
+    expect(content).toContain("accept responsibility for Mochi");
+  });
+
+  test('Viewer shows acknowledged date after acknowledging', async ({ page }) => {
+    const api = await apiContext();
+    const planId = randomUUID();
+    await api.post('/api/share', {
+      data: {
+        name: 'CG', email: 'cg@x.com', planId,
+        state: { planId, sections: { profile: { name: 'Mochi' } } },
+      },
+    });
+    await api.post('/api/plan/' + planId + '/acknowledge');
+    await page.goto(BASE + '/view/' + planId);
+    const content = await page.content();
+    expect(content).toContain('ack-confirmed');
+    expect(content).toContain('You read and accepted this plan on');
+  });
+
+  test('Acknowledge 404 for unknown plan', async () => {
+    const api = await apiContext();
+    const resp = await api.post('/api/plan/' + randomUUID() + '/acknowledge');
+    expect(resp.status()).toBe(404);
+  });
+});
+
+// ─── 15. Owner email features ─────────────────────────────────────────────────
+test.describe('Owner email on share', () => {
+  test('POST /api/share with ownerEmail succeeds', async () => {
+    const api = await apiContext();
+    const planId = randomUUID();
+    const resp = await api.post('/api/share', {
+      data: {
+        name: 'Jane', email: 'jane@x.com', planId, ownerEmail: 'owner@x.com',
+        state: { planId, sections: { profile: { name: 'Snowy' } } },
+      },
+    });
+    expect(resp.status()).toBe(200);
+    const body = await resp.json();
+    expect(body.success).toBe(true);
+  });
+
+  test('ownerEmail is optional — share works without it', async () => {
+    const api = await apiContext();
+    const planId = randomUUID();
+    const resp = await api.post('/api/share', {
+      data: {
+        name: 'Jane', email: 'jane@x.com', planId,
+        state: { planId, sections: { profile: { name: 'Cloud' } } },
+      },
+    });
+    expect(resp.status()).toBe(200);
+    const body = await resp.json();
+    expect(body.success).toBe(true);
+  });
+});

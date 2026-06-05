@@ -1,6 +1,7 @@
 require('dotenv').config();
 const express = require('express');
 const { Resend } = require('resend');
+const QRCode = require('qrcode');
 const { v4: uuidv4 } = require('uuid');
 const { neon } = require('@neondatabase/serverless');
 const { put: blobPut, del: blobDel } = require('@vercel/blob');
@@ -130,6 +131,9 @@ const dbReady = (async () => {
   const migrations = [
     'ALTER TABLE plans ADD COLUMN IF NOT EXISTS clinic_slug TEXT',
     'ALTER TABLE plans ADD COLUMN IF NOT EXISTS owner_clerk_id TEXT',
+    'ALTER TABLE plans ADD COLUMN IF NOT EXISTS owner_email TEXT',
+    'ALTER TABLE plans ADD COLUMN IF NOT EXISTS caregiver_ack_at INTEGER',
+    'ALTER TABLE plans ADD COLUMN IF NOT EXISTS completion_nudge_sent INTEGER DEFAULT 0',
     'ALTER TABLE plan_reminders ADD COLUMN IF NOT EXISTS unsubscribe_token TEXT',
     'ALTER TABLE plan_reminders ADD COLUMN IF NOT EXISTS disabled INTEGER DEFAULT 0',
   ];
@@ -328,6 +332,251 @@ function buildEmailHtml({ caregiverName, petName, viewUrl, state }) {
 </body></html>`;
 }
 
+// ── Owner CC email (sent to owner when they share the plan) ────────────────────
+function buildOwnerCopyEmailHtml({ ownerEmail, caregiverName, caregiverEmail, petName, viewUrl }) {
+  return `<!DOCTYPE html><html lang="en">
+<head><meta charset="UTF-8"><title>${esc(petName)}'s plan — shared</title></head>
+<body style="margin:0;padding:0;background:#F7F4ED;font-family:'Helvetica Neue',Arial,sans-serif">
+<table width="100%" cellpadding="0" cellspacing="0" style="background:#F7F4ED;padding:32px 16px">
+<tr><td align="center"><table width="100%" cellpadding="0" cellspacing="0" style="max-width:520px">
+  <tr><td style="background:#0A2A4A;border-radius:14px 14px 0 0;padding:22px 28px;text-align:center">
+    <div style="display:inline-block;background:#C84B30;color:#fff;font-size:10px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;padding:5px 12px;border-radius:5px;margin-bottom:12px">Pet Protection Promise™</div>
+    <h1 style="margin:0;font-size:22px;font-weight:900;color:#fff">Plan shared with ${esc(caregiverName)}</h1>
+  </td></tr>
+  <tr><td style="background:#fff;padding:26px 28px">
+    <p style="font-size:14px;line-height:1.6;color:#2C3E50;margin:0 0 14px">
+      You've successfully shared <strong>${esc(petName)}'s</strong> care plan with <strong>${esc(caregiverName)}</strong> (${esc(caregiverEmail)}).
+      They've received an email with a link to the full plan.
+    </p>
+    <p style="font-size:13px;color:#5A6B82;margin:0 0 20px">Here's your own copy of the link — bookmark it or save this email.</p>
+    <table cellpadding="0" cellspacing="0" style="margin:0 auto 20px">
+      <tr><td style="background:#F5B400;border-radius:10px">
+        <a href="${viewUrl}" style="display:inline-block;padding:12px 24px;font-size:14px;font-weight:900;color:#0A2A4A;text-decoration:none">View ${esc(petName)}'s plan →</a>
+      </td></tr>
+    </table>
+    <p style="font-size:11px;color:#8FA3B3;text-align:center;margin:0">
+      You'll receive a notification when ${esc(caregiverName)} acknowledges the plan.<br>Link: <a href="${viewUrl}" style="color:#C84B30">${viewUrl}</a>
+    </p>
+  </td></tr>
+  <tr><td style="background:#071E38;border-radius:0 0 14px 14px;padding:16px 28px;text-align:center">
+    <p style="margin:0;font-size:11px;color:rgba(255,255,255,.6)"><strong style="color:rgba(255,255,255,.85)">Pet Protection Promise™</strong></p>
+  </td></tr>
+</table></td></tr></table>
+</body></html>`;
+}
+
+// ── Completion nudge email (72h after share if plan <70% complete) ─────────────
+function buildNudgeEmailHtml({ petName, pct, viewUrl }) {
+  const remaining = 100 - pct;
+  const missingTips = [
+    'Daily routine and feeding schedule',
+    'Medications list and where they\'re stored',
+    'Financial provisions for your caregiver',
+    'Emergency first-24-hour priorities',
+    'Your personal letter to the caregiver',
+  ].slice(0, Math.min(3, Math.ceil(remaining / 20)));
+
+  return `<!DOCTYPE html><html lang="en">
+<head><meta charset="UTF-8"><title>Finish ${esc(petName)}'s plan</title></head>
+<body style="margin:0;padding:0;background:#F7F4ED;font-family:'Helvetica Neue',Arial,sans-serif">
+<table width="100%" cellpadding="0" cellspacing="0" style="background:#F7F4ED;padding:32px 16px">
+<tr><td align="center"><table width="100%" cellpadding="0" cellspacing="0" style="max-width:520px">
+  <tr><td style="background:#0A2A4A;border-radius:14px 14px 0 0;padding:22px 28px;text-align:center">
+    <div style="display:inline-block;background:#C84B30;color:#fff;font-size:10px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;padding:5px 12px;border-radius:5px;margin-bottom:12px">Pet Protection Promise™</div>
+    <h1 style="margin:0;font-size:22px;font-weight:900;color:#fff">${esc(petName)}'s plan is ${pct}% done</h1>
+  </td></tr>
+  <tr><td style="background:#fff;padding:26px 28px">
+    <p style="font-size:14px;line-height:1.6;color:#2C3E50;margin:0 0 14px">
+      You're almost there! Taking 5 more minutes to finish <strong>${esc(petName)}'s</strong> plan means your caregiver will have everything they need — even in an emergency at 2 AM.
+    </p>
+    ${missingTips.length ? `
+    <p style="font-size:13px;font-weight:700;color:#0A2A4A;margin:0 0 8px">Sections still to complete:</p>
+    <ul style="margin:0 0 20px;padding-left:20px">
+      ${missingTips.map(t => `<li style="font-size:13px;color:#2C3E50;margin-bottom:4px">${t}</li>`).join('')}
+    </ul>` : ''}
+    <table cellpadding="0" cellspacing="0" style="margin:0 auto 16px">
+      <tr><td style="background:#F5B400;border-radius:10px">
+        <a href="/" style="display:inline-block;padding:12px 24px;font-size:14px;font-weight:900;color:#0A2A4A;text-decoration:none">Continue filling the plan →</a>
+      </td></tr>
+    </table>
+    <p style="font-size:11px;color:#8FA3B3;text-align:center;margin:0">Your plan is auto-saved. Pick up right where you left off.</p>
+  </td></tr>
+  <tr><td style="background:#071E38;border-radius:0 0 14px 14px;padding:16px 28px;text-align:center">
+    <p style="margin:0;font-size:11px;color:rgba(255,255,255,.6)"><strong style="color:rgba(255,255,255,.85)">Pet Protection Promise™</strong></p>
+  </td></tr>
+</table></td></tr></table>
+</body></html>`;
+}
+
+// ── Caregiver acknowledgment notification email (to owner) ─────────────────────
+function buildAckEmailHtml({ caregiverName, petName, viewUrl, ackDate }) {
+  return `<!DOCTYPE html><html lang="en">
+<head><meta charset="UTF-8"><title>${esc(caregiverName)} accepted ${esc(petName)}'s plan</title></head>
+<body style="margin:0;padding:0;background:#F7F4ED;font-family:'Helvetica Neue',Arial,sans-serif">
+<table width="100%" cellpadding="0" cellspacing="0" style="background:#F7F4ED;padding:32px 16px">
+<tr><td align="center"><table width="100%" cellpadding="0" cellspacing="0" style="max-width:520px">
+  <tr><td style="background:#0A2A4A;border-radius:14px 14px 0 0;padding:22px 28px;text-align:center">
+    <div style="display:inline-block;background:#16A34A;color:#fff;font-size:10px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;padding:5px 12px;border-radius:5px;margin-bottom:12px">✓ Plan Accepted</div>
+    <h1 style="margin:0;font-size:22px;font-weight:900;color:#fff">${esc(caregiverName)} is ready</h1>
+  </td></tr>
+  <tr><td style="background:#fff;padding:26px 28px">
+    <p style="font-size:14px;line-height:1.6;color:#2C3E50;margin:0 0 14px">
+      <strong>${esc(caregiverName)}</strong> has read and formally accepted responsibility for <strong>${esc(petName)}'s</strong> care plan on <strong>${esc(ackDate)}</strong>.
+    </p>
+    <p style="font-size:13px;color:#5A6B82;margin:0 0 20px">
+      Your plan is in good hands. ${esc(caregiverName)} knows exactly what to do. You can rest easy knowing ${esc(petName)}'s care is covered.
+    </p>
+    <table cellpadding="0" cellspacing="0" style="margin:0 auto 16px">
+      <tr><td style="background:#F5B400;border-radius:10px">
+        <a href="${viewUrl}" style="display:inline-block;padding:12px 24px;font-size:14px;font-weight:900;color:#0A2A4A;text-decoration:none">View ${esc(petName)}'s plan →</a>
+      </td></tr>
+    </table>
+  </td></tr>
+  <tr><td style="background:#071E38;border-radius:0 0 14px 14px;padding:16px 28px;text-align:center">
+    <p style="margin:0;font-size:11px;color:rgba(255,255,255,.6)"><strong style="color:rgba(255,255,255,.85)">Pet Protection Promise™</strong></p>
+  </td></tr>
+</table></td></tr></table>
+</body></html>`;
+}
+
+// ── Emergency card HTML ──────────────────────────────────────────────────────
+function buildEmergencyCardHtml(planId, state, qrSvg) {
+  const profile = state.sections?.profile || {};
+  const caregivers = state.sections?.caregivers || {};
+  const vet = state.sections?.vet || {};
+  const meds = state.sections?.meds || {};
+  const emergency = state.sections?.emergency || {};
+  const routine = state.sections?.routine || {};
+
+  const petName = profile.name || 'Your pet';
+  const speciesEmojis = { dog: '🐶', cat: '🐱', bird: '🦜', horse: '🐴', rabbit: '🐰', fish: '🐠' };
+  const petEmoji = speciesEmojis[(profile.species || '').toLowerCase()] || '🐾';
+
+  const medLines = (meds.med_list || '').split('\n').filter(l => l.trim()).slice(0, 3);
+  const firstSteps = (emergency.first_steps || '').split('\n').filter(l => l.trim()).slice(0, 3);
+  const viewUrl = `${BASE_URL}/view/${planId}`;
+
+  function phoneBtn(phone, label) {
+    if (!phone) return '';
+    const tel = phone.replace(/[^0-9+]/g, '');
+    return `<a href="tel:${esc(tel)}" style="display:inline-flex;align-items:center;gap:8px;background:#16A34A;color:#fff;text-decoration:none;padding:12px 18px;border-radius:10px;font-family:'Helvetica Neue',Arial,sans-serif;font-weight:800;font-size:15px;margin-top:8px">
+      <span style="font-size:18px">📞</span> ${esc(label || phone)}
+    </a>`;
+  }
+
+  return `<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>🚨 Emergency — ${esc(petName)}'s Care</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@700;800;900&family=Nunito+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Nunito Sans',-apple-system,sans-serif;background:#0A2A4A;min-height:100vh;padding:0;color:#0E1A2E}
+.card{max-width:480px;margin:0 auto;background:#F7F4ED;min-height:100vh}
+.hdr{background:#C84B30;padding:18px 20px;display:flex;align-items:center;gap:10px}
+.hdr-em{font-size:10px;font-weight:800;color:rgba(255,255,255,.8);letter-spacing:.12em;text-transform:uppercase;margin-bottom:2px}
+.hdr h1{font-family:'Nunito',sans-serif;font-weight:900;font-size:22px;color:#fff;line-height:1.1}
+.hdr-emoji{font-size:36px;flex-shrink:0}
+.section{background:#fff;margin:10px 12px;border-radius:12px;overflow:hidden}
+.sec-label{background:#0A2A4A;color:rgba(255,255,255,.7);font-size:9px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;padding:6px 14px}
+.sec-body{padding:14px}
+.sec-name{font-family:'Nunito',sans-serif;font-weight:900;font-size:17px;color:#0A2A4A;margin-bottom:4px}
+.sec-role{font-size:12px;color:#5A6B82;font-weight:600;margin-bottom:10px}
+.med-item{font-size:13px;font-weight:600;color:#2C3E50;padding:5px 0;border-bottom:1px solid rgba(10,42,74,.08)}
+.med-item:last-child{border-bottom:none}
+.step{font-size:13px;color:#2C3E50;padding:5px 0;padding-left:20px;position:relative;border-bottom:1px solid rgba(10,42,74,.08)}
+.step::before{content:counter(step);counter-increment:step;position:absolute;left:0;top:6px;width:14px;height:14px;background:#C84B30;color:#fff;border-radius:50%;font-size:9px;font-weight:800;display:grid;place-items:center}
+.steps-list{counter-reset:step}
+.step:last-child{border-bottom:none}
+.full-link{display:block;background:#0A2A4A;color:#fff;text-align:center;padding:16px;text-decoration:none;font-family:'Nunito',sans-serif;font-weight:900;font-size:15px;margin:12px;border-radius:12px}
+.full-link:hover{background:#0F3A66}
+.qr-section{text-align:center;padding:16px 20px 24px;background:#071E38}
+.qr-lbl{font-size:11px;color:rgba(255,255,255,.6);margin-bottom:8px;letter-spacing:.05em}
+.qr-box{background:#fff;display:inline-block;padding:10px;border-radius:10px}
+.print-note{font-size:11px;color:rgba(255,255,255,.5);margin-top:8px}
+@media print{
+  .card{max-width:100%;min-height:auto}
+  a{text-decoration:none}
+}
+</style>
+</head>
+<body>
+<div class="card">
+
+  <div class="hdr">
+    <div class="hdr-emoji">${petEmoji}</div>
+    <div>
+      <div class="hdr-em">🚨 Emergency care info</div>
+      <h1>${esc(petName)}'s Plan</h1>
+    </div>
+  </div>
+
+  ${caregivers.primary_name ? `
+  <div class="section">
+    <div class="sec-label">Primary caregiver</div>
+    <div class="sec-body">
+      <div class="sec-name">${esc(caregivers.primary_name)}</div>
+      <div class="sec-role">${esc(caregivers.primary_rel || 'Caregiver')} ${caregivers.primary_address ? '· ' + caregivers.primary_address.split('\n')[0] : ''}</div>
+      ${phoneBtn(caregivers.primary_phone, 'Call ' + caregivers.primary_name.split(' ')[0])}
+    </div>
+  </div>` : ''}
+
+  ${vet.vet_name || vet.vet_clinic ? `
+  <div class="section">
+    <div class="sec-label">Veterinarian</div>
+    <div class="sec-body">
+      <div class="sec-name">${esc(vet.vet_name || vet.vet_clinic)}</div>
+      <div class="sec-role">${esc(vet.vet_clinic && vet.vet_name ? vet.vet_clinic : '')}${vet.vet_address ? ' · ' + vet.vet_address.split('\n')[0] : ''}</div>
+      ${phoneBtn(vet.vet_phone, 'Call ' + (vet.vet_clinic || 'Vet'))}
+    </div>
+  </div>` : ''}
+
+  ${vet.er_clinic ? `
+  <div class="section">
+    <div class="sec-label">24-hr Emergency Clinic</div>
+    <div class="sec-body">
+      <div class="sec-name" style="color:#C84B30">${esc(vet.er_clinic)}</div>
+    </div>
+  </div>` : ''}
+
+  ${emergency.first_call ? `
+  <div class="section">
+    <div class="sec-label">First call if owner unreachable</div>
+    <div class="sec-body" style="font-size:14px;font-weight:600;color:#0A2A4A">${esc(emergency.first_call)}</div>
+  </div>` : ''}
+
+  ${medLines.length ? `
+  <div class="section">
+    <div class="sec-label">Key medications</div>
+    <div class="sec-body">
+      ${medLines.map(m => `<div class="med-item">💊 ${esc(m.trim())}</div>`).join('')}
+      ${(meds.where_kept) ? `<div style="font-size:11px;color:#5A6B82;margin-top:8px">📍 ${esc(meds.where_kept)}</div>` : ''}
+    </div>
+  </div>` : ''}
+
+  ${firstSteps.length ? `
+  <div class="section">
+    <div class="sec-label">First 24-hour priorities</div>
+    <div class="sec-body">
+      <ol class="steps-list">
+        ${firstSteps.map(s => `<div class="step">${esc(s.replace(/^[-\d.•]+\s*/, '').trim())}</div>`).join('')}
+      </ol>
+    </div>
+  </div>` : ''}
+
+  <a class="full-link" href="${viewUrl}">View full care plan →</a>
+
+  <div class="qr-section">
+    <div class="qr-lbl">Scan or share this card</div>
+    ${qrSvg ? `<div class="qr-box">${qrSvg}</div>` : ''}
+    <div class="print-note">Print this page and keep it with ${esc(petName)}'s carrier, collar tag, or fridge</div>
+  </div>
+
+</div>
+</body></html>`;
+}
+
 // ── Viewer HTML ───────────────────────────────────────────────────────────────
 const SECTIONS_META = [
   { id: 'profile',    n: 'A', icon: '🐾', title: 'Pet Profile', fields: [
@@ -395,6 +644,17 @@ const SECTIONS_META = [
 function buildViewerHtml(planId, state, row, medRecords) {
   const petName = state.sections?.profile?.name || 'Your pet';
   const sharedDate = fmtDate(row.created_at);
+  const nowSec = Math.floor(Date.now() / 1000);
+  const ageDays = Math.floor((nowSec - row.created_at) / 86400);
+  const ageMonths = Math.floor(ageDays / 30);
+  const freshness = ageDays < 180
+    ? { label: '✓ Current', color: '#16A34A', bg: '#DCFCE7' }
+    : ageDays < 365
+    ? { label: '⚠ Review recommended', color: '#B45309', bg: '#FEF3C7' }
+    : { label: '⚠ Update needed', color: '#DC2626', bg: '#FEE2E2' };
+  const ackDate = row.caregiver_ack_at ? fmtDate(row.caregiver_ack_at) : null;
+  const viewUrl = `${BASE_URL}/view/${planId}`;
+  const whatsappUrl = `https://wa.me/?text=${encodeURIComponent('Here is ' + petName + "'s care plan: " + viewUrl)}`;
 
   function renderSecHtml(sec, secData) {
     const fieldsHtml = sec.fields.map(f => {
@@ -496,10 +756,21 @@ h1,h2,h3{font-family:'Nunito',sans-serif;font-weight:900;color:var(--navy);lette
 .rec-meta{font-size:11px;color:var(--i4);margin-left:auto}
 .rec-link{font-size:11px;font-weight:800;color:var(--td);background:var(--tt);padding:3px 9px;border-radius:5px;text-decoration:none;white-space:nowrap}
 .rec-link:hover{background:var(--tlt)}
+.ack-block{background:#fff;border:1px solid var(--line);border-radius:14px;margin-bottom:16px;padding:22px 24px;text-align:center}
+.ack-btn{background:var(--navy);color:#fff;border:none;padding:12px 24px;border-radius:10px;font-family:'Nunito',sans-serif;font-weight:900;font-size:14px;cursor:pointer;transition:all .15s}
+.ack-btn:hover{background:#0F3A66;transform:translateY(-1px)}
+.ack-btn:disabled{opacity:.6;cursor:default;transform:none}
+.ack-confirmed{display:flex;align-items:center;justify-content:center;gap:10px;background:#DCFCE7;border:1px solid #BBF7D0;border-radius:10px;padding:14px 18px;font-size:14px;font-weight:700;color:#15803D}
+.share-strip{display:flex;gap:8px;flex-wrap:wrap;justify-content:center;margin-bottom:16px}
+.ss-btn{display:inline-flex;align-items:center;gap:6px;padding:8px 14px;border-radius:9px;font-family:'Nunito',sans-serif;font-weight:800;font-size:12px;text-decoration:none;border:none;cursor:pointer;transition:all .13s}
+.ss-copy{background:#fff;color:var(--navy);border:1px solid var(--l2)}.ss-copy:hover{background:var(--bg2)}
+.ss-wa{background:#25D366;color:#fff}.ss-wa:hover{background:#1DA851}
+.ss-em{background:var(--terra);color:#fff}.ss-em:hover{background:var(--td)}
+.freshness{display:inline-flex;align-items:center;gap:5px;padding:3px 10px;border-radius:99px;font-size:11px;font-weight:700}
 .foot{background:var(--nd);color:rgba(255,255,255,.6);text-align:center;padding:16px 22px;font-size:11px;line-height:1.6;margin-top:36px}
 .foot b{color:rgba(255,255,255,.85)}
 @media(max-width:600px){.field{grid-template-columns:1fr;gap:2px}.fl{text-transform:none;font-size:11px}.hero h1{font-size:22px}}
-@media print{.topbar,.pbtn{display:none!important}.sec{break-inside:avoid}.hero{background:none!important;color:var(--navy)!important;border-bottom:2px solid var(--navy);padding:14px 0}.hero h1{color:var(--navy)!important}.hero .sub,.hero-eb{color:var(--i3)!important}.sec-hd{background:var(--navy)!important;-webkit-print-color-adjust:exact;print-color-adjust:exact}}
+@media print{.topbar,.pbtn,.ss-btn,.share-strip,.ack-btn{display:none!important}.sec{break-inside:avoid}.hero{background:none!important;color:var(--navy)!important;border-bottom:2px solid var(--navy);padding:14px 0}.hero h1{color:var(--navy)!important}.hero .sub,.hero-eb{color:var(--i3)!important}.sec-hd{background:var(--navy)!important;-webkit-print-color-adjust:exact;print-color-adjust:exact}}
 </style>
 </head>
 <body>
@@ -508,18 +779,77 @@ h1,h2,h3{font-family:'Nunito',sans-serif;font-weight:900;color:var(--navy);lette
     <div class="bmark"><svg viewBox="0 0 24 24" fill="none" stroke="#F5B400" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78L12 21.23l8.84-8.84a5.5 5.5 0 0 0 0-7.78z"/></svg></div>
     Pet Protection Promise™ <span class="badge">Read-only</span>
   </div>
-  <button class="pbtn" onclick="window.print()">🖨 Print / Save as PDF</button>
+  <div style="display:flex;gap:7px;flex-wrap:wrap;align-items:center">
+    <a href="/emergency/${esc(planId)}" class="ss-btn ss-em" target="_blank">🚨 Emergency card</a>
+    <button class="ss-btn ss-copy" onclick="copyLink('${esc(viewUrl)}',this)" id="copy-btn">🔗 Copy link</button>
+    <button class="pbtn" onclick="window.print()">🖨 Print</button>
+  </div>
 </div>
 <div class="hero">
   <div class="hero-eb">Pet Protection Promise™</div>
   <h1>${esc(petName)}'s Care Plan</h1>
-  <div class="sub">Shared ${sharedDate} · Prepared via iFinallyWill</div>
+  <div class="sub">
+    Shared ${sharedDate}
+    <span class="freshness" style="background:${freshness.bg};color:${freshness.color};margin-left:8px">${freshness.label}</span>
+  </div>
 </div>
 <div class="wrap">
   <div class="toc"><h3>Jump to section</h3><div class="tocs">${tocHtml}</div></div>
+
+  <!-- Share strip -->
+  <div class="share-strip">
+    <a href="${whatsappUrl}" class="ss-btn ss-wa" target="_blank">💬 Share on WhatsApp</a>
+    <button class="ss-btn ss-copy" onclick="copyLink('${esc(viewUrl)}',this)">🔗 Copy link</button>
+    <a href="/emergency/${esc(planId)}" class="ss-btn ss-em" target="_blank">🚨 Emergency card</a>
+  </div>
+
   ${sectionsHtml}
+
+  <!-- Caregiver acknowledgment block -->
+  <div class="ack-block" id="ack-block">
+    ${ackDate
+      ? `<div class="ack-confirmed">✓ You read and accepted this plan on ${esc(ackDate)}</div>`
+      : `<p style="font-size:14px;color:#2C3E50;font-weight:600;margin-bottom:12px">Have you read the full plan? Let the owner know you're ready.</p>
+         <button class="ack-btn" id="ack-btn" onclick="acknowledgePlan('${esc(planId)}')">✓ I've read and accept responsibility for ${esc(petName)}</button>
+         <p style="font-size:11px;color:#8FA3B3;margin-top:10px">This sends a confirmation to the plan owner.</p>`
+    }
+  </div>
+
 </div>
 <div class="foot"><b>Pet Protection Promise™</b> · Built by Barrett Tax Law &amp; Donsky &amp; Donsky Legacy Optimization Inc.<br>Legally valid across Canada and all 50 U.S. states.</div>
+<script>
+function copyLink(url, btn) {
+  navigator.clipboard.writeText(url).then(() => {
+    const orig = btn.textContent;
+    btn.textContent = '✓ Copied!';
+    setTimeout(() => { btn.textContent = orig; }, 2000);
+  }).catch(() => {
+    prompt('Copy this link:', url);
+  });
+}
+
+async function acknowledgePlan(planId) {
+  const btn = document.getElementById('ack-btn');
+  if (!btn) return;
+  btn.disabled = true;
+  btn.textContent = 'Sending…';
+  try {
+    const resp = await fetch('/api/plan/' + planId + '/acknowledge', { method: 'POST' });
+    const data = await resp.json();
+    if (data.success) {
+      document.getElementById('ack-block').innerHTML = '<div class="ack-confirmed">✓ Thank you — the owner has been notified that you\'ve read and accepted the plan.</div>';
+    } else {
+      btn.disabled = false;
+      btn.textContent = '✓ I\'ve read and accept responsibility';
+      alert('Something went wrong. Please try again.');
+    }
+  } catch {
+    btn.disabled = false;
+    btn.textContent = '✓ I\'ve read and accept responsibility';
+    alert('Could not connect. Please try again.');
+  }
+}
+</script>
 </body></html>`;
 }
 
@@ -1081,7 +1411,7 @@ app.get('/', (_req, res) => res.sendFile(path.join(__dirname, 'pet_promise.html'
 
 // ── Plan: share + retrieve ────────────────────────────────────────────────────
 app.post('/api/share', async (req, res) => {
-  const { name, email, state, planId, clinicSlug } = req.body;
+  const { name, email, state, planId, clinicSlug, ownerEmail } = req.body;
   if (!name || !email || !state) {
     return res.status(400).json({ error: 'name, email, and state are required' });
   }
@@ -1089,16 +1419,18 @@ app.post('/api/share', async (req, res) => {
   // Use client-provided planId so medical records stay associated
   const id = planId || uuidv4();
   const cleanState = stripMediaDataUrls(state);
+  const ownerEmailClean = ownerEmail && ownerEmail.includes('@') ? ownerEmail.trim() : null;
 
   await db.prepare(`
-    INSERT INTO plans (id, state_json, caregiver_name, caregiver_email, clinic_slug, created_at)
-    VALUES (?, ?, ?, ?, ?, extract(epoch from now())::integer)
+    INSERT INTO plans (id, state_json, caregiver_name, caregiver_email, clinic_slug, owner_email, created_at)
+    VALUES (?, ?, ?, ?, ?, ?, extract(epoch from now())::integer)
     ON CONFLICT (id) DO UPDATE SET
       state_json = EXCLUDED.state_json,
       caregiver_name = EXCLUDED.caregiver_name,
       caregiver_email = EXCLUDED.caregiver_email,
-      clinic_slug = EXCLUDED.clinic_slug
-  `).run(id, JSON.stringify(cleanState), name, email, clinicSlug || null);
+      clinic_slug = EXCLUDED.clinic_slug,
+      owner_email = COALESCE(EXCLUDED.owner_email, plans.owner_email)
+  `).run(id, JSON.stringify(cleanState), name, email, clinicSlug || null, ownerEmailClean);
 
   // Register annual reminders (vet + review types only — event-based ones are future work)
   const oneYearOut = Math.floor(Date.now() / 1000) + 365 * 24 * 60 * 60;
@@ -1127,6 +1459,15 @@ app.post('/api/share', async (req, res) => {
     console.error('Email delivery failed:', err.message);
     return res.json({ success: true, planId: id, viewUrl,
       emailWarning: `Email delivery failed. Share this link manually: ${viewUrl}` });
+  }
+
+  // CC the owner with a copy of the plan link (fire and forget)
+  if (ownerEmailClean) {
+    sendEmail({
+      to: ownerEmailClean,
+      subject: `You've shared ${petName}'s care plan with ${name}`,
+      html: buildOwnerCopyEmailHtml({ ownerEmail: ownerEmailClean, caregiverName: name, caregiverEmail: email, petName, viewUrl }),
+    }).catch(err => console.error('Owner CC email failed:', err.message));
   }
 
   res.json({ success: true, planId: id, viewUrl });
@@ -1354,14 +1695,80 @@ app.post('/api/clinic/plans/:planId/records', requireClinicAuth, upload.single('
   res.json({ success: true, record: { id, name: req.file.originalname } });
 });
 
+// ── QR code ───────────────────────────────────────────────────────────────────
+// Returns an SVG QR code pointing to /emergency/:planId
+app.get('/api/qr/:planId', async (req, res) => {
+  const url = `${BASE_URL}/emergency/${req.params.planId}`;
+  try {
+    const svg = await QRCode.toString(url, {
+      type: 'svg',
+      width: 160,
+      margin: 1,
+      color: { dark: '#0A2A4A', light: '#FFFFFF' },
+    });
+    res.setHeader('Content-Type', 'image/svg+xml');
+    res.setHeader('Cache-Control', 'public, max-age=86400');
+    res.send(svg);
+  } catch (err) {
+    res.status(500).json({ error: 'QR generation failed' });
+  }
+});
+
+// ── Emergency card ────────────────────────────────────────────────────────────
+app.get('/emergency/:id', async (req, res) => {
+  const row = await db.prepare('SELECT * FROM plans WHERE id = ?').get(req.params.id);
+  if (!row) return res.status(404).send(
+    `<html><body style="font-family:sans-serif;text-align:center;padding:60px;background:#0A2A4A;color:#fff"><h2>Plan not found</h2><p>This link may have expired.</p></body></html>`
+  );
+  let state = {};
+  try { state = JSON.parse(row.state_json); } catch {}
+
+  // Generate QR code for full plan link
+  let qrSvg = '';
+  try {
+    qrSvg = await QRCode.toString(`${BASE_URL}/view/${req.params.id}`, {
+      type: 'svg', width: 120, margin: 1,
+      color: { dark: '#0A2A4A', light: '#FFFFFF' },
+    });
+  } catch (_) {}
+
+  res.send(buildEmergencyCardHtml(req.params.id, state, qrSvg));
+});
+
+// ── Caregiver acknowledgment ──────────────────────────────────────────────────
+app.post('/api/plan/:id/acknowledge', async (req, res) => {
+  const plan = await db.prepare('SELECT * FROM plans WHERE id = ?').get(req.params.id);
+  if (!plan) return res.status(404).json({ error: 'Plan not found' });
+  if (plan.caregiver_ack_at) return res.json({ success: true, alreadyAcknowledged: true });
+
+  const now = Math.floor(Date.now() / 1000);
+  await db.prepare('UPDATE plans SET caregiver_ack_at = ? WHERE id = ?').run(now, plan.id);
+
+  // Notify owner if they provided an email
+  if (plan.owner_email) {
+    let petName = 'your pet';
+    let caregiverName = plan.caregiver_name || 'Your caregiver';
+    try { petName = JSON.parse(plan.state_json).sections?.profile?.name || petName; } catch {}
+    const viewUrl = `${BASE_URL}/view/${plan.id}`;
+    const ackDate = new Date(now * 1000).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
+    sendEmail({
+      to: plan.owner_email,
+      subject: `✓ ${caregiverName} has accepted ${petName}'s care plan`,
+      html: buildAckEmailHtml({ caregiverName, petName, viewUrl, ackDate }),
+    }).catch(err => console.error('Ack notification failed:', err.message));
+  }
+
+  res.json({ success: true });
+});
+
 // ── Reminder cron (daily at 9 AM) ────────────────────────────────────────────
 // ── Reminder logic (shared by Vercel Cron endpoint + local dev route) ─────────
 async function sendDueReminders() {
   const now = Math.floor(Date.now() / 1000);
-  const due = await db.prepare('SELECT * FROM plan_reminders WHERE next_due_at <= ? AND (disabled IS NULL OR disabled = 0)').all(now);
-  if (!due.length) return { sent: 0 };
-  console.log(`Sending ${due.length} reminder email(s)…`);
   let sent = 0;
+
+  // ── Annual reminders ──────────────────────────────────────────────────────
+  const due = await db.prepare('SELECT * FROM plan_reminders WHERE next_due_at <= ? AND (disabled IS NULL OR disabled = 0)').all(now);
   for (const r of due) {
     const viewUrl = `${BASE_URL}/view/${r.plan_id}`;
     try {
@@ -1377,7 +1784,38 @@ async function sendDueReminders() {
       sent++;
     } catch (err) { console.error(`Reminder failed for ${r.caregiver_email}:`, err.message); }
   }
-  return { sent, total: due.length };
+
+  // ── Completion nudge: 72 h after sharing, if owner provided email + plan <70% complete ──
+  const nudgeThreshold = now - 3 * 24 * 60 * 60; // 72 hours ago
+  const nudgeCandidates = await db.prepare(`
+    SELECT * FROM plans
+    WHERE owner_email IS NOT NULL
+      AND (completion_nudge_sent IS NULL OR completion_nudge_sent = 0)
+      AND created_at < ?
+  `).all(nudgeThreshold);
+  for (const plan of nudgeCandidates) {
+    const pct = calcCompletion(plan.state_json);
+    if (pct >= 70) {
+      // Already complete enough — mark as sent so we don't check again
+      await db.prepare('UPDATE plans SET completion_nudge_sent = 1 WHERE id = ?').run(plan.id);
+      continue;
+    }
+    let petName = 'your pet';
+    try { petName = JSON.parse(plan.state_json).sections?.profile?.name || petName; } catch {}
+    const viewUrl = `${BASE_URL}/view/${plan.id}`;
+    try {
+      await sendEmail({
+        to: plan.owner_email,
+        subject: `${petName}'s care plan is ${pct}% complete — finish it in 5 minutes`,
+        html: buildNudgeEmailHtml({ petName, pct, viewUrl }),
+      });
+      await db.prepare('UPDATE plans SET completion_nudge_sent = 1 WHERE id = ?').run(plan.id);
+      sent++;
+      console.log(`Completion nudge sent to ${plan.owner_email} for plan ${plan.id} (${pct}%)`);
+    } catch (err) { console.error(`Nudge email failed for ${plan.owner_email}:`, err.message); }
+  }
+
+  return { sent, annualReminders: due.length };
 }
 
 // Vercel Cron: runs daily at 9 AM UTC (configured in vercel.json)
