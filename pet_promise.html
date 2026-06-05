@@ -2629,6 +2629,9 @@ function boot(){
   renderSection();
   updateProgress();
 
+  // Persist initial state (ensures planId is saved even before first user interaction)
+  saveState();
+
   // close modals on backdrop click
   document.querySelectorAll('.modal').forEach(m => {
     m.addEventListener('click', (e) => {

@@ -17,5 +17,8 @@
     "resend": "^6.12.4",
     "stripe": "^22.2.0",
     "uuid": "^9.0.1"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.60.0"
   }
 }

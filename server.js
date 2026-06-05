@@ -191,7 +191,7 @@ async function requireClinicAuth(req, res, next) {
     if (!['clinic_staff', 'admin'].includes(meta.role)) {
       return res.status(403).json({ error: 'Clinic staff access required' });
     }
-    req.clinicUser = { userId, clinicSlug: meta.clinicSlug || null, role: meta.role };
+    req.clinicUser = { userId, clinicSlug: meta.clinicSlug || null, role: meta.role, clinicId: meta.clinicId || null };
     next();
   } catch (err) {
     console.error('requireClinicAuth error:', err.message);
@@ -245,10 +245,14 @@ function requireAdmin(req, res, next) {
 }
 
 // ── Email via Resend ──────────────────────────────────────────────────────────
-const resend = new Resend(process.env.RESEND_API_KEY);
+const resend = process.env.RESEND_API_KEY ? new Resend(process.env.RESEND_API_KEY) : null;
 const EMAIL_FROM = process.env.EMAIL_FROM || 'Pet Protection Promise™ <noreply@petpromise.app>';
 
 async function sendEmail({ to, subject, html }) {
+  if (!resend) {
+    console.warn(`[email] RESEND_API_KEY not set — skipping email to ${to}: "${subject}"`);
+    return;
+  }
   const { error } = await resend.emails.send({ from: EMAIL_FROM, to, subject, html });
   if (error) throw new Error(error.message || JSON.stringify(error));
 }
@@ -834,9 +838,15 @@ let selectedFiles = [];
 
 async function apiFetch(url, opts = {}) {
   const token = await window.Clerk.session.getToken();
+  // Don't force Content-Type for FormData — let the browser set multipart boundary
+  const isFormData = opts.body instanceof FormData;
   const res = await fetch(url, {
     ...opts,
-    headers: { Authorization: 'Bearer ' + token, 'Content-Type': 'application/json', ...(opts.headers || {}) },
+    headers: {
+      Authorization: 'Bearer ' + token,
+      ...(isFormData ? {} : { 'Content-Type': 'application/json' }),
+      ...(opts.headers || {}),
+    },
   });
   if (res.status === 401 || res.status === 403) { await window.Clerk.signOut(); window.location.reload(); return null; }
   return res.json();
@@ -981,6 +991,7 @@ async function submitUpload() {
   const btn = document.getElementById('submit-btn');
   btn.disabled = true;
   document.getElementById('upload-status').textContent = 'Uploading…';
+  const token = await window.Clerk.session.getToken();
 
   let ok = 0;
   for (const file of selectedFiles) {
@@ -1194,7 +1205,7 @@ app.get('/clinic/:slug', async (req, res) => {
   if (!clinic) return res.status(404).send(
     `<html><body style="font-family:sans-serif;padding:40px;text-align:center"><h2>Clinic not found</h2><p>Check the URL or contact support.</p></body></html>`
   );
-  const { c: planCount } = await db.prepare('SELECT COUNT(*) as c FROM plans WHERE clinic_slug = ?').get(req.params.slug);
+  const { c: planCount } = await db.prepare('SELECT COUNT(*)::int as c FROM plans WHERE clinic_slug = ?').get(req.params.slug);
   res.send(buildClinicLandingHtml(clinic, planCount));
 });
 
@@ -1265,9 +1276,9 @@ app.get('/api/clinic/stats', requireClinicAuth, async (req, res) => {
   const now = Math.floor(Date.now() / 1000);
   const monthStart = now - 30 * 24 * 60 * 60;
 
-  const { total }    = await db.prepare('SELECT COUNT(*) as total FROM plans WHERE clinic_slug = ?').get(clinicSlug);
-  const { month }    = await db.prepare('SELECT COUNT(*) as month FROM plans WHERE clinic_slug = ? AND created_at >= ?').get(clinicSlug, monthStart);
-  const { records }  = await db.prepare(`SELECT COUNT(*) as records FROM medical_records mr JOIN plans p ON p.id = mr.plan_id WHERE p.clinic_slug = ?`).get(clinicSlug);
+  const { total }    = await db.prepare('SELECT COUNT(*)::int as total FROM plans WHERE clinic_slug = ?').get(clinicSlug);
+  const { month }    = await db.prepare('SELECT COUNT(*)::int as month FROM plans WHERE clinic_slug = ? AND created_at >= ?').get(clinicSlug, monthStart);
+  const { records }  = await db.prepare(`SELECT COUNT(*)::int as records FROM medical_records mr JOIN plans p ON p.id = mr.plan_id WHERE p.clinic_slug = ?`).get(clinicSlug);
 
   const plans = await db.prepare('SELECT state_json FROM plans WHERE clinic_slug = ?').all(clinicSlug);
   const avgCompletion = plans.length
@@ -1602,11 +1613,11 @@ app.get('/unsubscribe', async (req, res) => {
 app.post('/api/unsubscribe', express.urlencoded({ extended: false }), async (req, res) => {
   const token = req.body.token || req.query.token;
   if (!token) return res.status(400).send('Missing token');
-  const result = await db.prepare('UPDATE plan_reminders SET disabled = 1 WHERE unsubscribe_token = ?').run(token);
+  await db.prepare('UPDATE plan_reminders SET disabled = 1 WHERE unsubscribe_token = ?').run(token);
   const reminder = await db.prepare('SELECT * FROM plan_reminders WHERE unsubscribe_token = ?').get(token);
   res.send(unsubscribePageHtml(
     'Unsubscribed',
-    result.changes > 0
+    reminder?.disabled
       ? `You've been unsubscribed from <strong>${esc(reminder?.label || 'reminder')}</strong> emails for <strong>${esc(reminder?.pet_name || 'your pet')}</strong>.`
       : 'Already unsubscribed.',
     token, false
@@ -1630,6 +1641,19 @@ function unsubscribePageHtml(title, body, token, showButton) {
   <a href="/" style="font-size:12px;color:#8FA3B3">Return to Pet Protection Promise™</a>
 </div></body></html>`;
 }
+
+// ── Global error handler ──────────────────────────────────────────────────────
+// Catches multer fileFilter rejections (and any other sync route errors) and
+// returns a clean 400 instead of the default Express 500.
+// eslint-disable-next-line no-unused-vars
+app.use((err, req, res, next) => {
+  const multer = require('multer');
+  if (err instanceof multer.MulterError || (err && err.message && err.message.includes('Only PDF'))) {
+    return res.status(400).json({ error: err.message });
+  }
+  console.error('Unhandled error:', err);
+  res.status(500).json({ error: 'Internal server error' });
+});
 
 // ── Export for Vercel (serverless) ────────────────────────────────────────────
 module.exports = app;
