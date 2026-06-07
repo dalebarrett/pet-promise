@@ -1059,7 +1059,7 @@ body.printing .top,body.printing .rail,body.printing .right,body.printing .expor
         <div class="welcome-price">
           <!-- Standalone option -->
           <div class="wp-stand">
-            <div class="wp-amt"><span>$</span>39</div>
+            <div class="wp-amt" id="wp-standalone-amt"><span>$</span>39</div>
             <div class="wp-stand-body">
               <div class="wp-tier">Standalone Promise</div>
               <div class="wp-detail">Already have a will? Get just the Promise — one-time, free updates.</div>
@@ -1305,6 +1305,30 @@ body.printing .top,body.printing .rail,body.printing .right,body.printing .expor
   </div>
 </div>
 
+<!-- ======== MODAL: Checkout ======== -->
+<div class="modal" id="modal-checkout">
+  <div class="modal-card" style="position:relative;max-width:460px">
+    <button class="modal-close" onclick="closeModal()">×</button>
+    <h3>Unlock your Pet Protection Plan</h3>
+    <p class="modal-sub">Pay once or subscribe — then share with your caregiver, store medical records, and get annual reminders.</p>
+    <div id="checkout-plans" style="display:flex;flex-direction:column;gap:8px;margin-bottom:14px"></div>
+    <input type="email" id="checkout-email" placeholder="Your email address" style="width:100%;padding:10px 12px;border:1.5px solid var(--line);border-radius:9px;font-size:13px;margin-bottom:10px"/>
+    <div style="display:flex;gap:8px;margin-bottom:6px">
+      <input type="text" id="checkout-discount" placeholder="Discount code (optional)" oninput="updateCheckoutWarn()" style="flex:1;padding:9px 12px;border:1.5px solid var(--line);border-radius:9px;font-size:13px;text-transform:uppercase"/>
+      <button onclick="applyCheckoutDiscount()" style="padding:9px 14px;border-radius:9px;background:#fff;border:1.5px solid var(--line);font-size:12px;font-weight:800;cursor:pointer">Apply</button>
+    </div>
+    <div id="checkout-discount-msg" style="font-size:12px;min-height:16px;margin-bottom:10px"></div>
+    <div style="font-size:11px;font-weight:800;color:var(--ink-3);text-transform:uppercase;letter-spacing:.05em;margin-bottom:7px">Pay with</div>
+    <div id="checkout-providers" style="display:flex;gap:8px;margin-bottom:12px">
+      <button id="cko-prov-stripe" onclick="selectProvider('stripe')" class="cko-prov on" style="flex:1;padding:11px;border-radius:10px;border:1.5px solid var(--navy);background:rgba(10,42,74,.05);font-size:13px;font-weight:800;cursor:pointer">💳 Card</button>
+      <button id="cko-prov-paypal" onclick="selectProvider('paypal')" class="cko-prov" style="flex:1;padding:11px;border-radius:10px;border:1.5px solid var(--line);background:#fff;font-size:13px;font-weight:800;cursor:pointer">🅿 PayPal</button>
+    </div>
+    <div id="checkout-warn" style="display:none;font-size:12px;color:var(--terra-deep, #C84B30);background:rgba(200,75,48,.08);border-radius:8px;padding:9px 11px;margin-bottom:12px"></div>
+    <button class="share-btn-primary" id="checkout-go" onclick="startCheckout()" style="width:100%">Continue to payment →</button>
+    <p class="modal-sub" style="margin-top:12px;font-size:11px">Secure checkout via Stripe or PayPal. Cancel anytime for subscriptions.</p>
+  </div>
+</div>
+
 <!-- ======== TOAST ======== -->
 <div class="toast" id="toast"></div>
 
@@ -1319,6 +1343,35 @@ const MASCOT_WILFRED = 'data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDA
 
 const STORAGE_KEY = 'ifw_pet_protection_v3';
 
+const CHIP_REGISTRIES = [
+  // ── United States ──────────────────────────────────────────────────────
+  {value:'HomeAgain',          label:'HomeAgain (Merck Animal Health) — US / CA'},
+  {value:'AKC_Reunite',        label:'AKC Reunite — US'},
+  {value:'24PetWatch',         label:'24PetWatch — US / CA'},
+  {value:'AVID_PETtrac',       label:'AVID PETtrac — US'},
+  {value:'PetLink',            label:'PetLink (Datamars) — US / CA'},
+  {value:'Found_Animals',      label:'Found Animals Registry — US'},
+  {value:'Save_This_Life',     label:'Save This Life — US'},
+  {value:'Peeva',              label:'Peeva — US'},
+  {value:'PetKey',             label:'PetKey (USDA-recognized) — US'},
+  {value:'Free_Pet_Chip',      label:'Free Pet Chip Registry — US'},
+  {value:'Microchip_ID',       label:'Microchip ID Systems — US'},
+  {value:'National_Pet',       label:'National Pet Registry — US'},
+  {value:'BuddyID',            label:'Buddy ID — US'},
+  {value:'InfoPET',            label:'InfoPET — US'},
+  {value:'PetsMicrochipped',   label:'PetsMicrochipped.com — US'},
+  {value:'PetHub',             label:'PetHub — US'},
+  {value:'Animal_Microchip',   label:'Animal Microchip — US'},
+  // ── Canada ─────────────────────────────────────────────────────────────
+  {value:'Canada_Pet_Registry',label:'Canada Pet Registry — CA'},
+  {value:'Microchips_ca',      label:'Microchips.ca — CA'},
+  {value:'BC_SPCA_ChipIn',     label:'BC SPCA ChipIn — CA (BC)'},
+  {value:'CanadaVetcare',      label:'Canadavetcare.com — CA'},
+  // ── Other ──────────────────────────────────────────────────────────────
+  {value:'AAHA_Universal',     label:'AAHA Universal Pet Microchip Lookup — US / CA'},
+  {value:'other',              label:'Other / not listed'},
+];
+
 const SECTIONS = [
   {id:'profile', n:'A', icon:'🐾', title:'Pet Profile', desc:'The basics — who, what, where.',
    intro:'Start with the essentials so anyone stepping in can identify your pet, find them in a registry, and verify they\'re yours. This is also what goes on the wallet card.',
@@ -1331,6 +1384,9 @@ const SECTIONS = [
      {key:'dob', type:'text', label:'Birthday or estimated age', placeholder:'e.g. March 2020 (or "approx. 6 yrs")'},
      {key:'colour', type:'text', label:'Colour and distinguishing markings', placeholder:'e.g. Cream coat, white chest patch, freckle on nose'},
      {key:'microchip', type:'text', label:'Microchip number', sub:'Critical for return-to-owner if your pet is found.', placeholder:'e.g. 985112345678901'},
+     {key:'chip_registry', type:'select', label:'Chip registry', sub:'Which national database is your pet registered in? Your vet can also update this.', options: CHIP_REGISTRIES},
+     {key:'chip_brand', type:'text', label:'Chip manufacturer', placeholder:'e.g. Datamars, AVID, HomeAgain'},
+     {key:'chip_date', type:'text', label:'Date chipped', placeholder:'e.g. March 2021'},
      {key:'registration', type:'text', label:'License / registration number (if any)', placeholder:'e.g. City of Toronto pet licence #DG-204771'},
      {key:'photo_note', type:'text', label:'Where the most recent photo lives', sub:'Tell your caregiver where to find a current photo (phone, cloud, fridge).', placeholder:'e.g. iCloud album "Carrot 2026"'},
      {key:'notes', type:'textarea', label:'Anything else identifying', sub:'Distinguishing scars, missing teeth, gait, voice — anything that helps confirm identity.', rows:3,
@@ -1753,6 +1809,16 @@ function renderSection(){
         html += '</label>';
       });
       html += '</div>';
+    } else if (f.type === 'select') {
+      html += '<select class="text-input select-input" onchange="setField(\''+sec.id+'\',\''+f.key+'\',this.value)" style="cursor:pointer">';
+      html += '<option value="">— select —</option>';
+      f.options.forEach(opt => {
+        const label = typeof opt === 'object' ? opt.label : opt;
+        const optVal = typeof opt === 'object' ? opt.value : opt;
+        const sel = val === optVal ? ' selected' : '';
+        html += '<option value="' + escapeHtml(optVal) + '"' + sel + '>' + escapeHtml(label) + '</option>';
+      });
+      html += '</select>';
     } else if (f.type === 'check') {
       const sel = Array.isArray(val) ? val : [];
       html += '<div class="opt-list">';
@@ -1804,9 +1870,14 @@ function renderSection(){
       html += '</div>';
     }
     html += '</div>';
+
+    // Inject vet invite block right after the emergency clinic field (near vet contact info)
+    if (sec.id === 'vet' && f.key === 'er_clinic') {
+      html += buildVetInviteHtml();
+    }
   });
 
-  // Medical records upload block (vet section only)
+  // Medical records upload block (vet section only — stays at bottom)
   if (sec.id === 'vet') html += buildMedRecordsHtml();
 
   // section-end nav
@@ -2239,6 +2310,130 @@ function openModal(which){
 function closeModal(){
   document.querySelectorAll('.modal').forEach(m => m.classList.remove('open'));
 }
+
+// ── Checkout modal (Stripe + PayPal, one-time + subscription, discounts) ──────
+let CHECKOUT = { productKey: null, provider: 'stripe', discount: null };
+
+async function openCheckout(){
+  if (!PRICING.products.length) await loadPricing();
+  const products = PRICING.products;
+  if (!products.length) { showToast('⚠ Pricing unavailable — try again shortly.'); return; }
+  // Default to the one-time product if present, else the first product
+  const oneTime = products.find(p => p.kind === 'one_time');
+  CHECKOUT = { productKey: (oneTime || products[0]).key, provider: 'stripe', discount: null };
+  // Prefill email from caregiver section owner email if we have one
+  const cg = state.sections?.caregivers || {};
+  document.getElementById('checkout-email').value = cg.owner_email || '';
+  document.getElementById('checkout-discount').value = '';
+  document.getElementById('checkout-discount-msg').textContent = '';
+  renderCheckoutPlans();
+  selectProvider('stripe');
+  document.querySelectorAll('.modal').forEach(m => m.classList.remove('open'));
+  document.getElementById('modal-checkout').classList.add('open');
+}
+
+function renderCheckoutPlans(){
+  const wrap = document.getElementById('checkout-plans');
+  wrap.innerHTML = PRICING.products.map(p => {
+    const on = p.key === CHECKOUT.productKey;
+    const per = p.kind === 'subscription' ? ('/' + (p.interval || 'period')) : ' one-time';
+    return '<button onclick="selectCheckoutPlan(\'' + p.key + '\')" style="text-align:left;padding:12px 14px;border-radius:11px;border:1.5px solid ' + (on ? 'var(--navy)' : 'var(--line)') + ';background:' + (on ? 'rgba(10,42,74,.05)' : '#fff') + ';cursor:pointer;display:flex;justify-content:space-between;align-items:center;gap:10px">'
+      + '<span><b style="font-family:\'Nunito\',sans-serif;color:var(--navy);font-size:14px">' + escapeHtml(p.name) + '</b><br><span style="font-size:11px;color:var(--ink-3)">' + escapeHtml(p.description || '') + '</span></span>'
+      + '<span style="font-weight:900;color:var(--navy);white-space:nowrap">' + escapeHtml(p.amountDisplay) + '<span style="font-size:10px;font-weight:700;color:var(--ink-3)">' + per + '</span></span></button>';
+  }).join('');
+}
+
+function selectCheckoutPlan(key){
+  CHECKOUT.productKey = key;
+  CHECKOUT.discount = null;
+  document.getElementById('checkout-discount-msg').textContent = '';
+  renderCheckoutPlans();
+  updateCheckoutWarn();
+}
+
+function selectProvider(prov){
+  CHECKOUT.provider = prov;
+  document.getElementById('cko-prov-stripe').className = 'cko-prov' + (prov === 'stripe' ? ' on' : '');
+  document.getElementById('cko-prov-paypal').className = 'cko-prov' + (prov === 'paypal' ? ' on' : '');
+  document.getElementById('cko-prov-stripe').style.borderColor = prov === 'stripe' ? 'var(--navy)' : 'var(--line)';
+  document.getElementById('cko-prov-stripe').style.background = prov === 'stripe' ? 'rgba(10,42,74,.05)' : '#fff';
+  document.getElementById('cko-prov-paypal').style.borderColor = prov === 'paypal' ? 'var(--navy)' : 'var(--line)';
+  document.getElementById('cko-prov-paypal').style.background = prov === 'paypal' ? 'rgba(10,42,74,.05)' : '#fff';
+  updateCheckoutWarn();
+}
+
+function currentCheckoutProduct(){ return PRICING.byKey[CHECKOUT.productKey] || null; }
+
+// PayPal subscriptions can't take our discount codes (API limitation). Warn and
+// strip the code for that combination so the user isn't surprised at PayPal.
+function updateCheckoutWarn(){
+  const p = currentCheckoutProduct();
+  const warn = document.getElementById('checkout-warn');
+  const isPaypalSub = CHECKOUT.provider === 'paypal' && p && p.kind === 'subscription';
+  const discountEl = document.getElementById('checkout-discount');
+  if (isPaypalSub && (CHECKOUT.discount || discountEl.value.trim())) {
+    warn.style.display = 'block';
+    warn.textContent = 'Discount codes aren\'t available for PayPal subscriptions. Use Card, or remove the code.';
+    CHECKOUT.discount = null;
+    document.getElementById('checkout-discount-msg').textContent = '';
+  } else {
+    warn.style.display = 'none';
+  }
+}
+
+async function applyCheckoutDiscount(){
+  const code = document.getElementById('checkout-discount').value.trim();
+  const msg = document.getElementById('checkout-discount-msg');
+  if (!code) { msg.textContent = ''; CHECKOUT.discount = null; return; }
+  const p = currentCheckoutProduct();
+  if (CHECKOUT.provider === 'paypal' && p && p.kind === 'subscription') { updateCheckoutWarn(); return; }
+  msg.style.color = 'var(--ink-3)'; msg.textContent = 'Checking…';
+  try {
+    const res = await fetch('/api/discount/validate', {
+      method:'POST', headers:{'Content-Type':'application/json'},
+      body: JSON.stringify({ code, productKey: CHECKOUT.productKey }),
+    });
+    const d = await res.json();
+    if (d.valid) {
+      CHECKOUT.discount = code;
+      msg.style.color = 'var(--green, #16A34A)';
+      msg.textContent = '✓ Code applied — ' + d.finalDisplay + ' (was ' + d.originalDisplay + ')';
+    } else {
+      CHECKOUT.discount = null;
+      msg.style.color = 'var(--terra-deep, #C84B30)';
+      msg.textContent = '✗ Code not valid for this plan.';
+    }
+  } catch(_) { msg.textContent = 'Could not check code.'; }
+}
+
+async function startCheckout(){
+  const email = document.getElementById('checkout-email').value.trim();
+  if (!email || !email.includes('@')) { showToast('A valid email is required.'); return; }
+  const p = currentCheckoutProduct();
+  if (!p) { showToast('Select a plan.'); return; }
+  const go = document.getElementById('checkout-go');
+  go.disabled = true; go.textContent = 'Redirecting…';
+  const body = {
+    planId: state.planId, ownerEmail: email, clinicSlug: state.clinicSlug,
+    productKey: CHECKOUT.productKey,
+    discountCode: (CHECKOUT.provider === 'paypal' && p.kind === 'subscription') ? null : CHECKOUT.discount,
+  };
+  try {
+    let endpoint;
+    if (CHECKOUT.provider === 'paypal') {
+      endpoint = p.kind === 'subscription' ? '/api/paypal/subscription' : '/api/paypal/order';
+    } else {
+      endpoint = '/api/payment/checkout';
+    }
+    const res = await fetch(endpoint, { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify(body) });
+    const data = await res.json();
+    const redirectUrl = data.url || data.approveUrl;
+    if (redirectUrl) { window.location.href = redirectUrl; return; }
+    showToast('⚠ ' + (data.error || 'Payment unavailable — try again.'));
+  } catch(_) { showToast('⚠ Could not reach the payment server.'); }
+  go.disabled = false; go.textContent = 'Continue to payment →';
+}
+
 function renderReminders(){
   const c = document.getElementById('reminder-list');
   let html = '<div class="opt-list">';
@@ -2271,27 +2466,18 @@ async function sendShare(){
   // ── Payment gate ──────────────────────────────────────────────────────────
   btn.textContent = 'Checking…'; btn.disabled = true;
   let paid = false;
+  // Fail CLOSED in production — a network blip must not unlock sharing. Only
+  // bypass the gate on localhost (dev convenience when the server isn't running).
+  const isLocalDev = ['localhost', '127.0.0.1'].includes(location.hostname);
   try {
     const pr = await fetch('/api/payment/status?planId=' + encodeURIComponent(state.planId));
     if (pr.ok) ({ paid } = await pr.json());
-  } catch(_) { paid = true; } // server not running → dev mode, skip gate
+  } catch(_) { paid = isLocalDev; }
 
   if (!paid) {
     btn.textContent = origText; btn.disabled = false;
     closeModal();
-    const ownerEmail = prompt('Enter your email address to continue ($79 one-time payment).\n\nThis unlocks sharing with your caregiver, medical record storage, and annual reminders.');
-    if (!ownerEmail || !ownerEmail.includes('@')) { showToast('A valid email is required to continue.'); return; }
-    btn.textContent = 'Redirecting to payment…'; btn.disabled = true;
-    try {
-      const cr = await fetch('/api/payment/checkout', {
-        method:'POST', headers:{'Content-Type':'application/json'},
-        body: JSON.stringify({ planId: state.planId, clinicSlug: state.clinicSlug, ownerEmail }),
-      });
-      const { url, error } = await cr.json();
-      if (url) { window.location.href = url; }
-      else showToast('⚠ Payment unavailable: ' + (error || 'try again'));
-    } catch(_) { showToast('⚠ Could not reach server.'); }
-    btn.textContent = origText; btn.disabled = false;
+    openCheckout();
     return;
   }
   // ── End payment gate ──────────────────────────────────────────────────────
@@ -2418,7 +2604,7 @@ function renderWalletPreview(){
         <div class="wp-title-mute">If found · Help me get home</div>
       </div>
       <div class="wp-row"><b>Type</b><span>${escapeHtml(profile.species || '—')} · ${escapeHtml(profile.breed || '—')}</span></div>
-      <div class="wp-row"><b>Microchip</b><span>${escapeHtml(profile.microchip || '—')}</span></div>
+      <div class="wp-row"><b>Microchip</b><span>${escapeHtml(profile.microchip || '—')}${profile.chip_registry && profile.chip_registry !== 'other' ? ' <small style="opacity:.7">· ' + escapeHtml(profile.chip_registry.replace(/_/g,' ')) + '</small>' : ''}</span></div>
       <div class="wp-row"><b>Caregiver</b><span>${escapeHtml(cg.primary_name || '—')} · ${escapeHtml(cg.primary_phone || '')}</span></div>
       <div class="wp-row"><b>Vet</b><span>${escapeHtml(vet.vet_clinic || '—')} · ${escapeHtml(vet.vet_phone || '')}</span></div>
       <div class="wp-row"><b>Emergency</b><span>${escapeHtml(vet.er_clinic || '—')}</span></div>
@@ -2451,7 +2637,7 @@ function printWalletCard(){
           <div class="m">If found · Help me home</div>
         </div>
         <div class="r"><b>Type</b><span>${escapeHtml(profile.species || '—')} · ${escapeHtml(profile.breed || '—')}</span></div>
-        <div class="r"><b>Chip</b><span>${escapeHtml(profile.microchip || '—')}</span></div>
+        <div class="r"><b>Chip</b><span>${escapeHtml(profile.microchip || '—')}${profile.chip_registry && profile.chip_registry !== 'other' ? ' · ' + escapeHtml(profile.chip_registry.replace(/_/g,' ')) : ''}</span></div>
         <div class="r"><b>Cgvr</b><span>${escapeHtml(cg.primary_name || '—')} · ${escapeHtml(cg.primary_phone || '')}</span></div>
         <div class="r"><b>Vet</b><span>${escapeHtml(vet.vet_clinic || '—')} · ${escapeHtml(vet.vet_phone || '')}</span></div>
         <div class="r"><b>ER</b><span>${escapeHtml(vet.er_clinic || '—')}</span></div>
@@ -2486,59 +2672,212 @@ function showToast(msg){
 // BOOT
 // ============================================================
 // ============================================================
+// VET INVITE
+// ============================================================
+function buildVetInviteHtml(){
+  return `<div class="field" style="display:block;margin-bottom:4px">
+  <div class="field-label" style="margin-bottom:4px">🔗 Invite your vet to upload records</div>
+  <div class="field-sub">Send your vet a secure one-click link — they can upload X-rays, lab results, vaccine records, and more. No login required.</div>
+  <div id="vet-invite-ui" style="margin-top:12px">
+    <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:10px">
+      <input id="vi-vet-name" type="text" placeholder="Vet / Dr. name (optional)"
+        style="padding:8px 11px;border:1.5px solid var(--line);border-radius:8px;font-size:12px;color:var(--ink-2);flex:1;min-width:130px"/>
+      <input id="vi-clinic" type="text" placeholder="Clinic name (optional)"
+        style="padding:8px 11px;border:1.5px solid var(--line);border-radius:8px;font-size:12px;color:var(--ink-2);flex:1;min-width:130px"/>
+    </div>
+    <input id="vi-message" type="text" placeholder="Message to vet (optional — e.g. Please upload Bella's latest bloodwork)"
+      style="padding:8px 11px;border:1.5px solid var(--line);border-radius:8px;font-size:12px;color:var(--ink-2);width:100%;margin-bottom:10px"/>
+    <button onclick="generateVetInvite()"
+      style="background:var(--navy);color:#fff;border:none;padding:9px 16px;border-radius:9px;font-family:inherit;font-weight:800;font-size:12px;cursor:pointer;display:flex;align-items:center;gap:6px">
+      🔗 Generate invite link
+    </button>
+  </div>
+  <div id="vet-invite-link-box" style="display:none;margin-top:12px;background:rgba(10,42,74,.05);border:1.5px solid var(--navy);border-radius:10px;padding:14px">
+    <div style="font-size:11px;font-weight:800;color:var(--navy);margin-bottom:8px;text-transform:uppercase;letter-spacing:.05em">✓ Invite link ready — share with your vet</div>
+    <div style="display:flex;gap:7px;flex-wrap:wrap;align-items:center">
+      <input id="vet-invite-link-val" type="text" readonly
+        style="flex:1;min-width:160px;padding:8px 10px;border:1px solid var(--line);border-radius:7px;font-size:11px;color:var(--ink-2);background:#fff;font-family:monospace"/>
+      <button onclick="copyVetInviteLink()"
+        style="padding:8px 13px;border-radius:8px;background:#fff;border:1.5px solid var(--line);font-size:11px;font-weight:800;cursor:pointer;white-space:nowrap"
+        id="vi-copy-btn">📋 Copy</button>
+      <a id="vi-wa-btn" href="#" target="_blank"
+        style="padding:8px 13px;border-radius:8px;background:#25D366;color:#fff;font-size:11px;font-weight:800;text-decoration:none;white-space:nowrap">💬 WhatsApp</a>
+      <a id="vi-email-btn" href="#"
+        style="padding:8px 13px;border-radius:8px;background:var(--terra-deep, #C84B30);color:#fff;font-size:11px;font-weight:800;text-decoration:none;white-space:nowrap">✉ Email</a>
+    </div>
+    <div style="font-size:11px;color:var(--ink-3);margin-top:8px">Link expires in 90 days. Your vet doesn't need a login.</div>
+    <button onclick="document.getElementById('vet-invite-link-box').style.display='none';document.getElementById('vet-invite-ui').style.display='block'"
+      style="margin-top:10px;background:none;border:none;font-size:11px;color:var(--ink-4);cursor:pointer;text-decoration:underline">Generate a new link</button>
+  </div>
+</div>`;
+}
+
+async function generateVetInvite(){
+  if (!state.planId){
+    alert('Save your plan first — it needs to be on the server before you can invite your vet.');
+    return;
+  }
+  const btn = document.querySelector('#vet-invite-ui button');
+  if (btn) { btn.disabled = true; btn.textContent = 'Generating…'; }
+  const vetName = document.getElementById('vi-vet-name')?.value?.trim() || '';
+  const clinicName = document.getElementById('vi-clinic')?.value?.trim() || '';
+  const message = document.getElementById('vi-message')?.value?.trim() || '';
+  try {
+    const res = await fetch('/api/plan/' + encodeURIComponent(state.planId) + '/vet-invite', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ vetName, clinicName, message }),
+    });
+    const data = await res.json();
+    if (!data.success) throw new Error(data.error || 'Failed to generate link');
+    showVetInviteLink(data.url, vetName, clinicName, message);
+  } catch(e) {
+    alert('Could not generate invite: ' + e.message);
+    if (btn) { btn.disabled = false; btn.textContent = '🔗 Generate invite link'; }
+  }
+}
+
+function showVetInviteLink(url, vetName, clinicName, message){
+  document.getElementById('vet-invite-ui').style.display = 'none';
+  const box = document.getElementById('vet-invite-link-box');
+  box.style.display = 'block';
+  document.getElementById('vet-invite-link-val').value = url;
+  const petName = state.sections?.profile?.name || 'my pet';
+  const intro = vetName
+    ? `Hi ${vetName},`
+    : 'Hi,';
+  const clinicPart = clinicName ? ` at ${clinicName}` : '';
+  const msgPart = message ? `\n\n${message}` : '';
+  const waText = encodeURIComponent(`${intro}\n\nI've set up a Pet Protection Promise care plan for ${petName} and would love to have ${petName}'s medical records included.${msgPart}\n\nHere's the secure upload link (no login needed):\n${url}`);
+  const emailSubj = encodeURIComponent(`Please upload ${petName}'s records — Pet Protection Promise`);
+  const emailBody = encodeURIComponent(`${intro}\n\nCould you please upload ${petName}'s medical records to their care plan?${msgPart}\n\nSecure upload link (no login required):\n${url}\n\nThank you!`);
+  document.getElementById('vi-wa-btn').href = `https://wa.me/?text=${waText}`;
+  document.getElementById('vi-email-btn').href = `mailto:?subject=${emailSubj}&body=${emailBody}`;
+}
+
+function copyVetInviteLink(){
+  const val = document.getElementById('vet-invite-link-val')?.value;
+  if (!val) return;
+  navigator.clipboard.writeText(val).then(() => {
+    const btn = document.getElementById('vi-copy-btn');
+    btn.textContent = '✓ Copied!';
+    setTimeout(() => { btn.textContent = '📋 Copy'; }, 2000);
+  }).catch(() => { prompt('Copy this link:', val); });
+}
+
+// ============================================================
 // MEDICAL RECORDS (Section C — server-side uploads)
 // ============================================================
 function buildMedRecordsHtml(){
   return `<div class="field" style="display:block">
-  <div class="field-label" style="margin-bottom:6px">Medical records &amp; documents</div>
-  <div class="field-sub">Upload lab results, X-rays, vaccine certificates, or any vet document. Stored on the server — not in your browser. PDF or image, max 20 MB each.</div>
-  <div id="med-records-list" style="display:flex;flex-direction:column;gap:8px;margin:10px 0"></div>
-  <div class="upload-zone" id="med-upload-zone" onclick="document.getElementById('med-file-input').click()" style="margin-bottom:8px">
-    <div class="upload-zone-icon">📋</div>
-    <div class="upload-zone-h">Upload vet records</div>
-    <div class="upload-zone-sub">PDF, JPG, PNG · Max 20 MB each · Click or drag &amp; drop</div>
+  <div class="field-label" style="margin-bottom:4px">🏥 Medical Records &amp; Documents</div>
+  <div class="field-sub">Lab results, X-rays, vaccine certificates, prescriptions — uploaded by you or your vet clinic. Stored securely on the server.</div>
+
+  <div id="vet-clinic-records" style="margin:12px 0 0"></div>
+  <div id="owner-records-list" style="margin:8px 0"></div>
+
+  <div style="margin-top:12px">
+    <div style="display:flex;gap:8px;margin-bottom:8px;flex-wrap:wrap">
+      <select id="med-record-type" style="padding:7px 10px;border:1.5px solid var(--line);border-radius:8px;font-size:12px;font-weight:700;color:var(--ink-2);background:#fff;flex:1;min-width:140px">
+        <option value="document">📄 Document</option>
+        <option value="vaccine">💉 Vaccine record</option>
+        <option value="lab">🧪 Lab result</option>
+        <option value="xray">🔬 X-ray / imaging</option>
+        <option value="prescription">💊 Prescription</option>
+        <option value="dental">🦷 Dental record</option>
+        <option value="surgery">🏥 Surgery / procedure</option>
+        <option value="photo">📷 Medical photo</option>
+      </select>
+      <input id="med-record-notes" type="text" placeholder="Optional note about this file…"
+        style="padding:7px 10px;border:1.5px solid var(--line);border-radius:8px;font-size:12px;color:var(--ink-2);background:#fff;flex:2;min-width:160px"/>
+    </div>
+    <div class="upload-zone" id="med-upload-zone" onclick="document.getElementById('med-file-input').click()" style="margin-bottom:8px">
+      <div class="upload-zone-icon">📋</div>
+      <div class="upload-zone-h">Upload vet records</div>
+      <div class="upload-zone-sub">PDF, JPG, PNG · Max 20 MB · Click or drag &amp; drop</div>
+    </div>
+    <input id="med-file-input" type="file" accept=".pdf,image/*" multiple style="display:none" onchange="handleMedUpload(this)"/>
+    <div id="med-upload-status" style="font-size:12px;color:var(--ink-3);min-height:18px"></div>
   </div>
-  <input id="med-file-input" type="file" accept=".pdf,image/*" multiple style="display:none" onchange="handleMedUpload(this)"/>
-  <div id="med-upload-status" style="font-size:12px;color:var(--ink-3);min-height:18px"></div>
 </div>`;
 }
 
+const RECORD_TYPE_LABELS = {
+  vaccine:'💉 Vaccine', lab:'🧪 Lab result', xray:'🔬 X-ray',
+  prescription:'💊 Prescription', dental:'🦷 Dental', surgery:'🏥 Surgery',
+  photo:'📷 Photo', document:'📄 Document'
+};
+
 async function loadMedRecords(){
-  const el = document.getElementById('med-records-list');
-  if (!el) return;
+  const clinicEl = document.getElementById('vet-clinic-records');
+  const ownerEl  = document.getElementById('owner-records-list');
+  if (!clinicEl && !ownerEl) return;
   try {
     const res = await fetch('/api/records/list?planId=' + encodeURIComponent(state.planId));
     if (!res.ok) throw new Error();
     const records = await res.json();
-    if (!records.length){
-      el.innerHTML = '<div style="font-size:12px;color:var(--ink-4)">No records uploaded yet.</div>';
-      return;
+
+    const clinicRecs = records.filter(r => r.uploaded_by && r.uploaded_by !== 'owner');
+    const ownerRecs  = records.filter(r => !r.uploaded_by || r.uploaded_by === 'owner');
+
+    if (clinicEl) {
+      if (clinicRecs.length) {
+        clinicEl.innerHTML = `
+          <div style="font-size:11px;font-weight:800;color:var(--terra-deep);text-transform:uppercase;letter-spacing:.06em;margin-bottom:6px">From your vet clinic</div>
+          ${clinicRecs.map(r => recordRowHtml(r, false)).join('')}`;
+      } else {
+        clinicEl.innerHTML = '';
+      }
     }
-    el.innerHTML = records.map(r => `
-      <div class="media-item">
-        <div class="mi-icon">${r.mime_type === 'application/pdf' ? '📄' : '🖼'}</div>
-        <div class="mi-body">
-          <div class="mi-name">${escapeHtml(r.original_name)}</div>
-          <div class="mi-meta">${fmtBytes(r.size_bytes)} · ${new Date(r.created_at * 1000).toLocaleDateString()}</div>
-        </div>
-        <a href="/api/records/file/${escapeHtml(r.id)}" target="_blank"
-           style="font-size:11px;font-weight:800;color:var(--terra-deep);background:var(--terra-tint);padding:4px 9px;border-radius:5px;text-decoration:none;flex-shrink:0">View</a>
-        <button class="mi-del" onclick="deleteMedRecord('${escapeHtml(r.id)}')" title="Delete">✕</button>
-      </div>`).join('');
+
+    if (ownerEl) {
+      if (ownerRecs.length) {
+        ownerEl.innerHTML = `
+          <div style="font-size:11px;font-weight:800;color:var(--ink-3);text-transform:uppercase;letter-spacing:.06em;margin-bottom:6px">Your uploads</div>
+          ${ownerRecs.map(r => recordRowHtml(r, true)).join('')}`;
+      } else if (!clinicRecs.length) {
+        ownerEl.innerHTML = '<div style="font-size:12px;color:var(--ink-4);padding:6px 0">No records uploaded yet.</div>';
+      } else {
+        ownerEl.innerHTML = '';
+      }
+    }
   } catch(_){
-    el.innerHTML = '<div style="font-size:12px;color:var(--ink-4)">Server not running — start it to enable record uploads.</div>';
+    if (ownerEl) ownerEl.innerHTML = '<div style="font-size:12px;color:var(--ink-4)">Start the server to enable record uploads.</div>';
   }
+}
+
+function recordRowHtml(r, canDelete) {
+  const typeLabel = RECORD_TYPE_LABELS[r.record_type] || '📄 Document';
+  const dateStr = new Date(r.created_at * 1000).toLocaleDateString();
+  return `<div class="media-item" style="align-items:flex-start">
+    <div class="mi-icon">${r.mime_type === 'application/pdf' ? '📄' : '🖼'}</div>
+    <div class="mi-body" style="flex:1">
+      <div class="mi-name">${escapeHtml(r.original_name)}</div>
+      <div class="mi-meta">
+        <span style="background:rgba(200,75,48,.12);color:var(--terra-deep);padding:2px 6px;border-radius:4px;font-size:10px;font-weight:800;margin-right:4px">${typeLabel}</span>
+        ${fmtBytes(r.size_bytes)} · ${dateStr}
+        ${r.notes ? ' · <em>' + escapeHtml(r.notes) + '</em>' : ''}
+      </div>
+    </div>
+    <a href="/api/records/file/${escapeHtml(r.id)}" target="_blank"
+       style="font-size:11px;font-weight:800;color:var(--terra-deep);background:var(--terra-tint);padding:4px 9px;border-radius:5px;text-decoration:none;flex-shrink:0;margin-left:6px">View</a>
+    ${canDelete ? `<button class="mi-del" onclick="deleteMedRecord('${escapeHtml(r.id)}')" title="Delete" style="margin-left:4px">✕</button>` : ''}
+  </div>`;
 }
 
 async function handleMedUpload(input){
   const files = Array.from(input.files);
   if (!files.length) return;
   const status = document.getElementById('med-upload-status');
+  const recordType = document.getElementById('med-record-type')?.value || 'document';
+  const notes = document.getElementById('med-record-notes')?.value?.trim() || '';
   status.textContent = 'Uploading…';
   for (const file of files){
     const fd = new FormData();
     fd.append('file', file);
     fd.append('planId', state.planId);
+    fd.append('record_type', recordType);
+    if (notes) fd.append('notes', notes);
     try {
       const res = await fetch('/api/records/upload', { method:'POST', body:fd });
       const data = await res.json();
@@ -2551,6 +2890,7 @@ async function handleMedUpload(input){
   }
   status.textContent = '✓ ' + files.length + ' file' + (files.length > 1 ? 's' : '') + ' uploaded';
   input.value = '';
+  if (document.getElementById('med-record-notes')) document.getElementById('med-record-notes').value = '';
   loadMedRecords();
 }
 
@@ -2568,8 +2908,33 @@ function fmtBytes(n){
   return (n / 1048576).toFixed(1) + ' MB';
 }
 
+// ── Pricing (fetched from server — single source of truth) ──────────────────
+let PRICING = { products: [], byKey: {} };
+function priceOf(key){ return PRICING.byKey[key] || null; }
+function standalonePrice(){ return priceOf('standalone_onetime'); }
+async function loadPricing(){
+  try {
+    const res = await fetch('/api/pricing');
+    if (!res.ok) return;
+    const data = await res.json();
+    PRICING.products = data.products || [];
+    PRICING.byKey = {};
+    PRICING.products.forEach(p => { PRICING.byKey[p.key] = p; });
+    // Update the welcome-screen standalone price from the server value
+    const standalone = standalonePrice();
+    const amtEl = document.getElementById('wp-standalone-amt');
+    if (standalone && amtEl) {
+      const dollars = standalone.amountCents % 100 === 0
+        ? String(standalone.amountCents / 100)
+        : (standalone.amountCents / 100).toFixed(2);
+      amtEl.innerHTML = '<span>$</span>' + dollars;
+    }
+  } catch(_) { /* offline / dev — leave static fallback price */ }
+}
+
 function boot(){
   // Set photo srcs
+  loadPricing();
   const wp = document.getElementById('welcome-photo-img');
   if (wp) wp.src = PHOTO_WELCOME;
   const wp2 = document.getElementById('welcome-photo-park');
@@ -2589,15 +2954,22 @@ function boot(){
     saveState();
   }
 
-  // Payment return — Stripe redirected back with ?payment=success
+  // Payment return — Stripe/PayPal redirect back with ?payment=success&provider=
   if (_up.get('payment') === 'success') {
+    const prov = _up.get('provider');
     window.history.replaceState({}, '', '/');
-    // Auto-open share modal once UI is ready (payment is now confirmed server-side)
-    setTimeout(() => { openModal('share'); showToast('✓ Payment complete — share your plan now.'); }, 400);
+    // For PayPal the capture/activation happens on /paypal/return before this
+    // redirect; for subscriptions the webhook may lag slightly, so confirm
+    // entitlement before prompting to share.
+    setTimeout(() => { openModal('share'); showToast('✓ Payment complete' + (prov === 'paypal' ? ' (PayPal)' : '') + ' — share your plan now.'); }, 400);
   }
   if (_up.get('payment') === 'cancelled') {
     window.history.replaceState({}, '', '/');
     setTimeout(() => showToast('Payment cancelled — your plan is saved.'), 400);
+  }
+  if (_up.get('payment') === 'error') {
+    window.history.replaceState({}, '', '/');
+    setTimeout(() => showToast('⚠ Payment could not be completed — please try again.'), 400);
   }
 
   // Magic-link restore — ?restore=planId loads server-saved plan into localStorage
