@@ -960,6 +960,11 @@ body.printing .top,body.printing .rail,body.printing .right,body.printing .expor
 
 <body>
 
+<!-- ======== GROUND CONTROL RETURN BAR (unified ecosystem nav) ======== -->
+<div id="gc-return-bar" style="display:none;position:fixed;top:0;left:0;right:0;z-index:10000;background:#0A2A4A;color:#fff;font-family:'Nunito Sans',-apple-system,sans-serif;font-size:13px;font-weight:700;padding:7px 14px;box-shadow:0 1px 6px rgba(0,0,0,.18)">
+  <a id="gc-return-link" href="#" style="color:#fff;text-decoration:none;display:inline-flex;align-items:center;gap:6px">← Return to Ground Control</a>
+</div>
+
 <!-- ======== WELCOME MODAL ======== -->
 <div class="welcome" id="welcome">
   <div class="welcome-card welcome-card-v3">
@@ -2932,9 +2937,35 @@ async function loadPricing(){
   } catch(_) { /* offline / dev — leave static fallback price */ }
 }
 
+// ── Ground Control return link (unified ecosystem nav) ──────────────────────
+// Reads ?return= on arrival, validates the host (anti open-redirect), persists
+// it, and shows a "← Return to Ground Control" bar on subsequent visits. Hidden
+// for users who never arrived from GC.
+const GC_ALLOWED_HOSTS = ['fivestarwills.ca'];
+function initGroundControlReturn(){
+  try {
+    const raw = new URLSearchParams(location.search).get('return');
+    if (raw) {
+      const u = new URL(raw);
+      const hostOk = GC_ALLOWED_HOSTS.some(h => u.hostname === h || u.hostname.endsWith('.' + h));
+      if (hostOk && (u.protocol === 'https:' || u.protocol === 'http:')) {
+        localStorage.setItem('gc_return', u.href);
+      }
+    }
+  } catch(_){ /* malformed return param — ignore */ }
+  const ret = localStorage.getItem('gc_return');
+  const bar = document.getElementById('gc-return-bar');
+  if (bar && ret) {
+    const link = document.getElementById('gc-return-link');
+    if (link) link.href = ret;
+    bar.style.display = 'block';
+  }
+}
+
 function boot(){
   // Set photo srcs
   loadPricing();
+  initGroundControlReturn();
   const wp = document.getElementById('welcome-photo-img');
   if (wp) wp.src = PHOTO_WELCOME;
   const wp2 = document.getElementById('welcome-photo-park');

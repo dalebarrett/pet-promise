@@ -3696,6 +3696,25 @@ app.get('/api/payment/status', async (req, res) => {
   res.json({ paid: entitled });
 });
 
+// Ground Control tile status — lets IFW flip the PP tile "Visit" → "Active".
+// HMAC-secured over "{ts}.{userRef}" (same scheme as grant/check). userRef is the
+// user's email (the universal key). hasData = the user has actually started a
+// plan or transacted in PP (an IFW grant alone does NOT count as "data").
+app.get('/api/integrations/ifinallywill/status', async (req, res) => {
+  const userRef = String(req.query.userRef || '').trim().toLowerCase();
+  if (!userRef) return res.status(400).json({ error: 'userRef required' });
+  if (!verifyIfwSignature(req, userRef)) return res.status(401).json({ error: 'unauthorized' });
+  const plan = await db.prepare(
+    `SELECT 1 FROM plans WHERE lower(owner_email) = ? AND state_json IS NOT NULL AND length(state_json) > 2 LIMIT 1`
+  ).get(userRef);
+  let hasData = !!plan;
+  if (!hasData) {
+    const pay = await db.prepare("SELECT 1 FROM payments WHERE lower(owner_email) = ? LIMIT 1").get(userRef);
+    hasData = !!pay;
+  }
+  res.json({ hasData });
+});
+
 // Signed metrics for IFW's unified company dashboard (schema v1, §Decision 5).
 // Canonical path /api/integrations/metrics (matches Legacy Letter); /api/admin/metrics
 // kept as an alias. Both are signed over "{ts}.{path}".
