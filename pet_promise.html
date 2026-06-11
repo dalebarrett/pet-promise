@@ -1115,7 +1115,8 @@ body.printing .top,body.printing .rail,body.printing .right,body.printing .expor
 
   <!-- LEFT RAIL -->
   <aside class="rail">
-    <div class="rail-h">Sections</div>
+    <div class="lang-switcher-mount" style="margin-bottom:12px"></div>
+    <div class="rail-h" data-i18n="ui.sectionsHeader">Sections</div>
     <div id="sec-list"></div>
     <div class="rail-divider"></div>
     <div class="rail-cta">
@@ -1457,6 +1458,74 @@ const I18N = {
     'w.cta':"मेरे पालतू की योजना बनाएँ", 'w.resumePre':"पहले से शुरू किया है?", 'w.resumeBtn':"जहाँ छोड़ा था वहीं से जारी रखें",
   },
 };
+// ── App-shell chrome + section titles/descriptions (en/fr/es/pt/hi) ──────────
+// (en for sec.* comes from the SECTIONS data via ti() fallback; section
+//  intros/tips/fields/prompts fall back to English until their pass lands.)
+Object.assign(I18N.en, {
+  'ui.section':'Section', 'ui.progress':'{n} of {total}', 'ui.complete':'Complete', 'ui.filled':'{pct}% filled',
+  'ui.tip':'💡 Tip.', 'ui.prev':'← Previous', 'ui.next':'Next: {title} →', 'ui.review':'Review & export →',
+});
+Object.assign(I18N.fr, {
+  'ui.section':'Section', 'ui.progress':'{n} sur {total}', 'ui.complete':'Terminé', 'ui.filled':'{pct} % rempli',
+  'ui.tip':'💡 Conseil.', 'ui.prev':'← Précédent', 'ui.next':'Suivant : {title} →', 'ui.review':'Réviser et exporter →',
+  'sec.profile.title':"Profil de l'animal", 'sec.profile.desc':"L'essentiel — qui, quoi, où.",
+  'sec.caregivers.title':'Gardiens', 'sec.caregivers.desc':"Principal, suppléant et la conversation que vous avez eue.",
+  'sec.vet.title':'Soins vétérinaires', 'sec.vet.desc':"Vétérinaire, clinique d'urgence, problèmes de santé, assurance.",
+  'sec.routine.title':'Routine quotidienne', 'sec.routine.desc':'Alimentation, exercice, sommeil, réconfort.',
+  'sec.meds.title':'Médicaments', 'sec.meds.desc':'Dose, horaire, pharmacie, renouvellements.',
+  'sec.behaviour.title':'Comportement et personnalité', 'sec.behaviour.desc':'Déclencheurs, peurs, réconfort, sociabilité.',
+  'sec.financial.title':'Dispositions financières', 'sec.financial.desc':"Budget de soins et circulation de l'argent.",
+  'sec.emergency.title':"Plan d'urgence", 'sec.emergency.desc':'Les premières 24 à 48 heures.',
+  'sec.eol.title':'Volontés de fin de vie', 'sec.eol.desc':'Le moment venu — vos préférences.',
+  'sec.letter.title':'Lettre au gardien', 'sec.letter.desc':'Un mot de vous, dans vos mots.',
+});
+Object.assign(I18N.es, {
+  'ui.section':'Sección', 'ui.progress':'{n} de {total}', 'ui.complete':'Completo', 'ui.filled':'{pct}% completado',
+  'ui.tip':'💡 Consejo.', 'ui.prev':'← Anterior', 'ui.next':'Siguiente: {title} →', 'ui.review':'Revisar y exportar →',
+  'sec.profile.title':'Perfil de la mascota', 'sec.profile.desc':'Lo básico: quién, qué, dónde.',
+  'sec.caregivers.title':'Cuidadores', 'sec.caregivers.desc':'Principal, de respaldo y la conversación que tuviste.',
+  'sec.vet.title':'Atención veterinaria', 'sec.vet.desc':'Veterinario, clínica de urgencias, afecciones, seguro.',
+  'sec.routine.title':'Rutina diaria', 'sec.routine.desc':'Comida, ejercicio, sueño, mimos.',
+  'sec.meds.title':'Medicamentos', 'sec.meds.desc':'Dosis, horario, farmacia, recargas.',
+  'sec.behaviour.title':'Comportamiento y personalidad', 'sec.behaviour.desc':'Detonantes, miedos, consuelos, sociabilidad.',
+  'sec.financial.title':'Provisiones económicas', 'sec.financial.desc':'Presupuesto de cuidados y cómo fluye el dinero.',
+  'sec.emergency.title':'Plan de emergencia', 'sec.emergency.desc':'Las primeras 24-48 horas.',
+  'sec.eol.title':'Voluntades para el final de la vida', 'sec.eol.desc':'Cuando llegue el momento: tus preferencias.',
+  'sec.letter.title':'Carta al cuidador', 'sec.letter.desc':'Unas palabras tuyas, con tu voz.',
+});
+Object.assign(I18N.pt, {
+  'ui.section':'Secção', 'ui.progress':'{n} de {total}', 'ui.complete':'Concluído', 'ui.filled':'{pct}% preenchido',
+  'ui.tip':'💡 Dica.', 'ui.prev':'← Anterior', 'ui.next':'Seguinte: {title} →', 'ui.review':'Rever e exportar →',
+  'sec.profile.title':'Perfil do animal', 'sec.profile.desc':'O essencial — quem, o quê, onde.',
+  'sec.caregivers.title':'Cuidadores', 'sec.caregivers.desc':'Principal, reserva e a conversa que teve.',
+  'sec.vet.title':'Cuidados veterinários', 'sec.vet.desc':'Veterinário, clínica de urgência, problemas de saúde, seguro.',
+  'sec.routine.title':'Rotina diária', 'sec.routine.desc':'Alimentação, exercício, sono, conforto.',
+  'sec.meds.title':'Medicamentos', 'sec.meds.desc':'Dose, horário, farmácia, renovações.',
+  'sec.behaviour.title':'Comportamento e personalidade', 'sec.behaviour.desc':'Gatilhos, medos, conforto, convívio.',
+  'sec.financial.title':'Provisões financeiras', 'sec.financial.desc':'Orçamento de cuidados e como o dinheiro circula.',
+  'sec.emergency.title':'Plano de emergência', 'sec.emergency.desc':'As primeiras 24-48 horas.',
+  'sec.eol.title':'Vontades de fim de vida', 'sec.eol.desc':'Quando chegar a hora — as suas preferências.',
+  'sec.letter.title':'Carta ao cuidador', 'sec.letter.desc':'Uma mensagem sua, na sua voz.',
+});
+Object.assign(I18N.hi, {
+  'ui.section':'अनुभाग', 'ui.progress':'{total} में से {n}', 'ui.complete':'पूर्ण', 'ui.filled':'{pct}% भरा',
+  'ui.tip':'💡 सुझाव।', 'ui.prev':'← पिछला', 'ui.next':'अगला: {title} →', 'ui.review':'समीक्षा और निर्यात →',
+  'sec.profile.title':'पालतू प्रोफ़ाइल', 'sec.profile.desc':'बुनियादी बातें — कौन, क्या, कहाँ।',
+  'sec.caregivers.title':'देखभालकर्ता', 'sec.caregivers.desc':'मुख्य, बैकअप, और वह बातचीत जो आपने की है।',
+  'sec.vet.title':'पशु-चिकित्सा देखभाल', 'sec.vet.desc':'पशु-चिकित्सक, आपातकालीन क्लिनिक, बीमारियाँ, बीमा।',
+  'sec.routine.title':'दैनिक दिनचर्या', 'sec.routine.desc':'खाना, व्यायाम, नींद, आराम।',
+  'sec.meds.title':'दवाएँ', 'sec.meds.desc':'खुराक, समय, फ़ार्मेसी, रीफ़िल।',
+  'sec.behaviour.title':'व्यवहार और स्वभाव', 'sec.behaviour.desc':'ट्रिगर, डर, राहत, सामाजिक मेल।',
+  'sec.financial.title':'वित्तीय प्रावधान', 'sec.financial.desc':'देखभाल बजट और पैसे का प्रवाह।',
+  'sec.emergency.title':'आपातकालीन योजना', 'sec.emergency.desc':'पहले 24-48 घंटे।',
+  'sec.eol.title':'जीवन-अंत की इच्छाएँ', 'sec.eol.desc':'जब वह समय आए — आपकी प्राथमिकताएँ।',
+  'sec.letter.title':'देखभालकर्ता के नाम पत्र', 'sec.letter.desc':'आपकी ओर से, आपके अपने शब्दों में एक संदेश।',
+});
+Object.assign(I18N.en, {'ui.sectionsHeader':'Sections'});
+Object.assign(I18N.fr, {'ui.sectionsHeader':'Sections'});
+Object.assign(I18N.es, {'ui.sectionsHeader':'Secciones'});
+Object.assign(I18N.pt, {'ui.sectionsHeader':'Secções'});
+Object.assign(I18N.hi, {'ui.sectionsHeader':'अनुभाग'});
 let currentLang = 'en';
 function detectLang(){
   const supported = LANGS.map(l => l.code);
@@ -1468,6 +1537,20 @@ function t(key){
   const v = I18N[currentLang] && I18N[currentLang][key];
   if (v != null) return v;
   return (I18N.en && I18N.en[key] != null) ? I18N.en[key] : key;
+}
+// Like t(), but with an explicit fallback (used where the English source lives in
+// the SECTIONS data, not in the catalog — so untranslated keys degrade to English).
+function ti(key, fallback){
+  const v = I18N[currentLang] && I18N[currentLang][key];
+  if (v != null) return v;
+  const e = I18N.en && I18N.en[key];
+  return (e != null) ? e : fallback;
+}
+// Interpolating translate: t('ui.next', {title:'…'}) replaces {placeholders}.
+function tf(key, vars){
+  let s = t(key);
+  if (vars) for (const k in vars) s = s.split('{'+k+'}').join(vars[k]);
+  return s;
 }
 function applyI18n(root){
   root = root || document;
@@ -1914,11 +1997,11 @@ function renderSectionList(){
     html += '<div class="sec-li' + (isOn ? ' on' : '') + '" onclick="goToSection(' + i + ')">';
     html += '<div class="sl-num">' + sec.n + '</div>';
     html += '<div class="sl-body">';
-    html += '<div class="sl-t">' + sec.icon + ' ' + escapeHtml(sec.title) + '</div>';
-    html += '<div class="sl-d">' + escapeHtml(sec.desc) + '</div>';
+    html += '<div class="sl-t">' + sec.icon + ' ' + escapeHtml(ti('sec.'+sec.id+'.title', sec.title)) + '</div>';
+    html += '<div class="sl-d">' + escapeHtml(ti('sec.'+sec.id+'.desc', sec.desc)) + '</div>';
     html += '<div class="sl-meta">';
-    if (isComplete) html += '<span class="check"></span> Complete';
-    else html += fill + '% filled';
+    if (isComplete) html += '<span class="check"></span> ' + t('ui.complete');
+    else html += tf('ui.filled', {pct: fill});
     html += '</div>';
     html += '</div></div>';
   });
@@ -1931,10 +2014,11 @@ function renderSection(){
   const sd = state.sections[sec.id] || {};
 
   let html = '';
-  html += '<div class="crumb"><b>Section ' + sec.n + '</b><span>· ' + escapeHtml(sec.title) + ' ·</span><span>' + (currentSection+1) + ' of ' + SECTIONS.length + '</span></div>';
-  html += '<h2><span class="sec-icon">' + sec.icon + '</span>' + escapeHtml(sec.title) + '</h2>';
-  html += '<div class="sec-intro">' + sec.intro + '</div>';
-  html += '<div class="sec-tip"><b>💡 Tip.</b> ' + sec.tip + '</div>';
+  const secTitle = escapeHtml(ti('sec.'+sec.id+'.title', sec.title));
+  html += '<div class="crumb"><b>' + t('ui.section') + ' ' + sec.n + '</b><span>· ' + secTitle + ' ·</span><span>' + tf('ui.progress', {n: currentSection+1, total: SECTIONS.length}) + '</span></div>';
+  html += '<h2><span class="sec-icon">' + sec.icon + '</span>' + secTitle + '</h2>';
+  html += '<div class="sec-intro">' + ti('sec.'+sec.id+'.intro', sec.intro) + '</div>';
+  html += '<div class="sec-tip"><b>' + t('ui.tip') + '</b> ' + ti('sec.'+sec.id+'.tip', sec.tip) + '</div>';
 
   sec.fields.forEach(f => {
     html += '<div class="field">';
@@ -2041,11 +2125,12 @@ function renderSection(){
   // section-end nav
   const isLast = currentSection === SECTIONS.length - 1;
   html += '<div class="sec-nav">';
-  html += '<button class="nav-btn prev" ' + (currentSection===0?'disabled':'') + ' onclick="prevSection()">← Previous</button>';
+  html += '<button class="nav-btn prev" ' + (currentSection===0?'disabled':'') + ' onclick="prevSection()">' + t('ui.prev') + '</button>';
   if (isLast) {
-    html += '<button class="nav-btn next glow" onclick="finishProgram()">Review &amp; export →</button>';
+    html += '<button class="nav-btn next glow" onclick="finishProgram()">' + t('ui.review') + '</button>';
   } else {
-    html += '<button class="nav-btn next" onclick="nextSection()">Next: ' + escapeHtml(SECTIONS[currentSection+1].title) + ' →</button>';
+    const nextSec = SECTIONS[currentSection+1];
+    html += '<button class="nav-btn next" onclick="nextSection()">' + tf('ui.next', {title: escapeHtml(ti('sec.'+nextSec.id+'.title', nextSec.title))}) + '</button>';
   }
   html += '</div>';
 
