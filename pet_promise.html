@@ -1526,6 +1526,11 @@ Object.assign(I18N.fr, {'ui.sectionsHeader':'Sections'});
 Object.assign(I18N.es, {'ui.sectionsHeader':'Secciones'});
 Object.assign(I18N.pt, {'ui.sectionsHeader':'Secções'});
 Object.assign(I18N.hi, {'ui.sectionsHeader':'अनुभाग'});
+Object.assign(I18N.en, {'ui.startingPoints':'Starting points — click to insert, then edit to make it yours','ui.selectPlaceholder':'— select —'});
+Object.assign(I18N.fr, {'ui.startingPoints':'Points de départ — cliquez pour insérer, puis modifiez à votre guise','ui.selectPlaceholder':'— sélectionner —'});
+Object.assign(I18N.es, {'ui.startingPoints':'Puntos de partida: haz clic para insertar y luego edítalo a tu gusto','ui.selectPlaceholder':'— seleccionar —'});
+Object.assign(I18N.pt, {'ui.startingPoints':'Pontos de partida — clique para inserir e depois edite à sua maneira','ui.selectPlaceholder':'— selecionar —'});
+Object.assign(I18N.hi, {'ui.startingPoints':'शुरुआती सुझाव — डालने के लिए क्लिक करें, फिर अपने अनुसार बदलें','ui.selectPlaceholder':'— चुनें —'});
 Object.assign(I18N.en, {'ui.footer':'<b>Pet Protection Promise™</b> · Built by Barrett Tax Law &amp; Donsky &amp; Donsky Legacy Optimization Inc. · Legally valid across Canada and all 50 U.S. states.'});
 Object.assign(I18N.fr, {'ui.footer':'<b>Pet Protection Promise™</b> · Conçu par Barrett Tax Law et Donsky &amp; Donsky Legacy Optimization Inc. · Juridiquement valide partout au Canada et dans les 50 États américains.'});
 Object.assign(I18N.es, {'ui.footer':'<b>Pet Protection Promise™</b> · Desarrollado por Barrett Tax Law y Donsky &amp; Donsky Legacy Optimization Inc. · Con validez legal en todo Canadá y los 50 estados de EE. UU.'});
@@ -1580,6 +1585,79 @@ Object.assign(I18N.hi, {
   'ui.trustEnc':'<b>AES-256</b> एन्क्रिप्शन','ui.trustSoc':'<b>FutureVault</b> · SOC 2 Type II','ui.trustLegal':'क़ानूनी रूप से मान्य · CA + सभी 50 अमेरिकी राज्य',
   'ui.upsellH':'अक्षमता की कमी को पूरा करें','ui.upsellP':'Pet Protection मृत्यु को कवर करता है। <b>संपत्ति + स्वास्थ्य के लिए POA</b> उन समयों को कवर करता है जब आप जीवित हैं पर कार्य नहीं कर सकते। दोनों Complete Plan ($159) और Couples Plan ($249) में शामिल हैं।','ui.upsellBtn':'Complete Plan देखें',
   'rt.0':'कहीं से भी शुरू करें। ज़्यादातर लोग <b>20 मिनट</b> में पूरा कर लेते हैं।','rt.30':'बढ़िया शुरुआत। जारी रखें — आपका देखभालकर्ता आभारी होगा।','rt.60':'एक-तिहाई से ज़्यादा हो गया। बाक़ी और तेज़ होगा।','rt.90':'बस थोड़ा बाक़ी — कुछ ही अनुभाग शेष हैं।','rt.99':'बस आख़िरी ज़ोर। पूरा होने पर योजना निर्यात करें।','rt.100':'<b>योजना पूर्ण।</b> PDF निर्यात करें और अपने देखभालकर्ता के साथ साझा करें।',
+});
+// ── Section A · Profile — full field content (en via SECTIONS fallback) ──────
+Object.assign(I18N.fr, {
+  'sec.profile.intro':"Commencez par l'essentiel pour que toute personne qui prend le relais puisse identifier votre animal, le retrouver dans un registre et confirmer qu'il est bien à vous. C'est aussi ce qui figure sur la carte de portefeuille.",
+  'sec.profile.tip':"<b>Soyez précis.</b> Le numéro de puce, la plaque d'enregistrement et la race complète font toute la différence si votre animal est perdu ou confié à quelqu'un d'autre.",
+  'fld.profile.name.label':"Nom de l'animal",'fld.profile.name.ph':"p. ex. Carrot",
+  'fld.profile.species.label':"Espèce",'fld.profile.species.opt.0':"Chien",'fld.profile.species.opt.1':"Chat",'fld.profile.species.opt.2':"Oiseau",'fld.profile.species.opt.3':"Lapin / petit mammifère",'fld.profile.species.opt.4':"Reptile",'fld.profile.species.opt.5':"Poisson",'fld.profile.species.opt.6':"Cheval",'fld.profile.species.opt.7':"Autre (préciser dans les notes)",
+  'fld.profile.breed.label':"Race (ou croisement)",'fld.profile.breed.ph':"p. ex. Golden Retriever / Croisé — probablement Labrador + chien courant",
+  'fld.profile.sex.label':"Sexe",'fld.profile.sex.opt.0':"Mâle — castré",'fld.profile.sex.opt.1':"Mâle — non castré",'fld.profile.sex.opt.2':"Femelle — stérilisée",'fld.profile.sex.opt.3':"Femelle — non stérilisée",
+  'fld.profile.dob.label':"Date de naissance ou âge estimé",'fld.profile.dob.ph':"p. ex. mars 2020 (ou « env. 6 ans »)",
+  'fld.profile.colour.label':"Couleur et signes distinctifs",'fld.profile.colour.ph':"p. ex. pelage crème, tache blanche au poitrail, tache sur le nez",
+  'fld.profile.microchip.label':"Numéro de puce",'fld.profile.microchip.sub':"Essentiel pour retrouver le propriétaire si votre animal est trouvé.",'fld.profile.microchip.ph':"p. ex. 985112345678901",
+  'fld.profile.chip_registry.label':"Registre de la puce",'fld.profile.chip_registry.sub':"Dans quelle base nationale votre animal est-il enregistré ? Votre vétérinaire peut aussi le mettre à jour.",
+  'fld.profile.chip_brand.label':"Fabricant de la puce",'fld.profile.chip_brand.ph':"p. ex. Datamars, AVID, HomeAgain",
+  'fld.profile.chip_date.label':"Date de pose de la puce",'fld.profile.chip_date.ph':"p. ex. mars 2021",
+  'fld.profile.registration.label':"Numéro de licence / d'enregistrement (le cas échéant)",'fld.profile.registration.ph':"p. ex. licence animale de la Ville de Toronto n° DG-204771",
+  'fld.profile.photo_note.label':"Où se trouve la photo la plus récente",'fld.profile.photo_note.sub':"Indiquez à votre gardien où trouver une photo récente (téléphone, nuage, frigo).",'fld.profile.photo_note.ph':"p. ex. album iCloud « Carrot 2026 »",
+  'fld.profile.notes.label':"Tout autre élément identifiant",'fld.profile.notes.sub':"Cicatrices distinctives, dents manquantes, démarche, voix — tout ce qui aide à confirmer son identité.",
+  'fld.profile.notes.prm.0':"Boite légèrement de la patte arrière gauche à la suite d'une blessure en 2024.",'fld.profile.notes.prm.1':"A un œil bleu et un œil brun (hétérochromie).",'fld.profile.notes.prm.2':"Canine avant gauche manquante — ancienne fracture.",'fld.profile.notes.prm.3':"Aboiement grave et distinctif pour un petit chien — reconnaissable entre tous.",
+});
+Object.assign(I18N.es, {
+  'sec.profile.intro':"Empieza por lo esencial para que quien se haga cargo pueda identificar a tu mascota, encontrarla en un registro y confirmar que es tuya. Esto también es lo que aparece en la tarjeta de cartera.",
+  'sec.profile.tip':"<b>Sé exacto.</b> El número de microchip, la placa de registro y la raza completa marcan la diferencia si tu mascota se pierde o queda al cuidado de otra persona.",
+  'fld.profile.name.label':"Nombre de la mascota",'fld.profile.name.ph':"p. ej. Carrot",
+  'fld.profile.species.label':"Especie",'fld.profile.species.opt.0':"Perro",'fld.profile.species.opt.1':"Gato",'fld.profile.species.opt.2':"Ave",'fld.profile.species.opt.3':"Conejo / pequeño mamífero",'fld.profile.species.opt.4':"Reptil",'fld.profile.species.opt.5':"Pez",'fld.profile.species.opt.6':"Caballo",'fld.profile.species.opt.7':"Otro (especificar en notas)",
+  'fld.profile.breed.label':"Raza (o mezcla)",'fld.profile.breed.ph':"p. ej. Golden Retriever / Mestizo — probablemente Labrador + sabueso",
+  'fld.profile.sex.label':"Sexo",'fld.profile.sex.opt.0':"Macho — castrado",'fld.profile.sex.opt.1':"Macho — entero",'fld.profile.sex.opt.2':"Hembra — esterilizada",'fld.profile.sex.opt.3':"Hembra — entera",
+  'fld.profile.dob.label':"Fecha de nacimiento o edad estimada",'fld.profile.dob.ph':"p. ej. marzo de 2020 (o « aprox. 6 años »)",
+  'fld.profile.colour.label':"Color y señas distintivas",'fld.profile.colour.ph':"p. ej. pelaje crema, mancha blanca en el pecho, peca en el hocico",
+  'fld.profile.microchip.label':"Número de microchip",'fld.profile.microchip.sub':"Esencial para devolverla a su dueño si la encuentran.",'fld.profile.microchip.ph':"p. ej. 985112345678901",
+  'fld.profile.chip_registry.label':"Registro del microchip",'fld.profile.chip_registry.sub':"¿En qué base de datos nacional está registrada tu mascota? Tu veterinario también puede actualizarlo.",
+  'fld.profile.chip_brand.label':"Fabricante del microchip",'fld.profile.chip_brand.ph':"p. ej. Datamars, AVID, HomeAgain",
+  'fld.profile.chip_date.label':"Fecha de colocación del microchip",'fld.profile.chip_date.ph':"p. ej. marzo de 2021",
+  'fld.profile.registration.label':"Número de licencia / registro (si lo hay)",'fld.profile.registration.ph':"p. ej. licencia de mascota de la Ciudad de Toronto n.º DG-204771",
+  'fld.profile.photo_note.label':"Dónde está la foto más reciente",'fld.profile.photo_note.sub':"Dile a tu cuidador dónde encontrar una foto actual (teléfono, nube, nevera).",'fld.profile.photo_note.ph':"p. ej. álbum de iCloud « Carrot 2026 »",
+  'fld.profile.notes.label':"Cualquier otro rasgo identificativo",'fld.profile.notes.sub':"Cicatrices distintivas, dientes que faltan, forma de andar, voz: cualquier cosa que ayude a confirmar su identidad.",
+  'fld.profile.notes.prm.0':"Cojea un poco de la pata trasera izquierda por una lesión de 2024.",'fld.profile.notes.prm.1':"Tiene un ojo azul y otro marrón (heterocromía).",'fld.profile.notes.prm.2':"Le falta el colmillo delantero izquierdo — fractura antigua.",'fld.profile.notes.prm.3':"Ladrido grave y característico para un perro pequeño — inconfundible.",
+});
+Object.assign(I18N.pt, {
+  'sec.profile.intro':"Comece pelo essencial para que quem assumir possa identificar o seu animal, encontrá-lo num registo e confirmar que é seu. É também o que consta no cartão de carteira.",
+  'sec.profile.tip':"<b>Seja exato.</b> O número do microchip, a chapa de registo e a raça completa fazem toda a diferença se o seu animal se perder ou ficar ao cuidado de outra pessoa.",
+  'fld.profile.name.label':"Nome do animal",'fld.profile.name.ph':"p. ex. Carrot",
+  'fld.profile.species.label':"Espécie",'fld.profile.species.opt.0':"Cão",'fld.profile.species.opt.1':"Gato",'fld.profile.species.opt.2':"Ave",'fld.profile.species.opt.3':"Coelho / pequeno mamífero",'fld.profile.species.opt.4':"Réptil",'fld.profile.species.opt.5':"Peixe",'fld.profile.species.opt.6':"Cavalo",'fld.profile.species.opt.7':"Outro (especificar nas notas)",
+  'fld.profile.breed.label':"Raça (ou cruzamento)",'fld.profile.breed.ph':"p. ex. Golden Retriever / Rafeiro — provavelmente Labrador + sabujo",
+  'fld.profile.sex.label':"Sexo",'fld.profile.sex.opt.0':"Macho — castrado",'fld.profile.sex.opt.1':"Macho — inteiro",'fld.profile.sex.opt.2':"Fêmea — esterilizada",'fld.profile.sex.opt.3':"Fêmea — inteira",
+  'fld.profile.dob.label':"Data de nascimento ou idade estimada",'fld.profile.dob.ph':"p. ex. março de 2020 (ou « aprox. 6 anos »)",
+  'fld.profile.colour.label':"Cor e sinais distintivos",'fld.profile.colour.ph':"p. ex. pelagem creme, mancha branca no peito, sarda no focinho",
+  'fld.profile.microchip.label':"Número do microchip",'fld.profile.microchip.sub':"Essencial para devolver ao dono se o seu animal for encontrado.",'fld.profile.microchip.ph':"p. ex. 985112345678901",
+  'fld.profile.chip_registry.label':"Registo do microchip",'fld.profile.chip_registry.sub':"Em que base de dados nacional o seu animal está registado? O seu veterinário também pode atualizar.",
+  'fld.profile.chip_brand.label':"Fabricante do microchip",'fld.profile.chip_brand.ph':"p. ex. Datamars, AVID, HomeAgain",
+  'fld.profile.chip_date.label':"Data de colocação do microchip",'fld.profile.chip_date.ph':"p. ex. março de 2021",
+  'fld.profile.registration.label':"Número de licença / registo (se houver)",'fld.profile.registration.ph':"p. ex. licença de animal da Cidade de Toronto n.º DG-204771",
+  'fld.profile.photo_note.label':"Onde está a foto mais recente",'fld.profile.photo_note.sub':"Diga ao seu cuidador onde encontrar uma foto atual (telemóvel, nuvem, frigorífico).",'fld.profile.photo_note.ph':"p. ex. álbum iCloud « Carrot 2026 »",
+  'fld.profile.notes.label':"Qualquer outro sinal identificador",'fld.profile.notes.sub':"Cicatrizes distintivas, dentes em falta, modo de andar, voz — tudo o que ajude a confirmar a identidade.",
+  'fld.profile.notes.prm.0':"Coxeia ligeiramente da pata traseira esquerda devido a uma lesão de 2024.",'fld.profile.notes.prm.1':"Tem um olho azul e um castanho (heterocromia).",'fld.profile.notes.prm.2':"Falta-lhe o canino dianteiro esquerdo — fratura antiga.",'fld.profile.notes.prm.3':"Ladrido grave e característico para um cão pequeno — inconfundível.",
+});
+Object.assign(I18N.hi, {
+  'sec.profile.intro':"ज़रूरी बातों से शुरू करें ताकि ज़िम्मेदारी संभालने वाला कोई भी व्यक्ति आपके पालतू को पहचान सके, किसी रजिस्ट्री में ढूँढ सके और पुष्टि कर सके कि वह आपका है। यही वॉलेट कार्ड पर भी आता है।",
+  'sec.profile.tip':"<b>सटीक रहें।</b> माइक्रोचिप नंबर, रजिस्ट्रेशन टैग और पूरी नस्ल बहुत काम आते हैं अगर आपका पालतू कभी खो जाए या किसी और की देखरेख में हो।",
+  'fld.profile.name.label':"पालतू का नाम",'fld.profile.name.ph':"जैसे Carrot",
+  'fld.profile.species.label':"प्रजाति",'fld.profile.species.opt.0':"कुत्ता",'fld.profile.species.opt.1':"बिल्ली",'fld.profile.species.opt.2':"पक्षी",'fld.profile.species.opt.3':"खरगोश / छोटा स्तनधारी",'fld.profile.species.opt.4':"सरीसृप",'fld.profile.species.opt.5':"मछली",'fld.profile.species.opt.6':"घोड़ा",'fld.profile.species.opt.7':"अन्य (नोट्स में बताएं)",
+  'fld.profile.breed.label':"नस्ल (या मिश्रण)",'fld.profile.breed.ph':"जैसे Golden Retriever / मिश्रित — संभवतः Lab + Hound",
+  'fld.profile.sex.label':"लिंग",'fld.profile.sex.opt.0':"नर — बधिया किया हुआ",'fld.profile.sex.opt.1':"नर — अक्षत",'fld.profile.sex.opt.2':"मादा — बंध्याकृत",'fld.profile.sex.opt.3':"मादा — अक्षत",
+  'fld.profile.dob.label':"जन्मदिन या अनुमानित आयु",'fld.profile.dob.ph':"जैसे मार्च 2020 (या लगभग 6 वर्ष)",
+  'fld.profile.colour.label':"रंग और पहचान-चिह्न",'fld.profile.colour.ph':"जैसे क्रीम रंग, छाती पर सफ़ेद धब्बा, नाक पर तिल",
+  'fld.profile.microchip.label':"माइक्रोचिप नंबर",'fld.profile.microchip.sub':"अगर आपका पालतू मिल जाए तो मालिक तक लौटाने के लिए अत्यंत ज़रूरी।",'fld.profile.microchip.ph':"जैसे 985112345678901",
+  'fld.profile.chip_registry.label':"चिप रजिस्ट्री",'fld.profile.chip_registry.sub':"आपका पालतू किस राष्ट्रीय डेटाबेस में पंजीकृत है? आपका पशु-चिकित्सक भी इसे अपडेट कर सकता है।",
+  'fld.profile.chip_brand.label':"चिप निर्माता",'fld.profile.chip_brand.ph':"जैसे Datamars, AVID, HomeAgain",
+  'fld.profile.chip_date.label':"चिप लगाने की तारीख़",'fld.profile.chip_date.ph':"जैसे मार्च 2021",
+  'fld.profile.registration.label':"लाइसेंस / पंजीकरण नंबर (यदि कोई हो)",'fld.profile.registration.ph':"जैसे City of Toronto पालतू लाइसेंस #DG-204771",
+  'fld.profile.photo_note.label':"सबसे हाल की तस्वीर कहाँ है",'fld.profile.photo_note.sub':"अपने देखभालकर्ता को बताएं कि मौजूदा तस्वीर कहाँ मिलेगी (फ़ोन, क्लाउड, फ्रिज)।",'fld.profile.photo_note.ph':"जैसे iCloud एल्बम « Carrot 2026 »",
+  'fld.profile.notes.label':"पहचान में मदद करने वाली कोई और बात",'fld.profile.notes.sub':"विशिष्ट निशान, गायब दाँत, चाल, आवाज़ — जो भी पहचान की पुष्टि में मदद करे।",
+  'fld.profile.notes.prm.0':"2024 की चोट के कारण बाएँ पिछले पैर में हल्का लंगड़ाकर चलता है।",'fld.profile.notes.prm.1':"एक आँख नीली और एक भूरी है (हेटरोक्रोमिया)।",'fld.profile.notes.prm.2':"सामने-बाएँ का कैनाइन दाँत गायब — पुरानी फ्रैक्चर।",'fld.profile.notes.prm.3':"छोटे कुत्ते के लिए अलग ही गहरी भौंक — पहचानने में आसान।",
 });
 let currentLang = 'en';
 function detectLang(){
@@ -2076,55 +2154,56 @@ function renderSection(){
   html += '<div class="sec-tip"><b>' + t('ui.tip') + '</b> ' + ti('sec.'+sec.id+'.tip', sec.tip) + '</div>';
 
   sec.fields.forEach(f => {
+    const kp = 'fld.'+sec.id+'.'+f.key;   // i18n key prefix for this field
     html += '<div class="field">';
-    html += '<div class="field-label">' + escapeHtml(f.label) + (f.required ? ' <span class="req">*</span>' : '') + '</div>';
-    if (f.sub) html += '<div class="field-sub">' + f.sub + '</div>';
+    html += '<div class="field-label">' + escapeHtml(ti(kp+'.label', f.label)) + (f.required ? ' <span class="req">*</span>' : '') + '</div>';
+    if (f.sub) html += '<div class="field-sub">' + ti(kp+'.sub', f.sub) + '</div>';
     const val = sd[f.key];
 
     if (f.type === 'text') {
-      const ph = (f.placeholder || '').replace(/"/g,'&quot;');
+      const ph = ti(kp+'.ph', f.placeholder || '').replace(/"/g,'&quot;');
       html += '<input type="text" class="text-input" placeholder="' + ph + '" value="' + escapeHtml(val||'') + '" oninput="setField(\''+sec.id+'\',\''+f.key+'\',this.value)"/>';
     } else if (f.type === 'textarea') {
-      const ph = (f.placeholder || '').replace(/"/g,'&quot;');
+      const ph = ti(kp+'.ph', f.placeholder || '').replace(/"/g,'&quot;');
       const rows = f.rows || 4;
       html += '<textarea class="text-area" rows="' + rows + '" placeholder="' + ph + '" oninput="setField(\''+sec.id+'\',\''+f.key+'\',this.value)">' + escapeHtml(val||'') + '</textarea>';
       if (f.prompts && f.prompts.length) {
-        html += '<div class="sec-prompts"><div class="sp-h">Starting points — click to insert, then edit to make it yours</div><div class="sp-list">';
+        html += '<div class="sec-prompts"><div class="sp-h">' + t('ui.startingPoints') + '</div><div class="sp-list">';
         f.prompts.forEach((p, i) => {
-          html += '<button class="sp-pill" onclick="insertPrompt(\''+sec.id+'\',\''+f.key+'\','+i+')">' + escapeHtml(p) + '</button>';
+          html += '<button class="sp-pill" onclick="insertPrompt(\''+sec.id+'\',\''+f.key+'\','+i+')">' + escapeHtml(ti(kp+'.prm.'+i, p)) + '</button>';
         });
         html += '</div></div>';
       }
     } else if (f.type === 'radio') {
       html += '<div class="opt-list">';
-      f.options.forEach(opt => {
-        const checked = val === opt;
+      f.options.forEach((opt, i) => {
+        const checked = val === opt;   // stored value stays the English option (data is language-independent)
         html += '<label class="opt-row' + (checked?' on':'') + '">';
         html += '<input type="radio" name="' + sec.id + '_' + f.key + '" ' + (checked?'checked':'') + ' onchange="setField(\''+sec.id+'\',\''+f.key+'\',\''+escapeJs(opt)+'\')"/>';
         html += '<span class="opt-bullet"></span>';
-        html += '<span class="opt-text">' + escapeHtml(opt) + '</span>';
+        html += '<span class="opt-text">' + escapeHtml(ti(kp+'.opt.'+i, opt)) + '</span>';
         html += '</label>';
       });
       html += '</div>';
     } else if (f.type === 'select') {
       html += '<select class="text-input select-input" onchange="setField(\''+sec.id+'\',\''+f.key+'\',this.value)" style="cursor:pointer">';
-      html += '<option value="">— select —</option>';
-      f.options.forEach(opt => {
+      html += '<option value="">' + t('ui.selectPlaceholder') + '</option>';
+      f.options.forEach((opt, i) => {
         const label = typeof opt === 'object' ? opt.label : opt;
         const optVal = typeof opt === 'object' ? opt.value : opt;
         const sel = val === optVal ? ' selected' : '';
-        html += '<option value="' + escapeHtml(optVal) + '"' + sel + '>' + escapeHtml(label) + '</option>';
+        html += '<option value="' + escapeHtml(optVal) + '"' + sel + '>' + escapeHtml(ti(kp+'.opt.'+i, label)) + '</option>';
       });
       html += '</select>';
     } else if (f.type === 'check') {
       const sel = Array.isArray(val) ? val : [];
       html += '<div class="opt-list">';
-      f.options.forEach(opt => {
+      f.options.forEach((opt, i) => {
         const isSel = sel.indexOf(opt) >= 0;
         html += '<label class="opt-row' + (isSel?' on':'') + '">';
         html += '<input type="checkbox" ' + (isSel?'checked':'') + ' onchange="toggleCheck(\''+sec.id+'\',\''+f.key+'\',\''+escapeJs(opt)+'\',this.checked)"/>';
         html += '<span class="opt-check"></span>';
-        html += '<span class="opt-text">' + escapeHtml(opt) + '</span>';
+        html += '<span class="opt-text">' + escapeHtml(ti(kp+'.opt.'+i, opt)) + '</span>';
         html += '</label>';
       });
       html += '</div>';
@@ -2240,7 +2319,8 @@ function insertPrompt(secId, fieldKey, promptIdx){
   if (!sec) return;
   const field = sec.fields.find(f => f.key === fieldKey);
   if (!field || !field.prompts) return;
-  const text = field.prompts[promptIdx];
+  // Insert the prompt in the user's current language (falls back to English).
+  const text = ti('fld.'+secId+'.'+fieldKey+'.prm.'+promptIdx, field.prompts[promptIdx]);
   if (!text) return;
   if (!state.sections[secId]) state.sections[secId] = {};
   const cur = state.sections[secId][fieldKey] || '';
