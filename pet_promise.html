@@ -1098,15 +1098,15 @@ body.printing .top,body.printing .rail,body.printing .right,body.printing .expor
     <span class="ver">Pet Protection</span>
   </a>
   <div class="top-prog">
-    <div class="tp-row"><span>Your plan</span><span><b id="topPctNum">0%</b> complete</span></div>
+    <div class="tp-row"><span data-i18n="ui.yourPlan">Your plan</span><span><b id="topPctNum">0%</b> <span data-i18n="ui.complete2">complete</span></span></div>
     <div class="tp-bar"><div class="tp-fill" id="topFill"></div></div>
   </div>
   <div class="top-actions">
     <span class="save-indicator" id="saveIndicator">
       <svg width="13" height="13" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="3,8 6,11 13,4"/></svg>
-      Saved
+      <span data-i18n="ui.saved">Saved</span>
     </span>
-    <button class="top-btn" onclick="openModal('share')">↗ Share with caregiver</button>
+    <button class="top-btn" onclick="openModal('share')" data-i18n="ui.shareCaregiver">↗ Share with caregiver</button>
   </div>
 </div>
 
@@ -1140,27 +1140,27 @@ body.printing .top,body.printing .rail,body.printing .right,body.printing .expor
           <img id="complete-photo-img" alt="A small child gently petting a golden Labrador in a pink harness" />
         </div>
         <div class="cpb-body">
-          <span class="cpb-eb" id="cpb-eb">Plan readiness</span>
+          <span class="cpb-eb" id="cpb-eb" data-i18n="ui.planReadiness">Plan readiness</span>
           <div class="cpb-h" id="cpb-h">Almost there.</div>
           <div class="cpb-p" id="cpb-p">A few sections left and your caregiver has everything they need.</div>
           <div class="cpb-actions">
-            <button class="primary" onclick="exportPlan()">📄 Export plan PDF</button>
-            <button class="ghost" onclick="exportWalletCard()">🪪 Wallet card</button>
-            <button class="ghost" onclick="openModal('share')">↗ Share with caregiver</button>
+            <button class="primary" onclick="exportPlan()" data-i18n="ui.exportPlanPdf">📄 Export plan PDF</button>
+            <button class="ghost" onclick="exportWalletCard()" data-i18n="ui.walletCard2">🪪 Wallet card</button>
+            <button class="ghost" onclick="openModal('share')" data-i18n="ui.shareCaregiver">↗ Share with caregiver</button>
           </div>
         </div>
       </div>
 
       <div class="export-bar">
         <div class="exb-l">
-          <div class="exb-eyebrow">📄 Export your Pet Protection Plan</div>
-          <div class="exb-title">Download the full plan PDF + the wallet card for your caregiver</div>
-          <div class="exb-desc">The <b>Pet Protection Plan</b> is the complete document your caregiver will use to step in. The <b>Wallet Card</b> is a printable mini-card with the essentials — vet, microchip, primary caregiver — for emergencies away from home.</div>
+          <div class="exb-eyebrow" data-i18n="ui.exbEyebrow">📄 Export your Pet Protection Plan</div>
+          <div class="exb-title" data-i18n="ui.exbTitle">Download the full plan PDF + the wallet card for your caregiver</div>
+          <div class="exb-desc" data-i18n-html="ui.exbDesc">The <b>Pet Protection Plan</b> is the complete document your caregiver will use to step in. The <b>Wallet Card</b> is a printable mini-card with the essentials — vet, microchip, primary caregiver — for emergencies away from home.</div>
         </div>
         <div class="exb-r">
-          <div class="exb-pct"><b id="exbPct">0%</b><span>complete</span></div>
-          <button class="exb-btn ghost" onclick="exportWalletCard()">🪪 Wallet Card</button>
-          <button class="exb-btn primary" onclick="exportPlan()">📄 Plan PDF</button>
+          <div class="exb-pct"><b id="exbPct">0%</b><span data-i18n="ui.complete2">complete</span></div>
+          <button class="exb-btn ghost" onclick="exportWalletCard()" data-i18n="ui.walletCardBtn">🪪 Wallet Card</button>
+          <button class="exb-btn primary" onclick="exportPlan()" data-i18n="ui.planPdfBtn">📄 Plan PDF</button>
         </div>
       </div>
 
@@ -1178,7 +1178,7 @@ body.printing .top,body.printing .rail,body.printing .right,body.printing .expor
   <!-- RIGHT RAIL -->
   <aside class="right">
     <div class="rt-card">
-      <div class="rt-h">Plan readiness</div>
+      <div class="rt-h" data-i18n="ui.planReadiness">Plan readiness</div>
       <div class="dial-wrap" style="height:140px">
         <svg width="140" height="140" viewBox="0 0 140 140">
           <defs>
@@ -1190,45 +1190,45 @@ body.printing .top,body.printing .rail,body.printing .right,body.printing .expor
           <circle cx="70" cy="70" r="58" stroke="#EFEAE0" stroke-width="11" fill="none"/>
           <circle id="dialArc" cx="70" cy="70" r="58" stroke="url(#dg)" stroke-width="11" fill="none" stroke-linecap="round" stroke-dasharray="364" stroke-dashoffset="364" style="transition:stroke-dashoffset .6s cubic-bezier(.4,0,.2,1);transform:rotate(-90deg);transform-origin:70px 70px"/>
         </svg>
-        <div class="dial-pct"><b id="dialPct">0</b><span>%&nbsp;ready</span></div>
+        <div class="dial-pct"><b id="dialPct">0</b><span>%&nbsp;<span data-i18n="ui.ready">ready</span></span></div>
       </div>
       <div class="rt-meta" id="rtMeta">Start anywhere. Most people finish in <b>20 minutes</b>.</div>
     </div>
 
     <div class="rt-card">
-      <div class="rt-h">Quick checklist</div>
+      <div class="rt-h" data-i18n="ui.quickChecklist">Quick checklist</div>
       <ul class="checklist" id="checklist"></ul>
     </div>
 
     <div class="rt-card">
-      <div class="rt-h">🛡 Your data</div>
+      <div class="rt-h" data-i18n="ui.yourData">🛡 Your data</div>
       <div class="trust-mini">
         <div class="trust-mini-row">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="11" width="16" height="10" rx="2"/><path d="M8 11 V7 a4 4 0 1 1 8 0 v4"/></svg>
-          <span><b>AES-256</b> encryption</span>
+          <span data-i18n-html="ui.trustEnc"><b>AES-256</b> encryption</span>
         </div>
         <div class="trust-mini-row">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2 L4 6 v6 c0 5 3 8 8 10 c5 -2 8 -5 8 -10 V6 Z"/></svg>
-          <span><b>FutureVault</b> · SOC 2 Type II</span>
+          <span data-i18n-html="ui.trustSoc"><b>FutureVault</b> · SOC 2 Type II</span>
         </div>
         <div class="trust-mini-row">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><polyline points="9,12 11,14 15.5,9.5"/></svg>
-          <span>Legally valid · CA + all 50 US states</span>
+          <span data-i18n="ui.trustLegal">Legally valid · CA + all 50 US states</span>
         </div>
       </div>
     </div>
 
     <div class="upsell">
-      <div class="upsell-h">Close the incapacity gap</div>
-      <div class="upsell-p">Pet Protection covers death. <b>POA for Property + Health</b> covers the times you're alive but can't act. Both are included in the Complete Plan ($159) and Couples Plan ($249).</div>
-      <button onclick="openModal('upgrade')">See the Complete Plan</button>
+      <div class="upsell-h" data-i18n="ui.upsellH">Close the incapacity gap</div>
+      <div class="upsell-p" data-i18n-html="ui.upsellP">Pet Protection covers death. <b>POA for Property + Health</b> covers the times you're alive but can't act. Both are included in the Complete Plan ($159) and Couples Plan ($249).</div>
+      <button onclick="openModal('upgrade')" data-i18n="ui.upsellBtn">See the Complete Plan</button>
     </div>
   </aside>
 
 </div>
 
 <!-- ======== FOOT ======== -->
-<div class="foot">
+<div class="foot" data-i18n-html="ui.footer">
   <b>Pet Protection Promise™</b> · Built by Barrett Tax Law &amp; Donsky &amp; Donsky Legacy Optimization Inc. · Legally valid across Canada and all 50 U.S. states.
 </div>
 
@@ -1526,6 +1526,61 @@ Object.assign(I18N.fr, {'ui.sectionsHeader':'Sections'});
 Object.assign(I18N.es, {'ui.sectionsHeader':'Secciones'});
 Object.assign(I18N.pt, {'ui.sectionsHeader':'Secções'});
 Object.assign(I18N.hi, {'ui.sectionsHeader':'अनुभाग'});
+Object.assign(I18N.en, {'ui.footer':'<b>Pet Protection Promise™</b> · Built by Barrett Tax Law &amp; Donsky &amp; Donsky Legacy Optimization Inc. · Legally valid across Canada and all 50 U.S. states.'});
+Object.assign(I18N.fr, {'ui.footer':'<b>Pet Protection Promise™</b> · Conçu par Barrett Tax Law et Donsky &amp; Donsky Legacy Optimization Inc. · Juridiquement valide partout au Canada et dans les 50 États américains.'});
+Object.assign(I18N.es, {'ui.footer':'<b>Pet Protection Promise™</b> · Desarrollado por Barrett Tax Law y Donsky &amp; Donsky Legacy Optimization Inc. · Con validez legal en todo Canadá y los 50 estados de EE. UU.'});
+Object.assign(I18N.pt, {'ui.footer':'<b>Pet Protection Promise™</b> · Desenvolvido por Barrett Tax Law e Donsky &amp; Donsky Legacy Optimization Inc. · Juridicamente válido em todo o Canadá e nos 50 estados dos EUA.'});
+Object.assign(I18N.hi, {'ui.footer':'<b>Pet Protection Promise™</b> · Barrett Tax Law और Donsky &amp; Donsky Legacy Optimization Inc. द्वारा निर्मित · कनाडा और सभी 50 अमेरिकी राज्यों में क़ानूनी रूप से मान्य।'});
+Object.assign(I18N.en, {
+  'ui.yourPlan':'Your plan','ui.complete2':'complete','ui.saved':'Saved','ui.shareCaregiver':'↗ Share with caregiver',
+  'ui.planReadiness':'Plan readiness','ui.exportPlanPdf':'📄 Export plan PDF','ui.walletCard2':'🪪 Wallet card',
+  'ui.exbEyebrow':'📄 Export your Pet Protection Plan','ui.exbTitle':'Download the full plan PDF + the wallet card for your caregiver',
+  'ui.exbDesc':'The <b>Pet Protection Plan</b> is the complete document your caregiver will use to step in. The <b>Wallet Card</b> is a printable mini-card with the essentials — vet, microchip, primary caregiver — for emergencies away from home.',
+  'ui.walletCardBtn':'🪪 Wallet Card','ui.planPdfBtn':'📄 Plan PDF','ui.ready':'ready','ui.quickChecklist':'Quick checklist','ui.yourData':'🛡 Your data',
+  'ui.trustEnc':'<b>AES-256</b> encryption','ui.trustSoc':'<b>FutureVault</b> · SOC 2 Type II','ui.trustLegal':'Legally valid · CA + all 50 US states',
+  'ui.upsellH':'Close the incapacity gap','ui.upsellP':"Pet Protection covers death. <b>POA for Property + Health</b> covers the times you're alive but can't act. Both are included in the Complete Plan ($159) and Couples Plan ($249).",'ui.upsellBtn':'See the Complete Plan',
+  'rt.0':'Start anywhere. Most people finish in <b>20 minutes</b>.','rt.30':'Great start. Keep going — your caregiver will thank you.','rt.60':'Over a third in. The rest is faster.','rt.90':'Almost there — just a few sections left.','rt.99':"One last push. Export the plan when you're done.",'rt.100':'<b>Plan complete.</b> Export the PDF and share with your caregiver.',
+});
+Object.assign(I18N.fr, {
+  'ui.yourPlan':'Votre plan','ui.complete2':'complété','ui.saved':'Enregistré','ui.shareCaregiver':'↗ Partager avec le gardien',
+  'ui.planReadiness':'État du plan','ui.exportPlanPdf':'📄 Exporter le plan (PDF)','ui.walletCard2':'🪪 Carte de portefeuille',
+  'ui.exbEyebrow':'📄 Exportez votre Pet Protection Plan','ui.exbTitle':'Téléchargez le plan complet (PDF) et la carte de portefeuille pour votre gardien',
+  'ui.exbDesc':"Le <b>Pet Protection Plan</b> est le document complet que votre gardien utilisera pour prendre le relais. La <b>Wallet Card</b> est une mini-carte imprimable avec l'essentiel — vétérinaire, puce, gardien principal — pour les urgences hors du domicile.",
+  'ui.walletCardBtn':'🪪 Carte de portefeuille','ui.planPdfBtn':'📄 Plan (PDF)','ui.ready':'prêt','ui.quickChecklist':'Liste de vérification','ui.yourData':'🛡 Vos données',
+  'ui.trustEnc':'Chiffrement <b>AES-256</b>','ui.trustSoc':'<b>FutureVault</b> · SOC 2 Type II','ui.trustLegal':'Valide juridiquement · CA + les 50 États américains',
+  'ui.upsellH':"Comblez le vide en cas d'incapacité",'ui.upsellP':"Le Pet Protection couvre le décès. La <b>procuration pour les biens et la santé</b> couvre les périodes où vous êtes en vie mais incapable d'agir. Les deux sont incluses dans le Complete Plan (159 $) et le Couples Plan (249 $).",'ui.upsellBtn':'Voir le Complete Plan',
+  'rt.0':'Commencez où vous voulez. La plupart des gens terminent en <b>20 minutes</b>.','rt.30':'Bon départ. Continuez — votre gardien vous remerciera.','rt.60':'Plus d\'un tiers fait. La suite va plus vite.','rt.90':'Presque fini — il ne reste que quelques sections.','rt.99':'Un dernier effort. Exportez le plan une fois terminé.','rt.100':'<b>Plan terminé.</b> Exportez le PDF et partagez-le avec votre gardien.',
+});
+Object.assign(I18N.es, {
+  'ui.yourPlan':'Tu plan','ui.complete2':'completado','ui.saved':'Guardado','ui.shareCaregiver':'↗ Compartir con el cuidador',
+  'ui.planReadiness':'Preparación del plan','ui.exportPlanPdf':'📄 Exportar plan en PDF','ui.walletCard2':'🪪 Tarjeta de cartera',
+  'ui.exbEyebrow':'📄 Exporta tu Pet Protection Plan','ui.exbTitle':'Descarga el plan completo en PDF y la tarjeta de cartera para tu cuidador',
+  'ui.exbDesc':'El <b>Pet Protection Plan</b> es el documento completo que usará tu cuidador para hacerse cargo. La <b>Wallet Card</b> es una mini-tarjeta imprimible con lo esencial: veterinario, microchip, cuidador principal, para emergencias fuera de casa.',
+  'ui.walletCardBtn':'🪪 Tarjeta de cartera','ui.planPdfBtn':'📄 Plan en PDF','ui.ready':'listo','ui.quickChecklist':'Lista rápida','ui.yourData':'🛡 Tus datos',
+  'ui.trustEnc':'Cifrado <b>AES-256</b>','ui.trustSoc':'<b>FutureVault</b> · SOC 2 Type II','ui.trustLegal':'Validez legal · CA + los 50 estados de EE. UU.',
+  'ui.upsellH':'Cierra la brecha de incapacidad','ui.upsellP':'El Pet Protection cubre el fallecimiento. El <b>poder notarial para bienes y salud</b> cubre los momentos en que estás vivo pero no puedes actuar. Ambos se incluyen en el Complete Plan ($159) y el Couples Plan ($249).','ui.upsellBtn':'Ver el Complete Plan',
+  'rt.0':'Empieza por donde quieras. La mayoría termina en <b>20 minutos</b>.','rt.30':'Buen comienzo. Sigue así: tu cuidador te lo agradecerá.','rt.60':'Más de un tercio hecho. El resto es más rápido.','rt.90':'Casi listo: solo faltan unas secciones.','rt.99':'Un último empujón. Exporta el plan cuando termines.','rt.100':'<b>Plan completo.</b> Exporta el PDF y compártelo con tu cuidador.',
+});
+Object.assign(I18N.pt, {
+  'ui.yourPlan':'O seu plano','ui.complete2':'concluído','ui.saved':'Guardado','ui.shareCaregiver':'↗ Partilhar com o cuidador',
+  'ui.planReadiness':'Prontidão do plano','ui.exportPlanPdf':'📄 Exportar plano em PDF','ui.walletCard2':'🪪 Cartão de carteira',
+  'ui.exbEyebrow':'📄 Exporte o seu Pet Protection Plan','ui.exbTitle':'Descarregue o plano completo em PDF e o cartão de carteira para o seu cuidador',
+  'ui.exbDesc':'O <b>Pet Protection Plan</b> é o documento completo que o seu cuidador usará para assumir. O <b>Wallet Card</b> é um mini-cartão imprimível com o essencial — veterinário, microchip, cuidador principal — para emergências fora de casa.',
+  'ui.walletCardBtn':'🪪 Cartão de carteira','ui.planPdfBtn':'📄 Plano em PDF','ui.ready':'pronto','ui.quickChecklist':'Lista rápida','ui.yourData':'🛡 Os seus dados',
+  'ui.trustEnc':'Encriptação <b>AES-256</b>','ui.trustSoc':'<b>FutureVault</b> · SOC 2 Type II','ui.trustLegal':'Juridicamente válido · CA + os 50 estados dos EUA',
+  'ui.upsellH':'Feche a lacuna de incapacidade','ui.upsellP':'O Pet Protection cobre o falecimento. A <b>procuração para bens e saúde</b> cobre os momentos em que está vivo mas não pode agir. Ambas estão incluídas no Complete Plan ($159) e no Couples Plan ($249).','ui.upsellBtn':'Ver o Complete Plan',
+  'rt.0':'Comece por onde quiser. A maioria termina em <b>20 minutos</b>.','rt.30':'Bom começo. Continue — o seu cuidador vai agradecer.','rt.60':'Mais de um terço feito. O resto é mais rápido.','rt.90':'Quase lá — faltam apenas algumas secções.','rt.99':'Um último esforço. Exporte o plano quando terminar.','rt.100':'<b>Plano concluído.</b> Exporte o PDF e partilhe com o seu cuidador.',
+});
+Object.assign(I18N.hi, {
+  'ui.yourPlan':'आपकी योजना','ui.complete2':'पूर्ण','ui.saved':'सहेजा गया','ui.shareCaregiver':'↗ देखभालकर्ता के साथ साझा करें',
+  'ui.planReadiness':'योजना की तैयारी','ui.exportPlanPdf':'📄 योजना PDF निर्यात करें','ui.walletCard2':'🪪 वॉलेट कार्ड',
+  'ui.exbEyebrow':'📄 अपना Pet Protection Plan निर्यात करें','ui.exbTitle':'अपने देखभालकर्ता के लिए पूरा प्लान PDF + वॉलेट कार्ड डाउनलोड करें',
+  'ui.exbDesc':'<b>Pet Protection Plan</b> वह पूरा दस्तावेज़ है जिसका उपयोग आपका देखभालकर्ता ज़िम्मेदारी संभालने के लिए करेगा। <b>Wallet Card</b> एक प्रिंट-योग्य मिनी-कार्ड है जिसमें ज़रूरी बातें होती हैं — पशु-चिकित्सक, माइक्रोचिप, मुख्य देखभालकर्ता — घर से बाहर आपात स्थितियों के लिए।',
+  'ui.walletCardBtn':'🪪 वॉलेट कार्ड','ui.planPdfBtn':'📄 योजना PDF','ui.ready':'तैयार','ui.quickChecklist':'त्वरित चेकलिस्ट','ui.yourData':'🛡 आपका डेटा',
+  'ui.trustEnc':'<b>AES-256</b> एन्क्रिप्शन','ui.trustSoc':'<b>FutureVault</b> · SOC 2 Type II','ui.trustLegal':'क़ानूनी रूप से मान्य · CA + सभी 50 अमेरिकी राज्य',
+  'ui.upsellH':'अक्षमता की कमी को पूरा करें','ui.upsellP':'Pet Protection मृत्यु को कवर करता है। <b>संपत्ति + स्वास्थ्य के लिए POA</b> उन समयों को कवर करता है जब आप जीवित हैं पर कार्य नहीं कर सकते। दोनों Complete Plan ($159) और Couples Plan ($249) में शामिल हैं।','ui.upsellBtn':'Complete Plan देखें',
+  'rt.0':'कहीं से भी शुरू करें। ज़्यादातर लोग <b>20 मिनट</b> में पूरा कर लेते हैं।','rt.30':'बढ़िया शुरुआत। जारी रखें — आपका देखभालकर्ता आभारी होगा।','rt.60':'एक-तिहाई से ज़्यादा हो गया। बाक़ी और तेज़ होगा।','rt.90':'बस थोड़ा बाक़ी — कुछ ही अनुभाग शेष हैं।','rt.99':'बस आख़िरी ज़ोर। पूरा होने पर योजना निर्यात करें।','rt.100':'<b>योजना पूर्ण।</b> PDF निर्यात करें और अपने देखभालकर्ता के साथ साझा करें।',
+});
 let currentLang = 'en';
 function detectLang(){
   const supported = LANGS.map(l => l.code);
@@ -1974,12 +2029,12 @@ function updateProgress(){
   renderChecklist();
   // rt meta message
   let msg;
-  if (pct === 0) msg = 'Start anywhere. Most people finish in <b>20 minutes</b>.';
-  else if (pct < 30) msg = 'Great start. Keep going — your caregiver will thank you.';
-  else if (pct < 60) msg = 'Over a third in. The rest is faster.';
-  else if (pct < 90) msg = 'Almost there — just a few sections left.';
-  else if (pct < 100) msg = 'One last push. Export the plan when you\'re done.';
-  else msg = '<b>Plan complete.</b> Export the PDF and share with your caregiver.';
+  if (pct === 0) msg = t('rt.0');
+  else if (pct < 30) msg = t('rt.30');
+  else if (pct < 60) msg = t('rt.60');
+  else if (pct < 90) msg = t('rt.90');
+  else if (pct < 100) msg = t('rt.99');
+  else msg = t('rt.100');
   document.getElementById('rtMeta').innerHTML = msg;
   updateCompletionBanner(pct);
 }
@@ -2151,7 +2206,7 @@ function renderChecklist(){
   SECTIONS.forEach(sec => {
     const fill = sectionFillRate(sec);
     const done = fill >= 0.6 ? 'done' : '';
-    html += '<li class="' + done + '">' + escapeHtml(sec.title) + '</li>';
+    html += '<li class="' + done + '">' + escapeHtml(ti('sec.'+sec.id+'.title', sec.title)) + '</li>';
   });
   c.innerHTML = html;
 }
