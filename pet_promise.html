@@ -1236,15 +1236,15 @@ body.printing .top,body.printing .rail,body.printing .right,body.printing .expor
 <div class="modal" id="modal-share">
   <div class="modal-card" style="position:relative">
     <button class="modal-close" onclick="closeModal()">×</button>
-    <h3>Share with your caregiver</h3>
-    <p class="modal-sub">We'll send your primary caregiver a secure read-only link to the Pet Protection Plan. They'll see everything they need: routine, vet, meds, behaviour notes, your letter to them.</p>
+    <h3 data-i18n="mod.share.h">Share with your caregiver</h3>
+    <p class="modal-sub" data-i18n="mod.share.sub">We'll send your primary caregiver a secure read-only link to the Pet Protection Plan. They'll see everything they need: routine, vet, meds, behaviour notes, your letter to them.</p>
     <div class="share-form">
-      <input type="text" id="share-name" placeholder="Caregiver's name (auto-filled from Section B)"/>
-      <input type="email" id="share-email" placeholder="Caregiver's email"/>
-      <input type="email" id="share-owner-email" placeholder="Your email (optional — get a copy + ack notification)"/>
-      <button class="share-btn-primary" onclick="sendShare()">Send the plan</button>
+      <input type="text" id="share-name" placeholder="Caregiver's name (auto-filled from Section B)" data-i18n-ph="mod.share.phName"/>
+      <input type="email" id="share-email" placeholder="Caregiver's email" data-i18n-ph="mod.share.phEmail"/>
+      <input type="email" id="share-owner-email" placeholder="Your email (optional — get a copy + ack notification)" data-i18n-ph="mod.share.phOwner"/>
+      <button class="share-btn-primary" onclick="sendShare()" data-i18n="mod.share.btn">Send the plan</button>
     </div>
-    <p class="modal-sub" style="margin-top:14px;font-size:12px">Your caregiver gets read-only access. Updates sync automatically when you change anything.</p>
+    <p class="modal-sub" style="margin-top:14px;font-size:12px" data-i18n="mod.share.note">Your caregiver gets read-only access. Updates sync automatically when you change anything.</p>
   </div>
 </div>
 
@@ -1252,10 +1252,10 @@ body.printing .top,body.printing .rail,body.printing .right,body.printing .expor
 <div class="modal" id="modal-updates">
   <div class="modal-card" style="position:relative">
     <button class="modal-close" onclick="closeModal()">×</button>
-    <h3>Set update reminders</h3>
-    <p class="modal-sub">Pet care changes constantly. We'll nudge you to review your plan when these things happen — quick check-ins, two minutes each.</p>
+    <h3 data-i18n="mod.updates.h">Set update reminders</h3>
+    <p class="modal-sub" data-i18n="mod.updates.sub">Pet care changes constantly. We'll nudge you to review your plan when these things happen — quick check-ins, two minutes each.</p>
     <div id="reminder-list"></div>
-    <button class="share-btn-primary" onclick="closeModal()" style="margin-top:14px">Save reminders</button>
+    <button class="share-btn-primary" onclick="closeModal()" style="margin-top:14px" data-i18n="mod.updates.btn">Save reminders</button>
   </div>
 </div>
 
@@ -1263,18 +1263,18 @@ body.printing .top,body.printing .rail,body.printing .right,body.printing .expor
 <div class="modal" id="modal-upgrade">
   <div class="modal-card" style="position:relative;max-width:580px">
     <button class="modal-close" onclick="closeModal()">×</button>
-    <h3>Pet Protection covers death. POA covers the rest.</h3>
-    <p class="modal-sub">Statistically, you're far more likely to be temporarily incapacitated — hospital stay, surgery recovery, cognitive decline — than to die suddenly. A Power of Attorney is the document that lets your chosen person act on your behalf during those windows.</p>
+    <h3 data-i18n="mod.upgrade.h">Pet Protection covers death. POA covers the rest.</h3>
+    <p class="modal-sub" data-i18n="mod.upgrade.sub">Statistically, you're far more likely to be temporarily incapacitated — hospital stay, surgery recovery, cognitive decline — than to die suddenly. A Power of Attorney is the document that lets your chosen person act on your behalf during those windows.</p>
 
     <div style="background:var(--bg);border-radius:12px;padding:18px;margin-bottom:14px">
-      <div style="font-family:'Nunito';font-weight:900;color:var(--navy);font-size:14px;margin-bottom:8px">Complete Plan — $159</div>
-      <div style="font-size:13px;color:var(--ink-2);line-height:1.6">Will + POA for Property + POA for Health + Treasure Chest + <b>Pet Protection Promise included free</b>.</div>
+      <div style="font-family:'Nunito';font-weight:900;color:var(--navy);font-size:14px;margin-bottom:8px" data-i18n="mod.upgrade.completeName">Complete Plan — $159</div>
+      <div style="font-size:13px;color:var(--ink-2);line-height:1.6" data-i18n-html="mod.upgrade.completeDesc">Will + POA for Property + POA for Health + Treasure Chest + <b>Pet Protection Promise included free</b>.</div>
     </div>
     <div style="background:var(--terra-tint);border-radius:12px;padding:18px;margin-bottom:18px;border:1px solid var(--terra-lt)">
-      <div style="font-family:'Nunito';font-weight:900;color:var(--terra-deep);font-size:14px;margin-bottom:8px">Couples Plan — $249</div>
-      <div style="font-size:13px;color:var(--ink-2);line-height:1.6">Everything in Complete, for both partners. <b>2× POA for Property, 2× POA for Health.</b> Pet Protection covers shared pets in one plan.</div>
+      <div style="font-family:'Nunito';font-weight:900;color:var(--terra-deep);font-size:14px;margin-bottom:8px" data-i18n="mod.upgrade.couplesName">Couples Plan — $249</div>
+      <div style="font-size:13px;color:var(--ink-2);line-height:1.6" data-i18n-html="mod.upgrade.couplesDesc">Everything in Complete, for both partners. <b>2× POA for Property, 2× POA for Health.</b> Pet Protection covers shared pets in one plan.</div>
     </div>
-    <button class="share-btn-primary" onclick="closeModal()">Continue with Pet Protection only</button>
+    <button class="share-btn-primary" onclick="closeModal()" data-i18n="mod.upgrade.btn">Continue with Pet Protection only</button>
   </div>
 </div>
 
@@ -1282,10 +1282,10 @@ body.printing .top,body.printing .rail,body.printing .right,body.printing .expor
 <div class="modal" id="modal-wallet">
   <div class="modal-card" style="position:relative">
     <button class="modal-close" onclick="closeModal()">×</button>
-    <h3>Your pet's emergency wallet card</h3>
-    <p class="modal-sub">A printable mini-card with the essentials a stranger or first-responder would need if you're incapacitated and your pet is found. Print, fold, keep in wallet.</p>
+    <h3 data-i18n="mod.wallet.h">Your pet's emergency wallet card</h3>
+    <p class="modal-sub" data-i18n="mod.wallet.sub">A printable mini-card with the essentials a stranger or first-responder would need if you're incapacitated and your pet is found. Print, fold, keep in wallet.</p>
     <div id="wallet-content"></div>
-    <button class="share-btn-primary" onclick="printWalletCard()">Print this card</button>
+    <button class="share-btn-primary" onclick="printWalletCard()" data-i18n="mod.wallet.btn">Print this card</button>
   </div>
 </div>
 
@@ -1293,23 +1293,23 @@ body.printing .top,body.printing .rail,body.printing .right,body.printing .expor
 <div class="modal" id="modal-checkout">
   <div class="modal-card" style="position:relative;max-width:460px">
     <button class="modal-close" onclick="closeModal()">×</button>
-    <h3>Unlock your Pet Protection Plan</h3>
-    <p class="modal-sub">Pay once or subscribe — then share with your caregiver, store medical records, and get annual reminders.</p>
+    <h3 data-i18n="mod.checkout.h">Unlock your Pet Protection Plan</h3>
+    <p class="modal-sub" data-i18n="mod.checkout.sub">Pay once or subscribe — then share with your caregiver, store medical records, and get annual reminders.</p>
     <div id="checkout-plans" style="display:flex;flex-direction:column;gap:8px;margin-bottom:14px"></div>
-    <input type="email" id="checkout-email" placeholder="Your email address" style="width:100%;padding:10px 12px;border:1.5px solid var(--line);border-radius:9px;font-size:13px;margin-bottom:10px"/>
+    <input type="email" id="checkout-email" placeholder="Your email address" data-i18n-ph="mod.checkout.phEmail" style="width:100%;padding:10px 12px;border:1.5px solid var(--line);border-radius:9px;font-size:13px;margin-bottom:10px"/>
     <div style="display:flex;gap:8px;margin-bottom:6px">
-      <input type="text" id="checkout-discount" placeholder="Discount code (optional)" oninput="updateCheckoutWarn()" style="flex:1;padding:9px 12px;border:1.5px solid var(--line);border-radius:9px;font-size:13px;text-transform:uppercase"/>
-      <button onclick="applyCheckoutDiscount()" style="padding:9px 14px;border-radius:9px;background:#fff;border:1.5px solid var(--line);font-size:12px;font-weight:800;cursor:pointer">Apply</button>
+      <input type="text" id="checkout-discount" placeholder="Discount code (optional)" data-i18n-ph="mod.checkout.phDiscount" oninput="updateCheckoutWarn()" style="flex:1;padding:9px 12px;border:1.5px solid var(--line);border-radius:9px;font-size:13px;text-transform:uppercase"/>
+      <button onclick="applyCheckoutDiscount()" style="padding:9px 14px;border-radius:9px;background:#fff;border:1.5px solid var(--line);font-size:12px;font-weight:800;cursor:pointer" data-i18n="mod.checkout.applyBtn">Apply</button>
     </div>
     <div id="checkout-discount-msg" style="font-size:12px;min-height:16px;margin-bottom:10px"></div>
-    <div style="font-size:11px;font-weight:800;color:var(--ink-3);text-transform:uppercase;letter-spacing:.05em;margin-bottom:7px">Pay with</div>
+    <div style="font-size:11px;font-weight:800;color:var(--ink-3);text-transform:uppercase;letter-spacing:.05em;margin-bottom:7px" data-i18n="mod.checkout.payWith">Pay with</div>
     <div id="checkout-providers" style="display:flex;gap:8px;margin-bottom:12px">
-      <button id="cko-prov-stripe" onclick="selectProvider('stripe')" class="cko-prov on" style="flex:1;padding:11px;border-radius:10px;border:1.5px solid var(--navy);background:rgba(10,42,74,.05);font-size:13px;font-weight:800;cursor:pointer">💳 Card</button>
-      <button id="cko-prov-paypal" onclick="selectProvider('paypal')" class="cko-prov" style="flex:1;padding:11px;border-radius:10px;border:1.5px solid var(--line);background:#fff;font-size:13px;font-weight:800;cursor:pointer">🅿 PayPal</button>
+      <button id="cko-prov-stripe" onclick="selectProvider('stripe')" class="cko-prov on" style="flex:1;padding:11px;border-radius:10px;border:1.5px solid var(--navy);background:rgba(10,42,74,.05);font-size:13px;font-weight:800;cursor:pointer" data-i18n="mod.checkout.cardBtn">💳 Card</button>
+      <button id="cko-prov-paypal" onclick="selectProvider('paypal')" class="cko-prov" style="flex:1;padding:11px;border-radius:10px;border:1.5px solid var(--line);background:#fff;font-size:13px;font-weight:800;cursor:pointer" data-i18n="mod.checkout.paypalBtn">🅿 PayPal</button>
     </div>
     <div id="checkout-warn" style="display:none;font-size:12px;color:var(--terra-deep, #C84B30);background:rgba(200,75,48,.08);border-radius:8px;padding:9px 11px;margin-bottom:12px"></div>
-    <button class="share-btn-primary" id="checkout-go" onclick="startCheckout()" style="width:100%">Continue to payment →</button>
-    <p class="modal-sub" style="margin-top:12px;font-size:11px">Secure checkout via Stripe or PayPal. Cancel anytime for subscriptions.</p>
+    <button class="share-btn-primary" id="checkout-go" onclick="startCheckout()" style="width:100%" data-i18n="mod.checkout.goBtn">Continue to payment →</button>
+    <p class="modal-sub" style="margin-top:12px;font-size:11px" data-i18n="mod.checkout.secureNote">Secure checkout via Stripe or PayPal. Cancel anytime for subscriptions.</p>
   </div>
 </div>
 
@@ -1659,6 +1659,1470 @@ Object.assign(I18N.hi, {
   'fld.profile.notes.label':"पहचान में मदद करने वाली कोई और बात",'fld.profile.notes.sub':"विशिष्ट निशान, गायब दाँत, चाल, आवाज़ — जो भी पहचान की पुष्टि में मदद करे।",
   'fld.profile.notes.prm.0':"2024 की चोट के कारण बाएँ पिछले पैर में हल्का लंगड़ाकर चलता है।",'fld.profile.notes.prm.1':"एक आँख नीली और एक भूरी है (हेटरोक्रोमिया)।",'fld.profile.notes.prm.2':"सामने-बाएँ का कैनाइन दाँत गायब — पुरानी फ्रैक्चर।",'fld.profile.notes.prm.3':"छोटे कुत्ते के लिए अलग ही गहरी भौंक — पहचानने में आसान।",
 });
+// ── Section · caregivers — full field content (AI first-pass; flag for native review) ──
+Object.assign(I18N.fr, {
+  'sec.caregivers.intro': "C'est une <b>décision humaine</b>, pas une question de paperasse. Le plus important sur cette page, ce n'est pas le formulaire — c'est que vous ayez <b>parlé aux deux personnes</b> et qu'elles aient clairement dit oui.",
+  'sec.caregivers.tip': "<b>Franc, mais vrai.</b> Si vous n'avez pas eu la conversation, vous n'avez pas de plan. Vous avez un espoir. Planifiez l'appel avant de terminer cette section.",
+  'fld.caregivers.primary_name.label': "Gardien principal — nom complet",
+  'fld.caregivers.primary_name.ph': "p. ex. Maria Chen",
+  'fld.caregivers.primary_rel.label': "Votre lien avec cette personne",
+  'fld.caregivers.primary_rel.ph': "p. ex. Ma sœur / Meilleure amie depuis 12 ans",
+  'fld.caregivers.primary_phone.label': "Gardien principal — téléphone",
+  'fld.caregivers.primary_phone.ph': "p. ex. (416) 555-0142",
+  'fld.caregivers.primary_email.label': "Gardien principal — courriel",
+  'fld.caregivers.primary_email.ph': "p. ex. maria@email.com",
+  'fld.caregivers.primary_address.label': "Gardien principal — adresse",
+  'fld.caregivers.primary_address.sub': "Au cas où votre animal devrait se rendre chez cette personne.",
+  'fld.caregivers.primary_address.ph': "p. ex. 412 Bayview Ave, Toronto ON",
+  'fld.caregivers.primary_agreed.label': "Cette personne a-t-elle clairement accepté?",
+  'fld.caregivers.primary_agreed.opt.0': "Oui — nous en avons parlé et elle a dit oui",
+  'fld.caregivers.primary_agreed.opt.1': "Nous en avons parlé, mais c'est resté informel — je devrais confirmer",
+  'fld.caregivers.primary_agreed.opt.2': "Je n'ai pas encore eu la conversation — je le ferai cette semaine",
+  'fld.caregivers.backup_name.label': "Gardien de relève — nom complet",
+  'fld.caregivers.backup_name.sub': "Parce que la vie réserve des imprévus — un déménagement, une maladie, ou simplement plus la possibilité de s'en occuper.",
+  'fld.caregivers.backup_name.ph': "p. ex. David Park",
+  'fld.caregivers.backup_rel.label': "Votre lien avec cette personne",
+  'fld.caregivers.backup_rel.ph': "p. ex. Mon beau-frère",
+  'fld.caregivers.backup_phone.label': "Gardien de relève — téléphone",
+  'fld.caregivers.backup_phone.ph': "p. ex. (416) 555-0188",
+  'fld.caregivers.backup_agreed.label': "Le gardien de relève a-t-il accepté?",
+  'fld.caregivers.backup_agreed.opt.0': "Oui",
+  'fld.caregivers.backup_agreed.opt.1': "Pas encore — j'aurai la conversation bientôt",
+  'fld.caregivers.backup_agreed.opt.2': "Sans objet",
+  'fld.caregivers.caregiver_notes.label': "Notes sur la passation",
+  'fld.caregivers.caregiver_notes.sub': "Tout détail important concernant la relation entre le gardien et votre animal.",
+  'fld.caregivers.caregiver_notes.prm.0': "Maria connaît Carrot depuis qu'il est chiot. Il va chez elle avec plaisir.",
+  'fld.caregivers.caregiver_notes.prm.1': "David habite dans une autre province — l'animal devrait se rendre chez lui dans un délai de 2 semaines.",
+  'fld.caregivers.caregiver_notes.prm.2': "Ma sœur est allergique, mais elle est prête à gérer la situation avec des antihistaminiques et une zone sans poils dans sa maison.",
+  'fld.caregivers.caregiver_notes.prm.3': "Le gardien a ses propres chiens — les présentations devraient se faire prudemment en terrain neutre."
+});
+Object.assign(I18N.es, {
+  'sec.caregivers.intro': "Esta es una <b>decisión de personas</b>, no de papeleo. Lo más importante de esta página no es el formulario — es que hayas <b>hablado con ambas personas</b> y que hayan dicho claramente que sí.",
+  'sec.caregivers.tip': "<b>Directo pero cierto.</b> Si no has tenido la conversación, no tienes un plan. Tienes una esperanza. Agenda la llamada antes de terminar esta sección.",
+  'fld.caregivers.primary_name.label': "Cuidador principal — nombre completo",
+  'fld.caregivers.primary_name.ph': "p. ej. Maria Chen",
+  'fld.caregivers.primary_rel.label': "Su relación contigo",
+  'fld.caregivers.primary_rel.ph': "p. ej. Mi hermana / Mejor amiga desde hace 12 años",
+  'fld.caregivers.primary_phone.label': "Cuidador principal — teléfono",
+  'fld.caregivers.primary_phone.ph': "p. ej. (416) 555-0142",
+  'fld.caregivers.primary_email.label': "Cuidador principal — correo electrónico",
+  'fld.caregivers.primary_email.ph': "p. ej. maria@email.com",
+  'fld.caregivers.primary_address.label': "Cuidador principal — dirección",
+  'fld.caregivers.primary_address.sub': "Por si tu mascota necesita viajar hasta donde vive.",
+  'fld.caregivers.primary_address.ph': "p. ej. 412 Bayview Ave, Toronto ON",
+  'fld.caregivers.primary_agreed.label': "¿Ha aceptado claramente?",
+  'fld.caregivers.primary_agreed.opt.0': "Sí — ya hablamos y dijo que sí",
+  'fld.caregivers.primary_agreed.opt.1': "Hemos hablado pero fue algo informal — debería confirmarlo",
+  'fld.caregivers.primary_agreed.opt.2': "Aún no he tenido la conversación — lo haré esta semana",
+  'fld.caregivers.backup_name.label': "Cuidador de respaldo — nombre completo",
+  'fld.caregivers.backup_name.sub': "Porque la vida da vueltas — la gente se muda, se enferma o simplemente ya no puede.",
+  'fld.caregivers.backup_name.ph': "p. ej. David Park",
+  'fld.caregivers.backup_rel.label': "Su relación contigo",
+  'fld.caregivers.backup_rel.ph': "p. ej. Mi cuñado",
+  'fld.caregivers.backup_phone.label': "Cuidador de respaldo — teléfono",
+  'fld.caregivers.backup_phone.ph': "p. ej. (416) 555-0188",
+  'fld.caregivers.backup_agreed.label': "¿El cuidador de respaldo ha aceptado?",
+  'fld.caregivers.backup_agreed.opt.0': "Sí",
+  'fld.caregivers.backup_agreed.opt.1': "Todavía no — tendré la conversación pronto",
+  'fld.caregivers.backup_agreed.opt.2': "No aplica",
+  'fld.caregivers.caregiver_notes.label': "Notas sobre la entrega del cuidado",
+  'fld.caregivers.caregiver_notes.sub': "Cualquier detalle importante sobre la relación entre el cuidador y tu mascota.",
+  'fld.caregivers.caregiver_notes.prm.0': "Maria conoce a Carrot desde que era cachorro. Él se va con ella feliz.",
+  'fld.caregivers.caregiver_notes.prm.1': "David vive en otra provincia — la mascota tendría que viajar hasta allá en un plazo de 2 semanas.",
+  'fld.caregivers.caregiver_notes.prm.2': "Mi hermana es alérgica, pero está dispuesta a manejarlo con antihistamínicos y una zona libre de pelo en su casa.",
+  'fld.caregivers.caregiver_notes.prm.3': "El cuidador tiene perros propios — las presentaciones deben hacerse con cuidado en terreno neutral."
+});
+Object.assign(I18N.pt, {
+  'sec.caregivers.intro': "Esta é uma <b>decisão sobre pessoas</b>, não uma decisão burocrática. O mais importante nesta página não é o formulário — é já ter <b>falado com as duas pessoas</b> e elas terem dito claramente que sim.",
+  'sec.caregivers.tip': "<b>Direto, mas verdadeiro.</b> Se ainda não teve a conversa, não tem um plano. Tem uma esperança. Marque a chamada antes de terminar esta secção.",
+  'fld.caregivers.primary_name.label': "Cuidador principal — nome completo",
+  'fld.caregivers.primary_name.ph': "p. ex. Maria Chen",
+  'fld.caregivers.primary_rel.label': "Relação dessa pessoa consigo",
+  'fld.caregivers.primary_rel.ph': "p. ex. A minha irmã / Melhor amiga há 12 anos",
+  'fld.caregivers.primary_phone.label': "Cuidador principal — telefone",
+  'fld.caregivers.primary_phone.ph': "p. ex. (416) 555-0142",
+  'fld.caregivers.primary_email.label': "Cuidador principal — e-mail",
+  'fld.caregivers.primary_email.ph': "p. ex. maria@email.com",
+  'fld.caregivers.primary_address.label': "Cuidador principal — morada",
+  'fld.caregivers.primary_address.sub': "Para o caso de o seu animal precisar de viajar até essa pessoa.",
+  'fld.caregivers.primary_address.ph': "p. ex. 412 Bayview Ave, Toronto ON",
+  'fld.caregivers.primary_agreed.label': "Essa pessoa aceitou claramente?",
+  'fld.caregivers.primary_agreed.opt.0': "Sim — falámos e disse claramente que sim",
+  'fld.caregivers.primary_agreed.opt.1': "Falámos, mas de modo informal — devia confirmar",
+  'fld.caregivers.primary_agreed.opt.2': "Ainda não tive a conversa — vou tê-la esta semana",
+  'fld.caregivers.backup_name.label': "Cuidador suplente — nome completo",
+  'fld.caregivers.backup_name.sub': "Porque a vida dá voltas — as pessoas mudam-se, adoecem ou simplesmente deixam de poder.",
+  'fld.caregivers.backup_name.ph': "p. ex. David Park",
+  'fld.caregivers.backup_rel.label': "Relação dessa pessoa consigo",
+  'fld.caregivers.backup_rel.ph': "p. ex. Cunhado",
+  'fld.caregivers.backup_phone.label': "Cuidador suplente — telefone",
+  'fld.caregivers.backup_phone.ph': "p. ex. (416) 555-0188",
+  'fld.caregivers.backup_agreed.label': "O cuidador suplente aceitou?",
+  'fld.caregivers.backup_agreed.opt.0': "Sim",
+  'fld.caregivers.backup_agreed.opt.1': "Ainda não — vou ter a conversa em breve",
+  'fld.caregivers.backup_agreed.opt.2': "Não aplicável",
+  'fld.caregivers.caregiver_notes.label': "Notas sobre a passagem de cuidados",
+  'fld.caregivers.caregiver_notes.sub': "Qualquer pormenor relevante sobre a relação entre o cuidador e o seu animal.",
+  'fld.caregivers.caregiver_notes.prm.0': "A Maria conhece o Carrot desde cachorro. Ele vai para casa dela de bom grado.",
+  'fld.caregivers.caregiver_notes.prm.1': "O David vive noutra província — o animal teria de viajar até ele no prazo de 2 semanas.",
+  'fld.caregivers.caregiver_notes.prm.2': "A minha irmã é alérgica, mas está disposta a gerir a situação com anti-histamínicos e uma zona livre de pelos em casa.",
+  'fld.caregivers.caregiver_notes.prm.3': "O cuidador tem cães — as apresentações devem ser feitas com cuidado em terreno neutro."
+});
+Object.assign(I18N.hi, {
+  'sec.caregivers.intro': "यह <b>लोगों से जुड़ा फ़ैसला</b> है, कागज़ी कार्रवाई का नहीं। इस पेज पर सबसे ज़रूरी चीज़ फ़ॉर्म नहीं है — बल्कि यह है कि आपने <b>दोनों लोगों से बात कर ली है</b> और उन्होंने साफ़ तौर पर हाँ कह दी है।",
+  'sec.caregivers.tip': "<b>कड़वा लेकिन सच।</b> अगर आपने बातचीत नहीं की है, तो आपके पास कोई योजना नहीं है — सिर्फ़ एक उम्मीद है। यह सेक्शन पूरा करने से पहले कॉल का समय तय कर लें।",
+  'fld.caregivers.primary_name.label': "मुख्य देखभालकर्ता — पूरा नाम",
+  'fld.caregivers.primary_name.ph': "जैसे Maria Chen",
+  'fld.caregivers.primary_rel.label': "आपसे उनका रिश्ता",
+  'fld.caregivers.primary_rel.ph': "जैसे मेरी बहन / 12 साल से सबसे अच्छी दोस्त",
+  'fld.caregivers.primary_phone.label': "मुख्य देखभालकर्ता — फ़ोन",
+  'fld.caregivers.primary_phone.ph': "जैसे (416) 555-0142",
+  'fld.caregivers.primary_email.label': "मुख्य देखभालकर्ता — ईमेल",
+  'fld.caregivers.primary_email.ph': "जैसे maria@email.com",
+  'fld.caregivers.primary_address.label': "मुख्य देखभालकर्ता — पता",
+  'fld.caregivers.primary_address.sub': "अगर आपके पालतू जानवर को उनके पास जाना पड़े, तो इसके लिए।",
+  'fld.caregivers.primary_address.ph': "जैसे 412 Bayview Ave, Toronto ON",
+  'fld.caregivers.primary_agreed.label': "क्या उन्होंने साफ़ तौर पर हामी भरी है?",
+  'fld.caregivers.primary_agreed.opt.0': "हाँ — हमने बात की है और उन्होंने हाँ कह दी है",
+  'fld.caregivers.primary_agreed.opt.1': "बात हुई है, पर अनौपचारिक रूप से — मुझे पक्का कर लेना चाहिए",
+  'fld.caregivers.primary_agreed.opt.2': "अभी तक बात नहीं हुई है — इस हफ़्ते कर लूँगा/लूँगी",
+  'fld.caregivers.backup_name.label': "बैकअप देखभालकर्ता — पूरा नाम",
+  'fld.caregivers.backup_name.sub': "क्योंकि ज़िंदगी में कुछ भी हो सकता है — लोग शहर बदल लेते हैं, बीमार पड़ जाते हैं, या बस आगे संभाल नहीं पाते।",
+  'fld.caregivers.backup_name.ph': "जैसे David Park",
+  'fld.caregivers.backup_rel.label': "आपसे उनका रिश्ता",
+  'fld.caregivers.backup_rel.ph': "जैसे जीजा",
+  'fld.caregivers.backup_phone.label': "बैकअप देखभालकर्ता — फ़ोन",
+  'fld.caregivers.backup_phone.ph': "जैसे (416) 555-0188",
+  'fld.caregivers.backup_agreed.label': "क्या बैकअप देखभालकर्ता ने हामी भरी है?",
+  'fld.caregivers.backup_agreed.opt.0': "हाँ",
+  'fld.caregivers.backup_agreed.opt.1': "अभी नहीं — जल्द ही बात करूँगा/करूँगी",
+  'fld.caregivers.backup_agreed.opt.2': "लागू नहीं",
+  'fld.caregivers.caregiver_notes.label': "हैंडओवर के बारे में नोट्स",
+  'fld.caregivers.caregiver_notes.sub': "देखभालकर्ता और आपके पालतू जानवर के रिश्ते से जुड़ी कोई भी ज़रूरी बात।",
+  'fld.caregivers.caregiver_notes.prm.0': "Maria, Carrot को पिल्ला होने के समय से जानती है। वह खुशी-खुशी उसके पास चला जाता है।",
+  'fld.caregivers.caregiver_notes.prm.1': "David दूसरे प्रांत में रहते हैं — पालतू को 2 हफ़्तों के भीतर उनके पास भेजना होगा।",
+  'fld.caregivers.caregiver_notes.prm.2': "मेरी बहन को एलर्जी है, लेकिन वह एंटीहिस्टामाइन दवाओं और घर में जानवर के बालों से मुक्त एक हिस्से के साथ इसे संभालने के लिए तैयार है।",
+  'fld.caregivers.caregiver_notes.prm.3': "देखभालकर्ता के पास अपने भी कुत्ते हैं — पहली मुलाक़ात किसी तटस्थ जगह पर सावधानी से करवानी चाहिए।"
+});
+
+// ── Section · vet — full field content (AI first-pass; flag for native review) ──
+Object.assign(I18N.fr, {
+  'sec.vet.intro':"Votre gardien ne devrait pas avoir à fouiller dans votre téléphone pour trouver le vétérinaire à 2 h du matin. Inscrivez l'information ici une fois, et il l'aura pour toujours.",
+  'sec.vet.tip':"<b>Les deux vétérinaires comptent.</b> Votre clinique habituelle pour les soins courants, et la clinique d'urgence ouverte 24 heures — ce sont généralement deux endroits différents.",
+  'fld.vet.vet_name.label':"Vétérinaire principal — nom",
+  'fld.vet.vet_name.ph':"p. ex. Dr. Anita Singh",
+  'fld.vet.vet_clinic.label':"Nom de la clinique",
+  'fld.vet.vet_clinic.ph':"p. ex. Bayview Animal Clinic",
+  'fld.vet.vet_phone.label':"Téléphone de la clinique",
+  'fld.vet.vet_phone.ph':"p. ex. (416) 555-0142",
+  'fld.vet.vet_address.label':"Adresse de la clinique",
+  'fld.vet.vet_address.ph':"p. ex. 1450 Bayview Ave, Toronto",
+  'fld.vet.er_clinic.label':"Clinique d'urgence / ouverte 24 heures",
+  'fld.vet.er_clinic.sub':"Différente de votre vétérinaire habituel. Cherchez-la dès maintenant si vous ne la connaissez pas déjà.",
+  'fld.vet.er_clinic.ph':"p. ex. Toronto Veterinary Emergency Hospital — (416) 247-VETS",
+  'fld.vet.conditions.label':"Problèmes de santé en cours",
+  'fld.vet.conditions.sub':"Soyez précis. Les noms de diagnostic comptent chez le vétérinaire.",
+  'fld.vet.conditions.prm.0':"Dermatite atopique (allergies cutanées). Maîtrisée avec Apoquel tous les jours.",
+  'fld.vet.conditions.prm.1':"Dysplasie de la hanche gauche — diagnostiquée en 2024. Éviter les impacts violents; les escaliers sont permis.",
+  'fld.vet.conditions.prm.2':"Hyperthyroïdie (chat) — contrôlée avec Methimazole deux fois par jour.",
+  'fld.vet.conditions.prm.3':"Diabétique — insuline deux fois par jour, suivi trimestriel.",
+  'fld.vet.conditions.prm.4':"Aucun problème de santé en cours — généralement en bonne santé, bilans sanguins à jour.",
+  'fld.vet.allergies.label':"Allergies (alimentaires, médicamenteuses, environnementales)",
+  'fld.vet.allergies.prm.0':"Réaction allergique grave à la pénicilline et à tout antibiotique de la famille des bêta-lactamines.",
+  'fld.vet.allergies.prm.1':"Alimentaire — le poulet provoque des troubles digestifs. Donner uniquement de l'agneau, du poisson ou du canard.",
+  'fld.vet.allergies.prm.2':"Environnementale — pollen de graminées, crises au printemps. Maîtrisées avec Apoquel.",
+  'fld.vet.allergies.prm.3':"Aucune allergie connue.",
+  'fld.vet.vaccines.label':"Statut vaccinal",
+  'fld.vet.vaccines.sub':"Dernier vaccin contre la rage, dernier DHPP/FVRCP, etc. Votre gardien pourrait en avoir besoin pour la pension ou un passage de frontière.",
+  'fld.vet.vaccines.ph':"p. ex. Rage à jour — expire en juillet 2027. DHPP à jour.",
+  'fld.vet.insurance.label':"Assureur pour animaux + numéro de police (le cas échéant)",
+  'fld.vet.insurance.ph':"p. ex. Trupanion — police #PT-204771",
+  'fld.vet.insurance_notes.label':"Comment soumettre une réclamation / ce qui est couvert",
+  'fld.vet.insurance_notes.sub':"Votre gardien ne veut pas avoir à apprendre tout cela en pleine crise.",
+  'fld.vet.insurance_notes.prm.0':"Les réclamations se font dans l'application Trupanion — les identifiants sont dans mon gestionnaire de mots de passe.",
+  'fld.vet.insurance_notes.prm.1':"La police couvre 90 % des accidents et maladies, avec une franchise de $500. Aucune couverture des soins préventifs.",
+  'fld.vet.insurance_notes.prm.2':"Pas d'assurance — le gardien doit s'attendre à des factures vétérinaires d'urgence de l'ordre de $500–$3,000; elles sont couvertes par le don en argent prévu à la Section G."
+});
+Object.assign(I18N.es, {
+  'sec.vet.intro':"Tu cuidador no debería tener que rebuscar en tu teléfono para encontrar al veterinario a las 2 de la madrugada. Anótalo aquí una vez y lo tendrá para siempre.",
+  'sec.vet.tip':"<b>Los dos veterinarios importan.</b> Tu clínica habitual para la atención de rutina y la clínica de urgencias 24 horas: normalmente no son la misma.",
+  'fld.vet.vet_name.label':"Veterinario principal — nombre",
+  'fld.vet.vet_name.ph':"p. ej. Dr. Anita Singh",
+  'fld.vet.vet_clinic.label':"Nombre de la clínica",
+  'fld.vet.vet_clinic.ph':"p. ej. Bayview Animal Clinic",
+  'fld.vet.vet_phone.label':"Teléfono de la clínica",
+  'fld.vet.vet_phone.ph':"p. ej. (416) 555-0142",
+  'fld.vet.vet_address.label':"Dirección de la clínica",
+  'fld.vet.vet_address.ph':"p. ej. 1450 Bayview Ave, Toronto",
+  'fld.vet.er_clinic.label':"Clínica de urgencias / 24 horas",
+  'fld.vet.er_clinic.sub':"No es la misma que tu veterinario habitual. Búscala ahora si todavía no la conoces.",
+  'fld.vet.er_clinic.ph':"p. ej. Toronto Veterinary Emergency Hospital — (416) 247-VETS",
+  'fld.vet.conditions.label':"Afecciones médicas en curso",
+  'fld.vet.conditions.sub':"Sé específico. Los nombres del diagnóstico importan en el veterinario.",
+  'fld.vet.conditions.prm.0':"Dermatitis atópica (alergias en la piel). Controlada con Apoquel a diario.",
+  'fld.vet.conditions.prm.1':"Displasia de cadera izquierda — diagnosticada en 2024. Evitar impactos fuertes; las escaleras están bien.",
+  'fld.vet.conditions.prm.2':"Hipertiroidismo (gato) — controlado con Methimazole dos veces al día.",
+  'fld.vet.conditions.prm.3':"Diabético — insulina dos veces al día, con controles trimestrales.",
+  'fld.vet.conditions.prm.4':"Sin afecciones en curso — en general sano, con análisis de sangre al día.",
+  'fld.vet.allergies.label':"Alergias (alimentos, medicamentos, ambientales)",
+  'fld.vet.allergies.prm.0':"Reacción alérgica grave a la penicilina y a cualquier antibiótico betalactámico.",
+  'fld.vet.allergies.prm.1':"Alimentos: pollo — le causa malestar gastrointestinal. Usar solo cordero, pescado o pato.",
+  'fld.vet.allergies.prm.2':"Ambiental: polen de pasto — se agrava en primavera. Se controla con Apoquel.",
+  'fld.vet.allergies.prm.3':"Sin alergias conocidas.",
+  'fld.vet.vaccines.label':"Estado de vacunación",
+  'fld.vet.vaccines.sub':"Última vacuna antirrábica, última DHPP/FVRCP, etc. Tu cuidador puede necesitarlo para una guardería o para cruzar fronteras.",
+  'fld.vet.vaccines.ph':"p. ej. Rabia al día — vence en julio de 2027. DHPP vigente.",
+  'fld.vet.insurance.label':"Aseguradora de mascotas + número de póliza (si tienes)",
+  'fld.vet.insurance.ph':"p. ej. Trupanion — Póliza #PT-204771",
+  'fld.vet.insurance_notes.label':"Cómo presentar un reclamo / qué cubre",
+  'fld.vet.insurance_notes.sub':"Tu cuidador no querrá aprender esto en plena crisis.",
+  'fld.vet.insurance_notes.prm.0':"Los reclamos se presentan en la app de Trupanion — el acceso está en mi gestor de contraseñas.",
+  'fld.vet.insurance_notes.prm.1':"La póliza cubre el 90% de accidentes y enfermedades, con deducible de $500. No incluye cobertura de bienestar.",
+  'fld.vet.insurance_notes.prm.2':"Sin seguro — el cuidador debe esperar facturas veterinarias de emergencia de entre $500–$3,000; se cubren con el regalo en efectivo de la Sección G."
+});
+Object.assign(I18N.pt, {
+  'sec.vet.intro':"O seu cuidador não deveria ter de vasculhar o seu telemóvel para encontrar o veterinário às 2 da manhã. Registe a informação aqui uma vez e ele fica com ela para sempre.",
+  'sec.vet.tip':"<b>Os dois veterinários são importantes.</b> A sua clínica habitual para os cuidados de rotina e a clínica de urgência aberta 24 horas — normalmente são sítios diferentes.",
+  'fld.vet.vet_name.label':"Veterinário principal — nome",
+  'fld.vet.vet_name.ph':"p. ex. Dr. Anita Singh",
+  'fld.vet.vet_clinic.label':"Nome da clínica",
+  'fld.vet.vet_clinic.ph':"p. ex. Bayview Animal Clinic",
+  'fld.vet.vet_phone.label':"Telefone da clínica",
+  'fld.vet.vet_phone.ph':"p. ex. (416) 555-0142",
+  'fld.vet.vet_address.label':"Morada da clínica",
+  'fld.vet.vet_address.ph':"p. ex. 1450 Bayview Ave, Toronto",
+  'fld.vet.er_clinic.label':"Clínica de urgência / aberta 24 horas",
+  'fld.vet.er_clinic.sub':"Diferente do seu veterinário habitual. Procure-a já, se ainda não a conhece.",
+  'fld.vet.er_clinic.ph':"p. ex. Toronto Veterinary Emergency Hospital — (416) 247-VETS",
+  'fld.vet.conditions.label':"Problemas de saúde em curso",
+  'fld.vet.conditions.sub':"Seja específico. Os nomes dos diagnósticos fazem diferença no veterinário.",
+  'fld.vet.conditions.prm.0':"Dermatite atópica (alergias de pele). Controlada com Apoquel diariamente.",
+  'fld.vet.conditions.prm.1':"Displasia da anca esquerda — diagnosticada em 2024. Evitar impactos fortes; escadas não há problema.",
+  'fld.vet.conditions.prm.2':"Hipertiroidismo (gato) — controlado com Methimazole duas vezes por dia.",
+  'fld.vet.conditions.prm.3':"Diabético — insulina duas vezes por dia, com controlo trimestral.",
+  'fld.vet.conditions.prm.4':"Sem problemas de saúde em curso — geralmente saudável, análises ao sangue em dia.",
+  'fld.vet.allergies.label':"Alergias (alimentares, a medicamentos, ambientais)",
+  'fld.vet.allergies.prm.0':"Reação alérgica grave à penicilina e a qualquer antibiótico beta-lactâmico.",
+  'fld.vet.allergies.prm.1':"Alimentar: frango — provoca problemas gastrointestinais. Dar apenas borrego, peixe ou pato.",
+  'fld.vet.allergies.prm.2':"Ambiental: pólen de gramíneas — agrava-se na primavera. Controlada com Apoquel.",
+  'fld.vet.allergies.prm.3':"Sem alergias conhecidas.",
+  'fld.vet.vaccines.label':"Estado de vacinação",
+  'fld.vet.vaccines.sub':"Última vacina antirrábica, última DHPP/FVRCP, etc. O seu cuidador pode precisar disto para um hotel de animais ou para atravessar fronteiras.",
+  'fld.vet.vaccines.ph':"p. ex. Raiva em dia — expira em julho de 2027. DHPP em dia.",
+  'fld.vet.insurance.label':"Seguradora do animal + número da apólice (se existir)",
+  'fld.vet.insurance.ph':"p. ex. Trupanion — Apólice #PT-204771",
+  'fld.vet.insurance_notes.label':"Como acionar o seguro / o que está coberto",
+  'fld.vet.insurance_notes.sub':"O seu cuidador não vai querer aprender isto numa situação de stress.",
+  'fld.vet.insurance_notes.prm.0':"Os pedidos de reembolso são submetidos na app da Trupanion — os dados de acesso estão no meu gestor de palavras-passe.",
+  'fld.vet.insurance_notes.prm.1':"A apólice cobre 90% de acidentes e doenças, com franquia de $500. Sem cobertura de bem-estar.",
+  'fld.vet.insurance_notes.prm.2':"Sem seguro — o cuidador deve contar com contas veterinárias de urgência na ordem de $500–$3,000; ficam cobertas pela doação em dinheiro da Secção G."
+});
+Object.assign(I18N.hi, {
+  'sec.vet.intro':"आपके देखभालकर्ता को रात 2 बजे पशु-चिकित्सक का नंबर ढूँढने के लिए आपका फ़ोन खंगालना न पड़े। इसे यहाँ एक बार लिख दें, और यह जानकारी हमेशा उनके पास रहेगी।",
+  'sec.vet.tip':"<b>दोनों पशु-चिकित्सक ज़रूरी हैं।</b> नियमित देखभाल के लिए आपका सामान्य क्लिनिक, और 24 घंटे खुला आपातकालीन क्लिनिक — ये आमतौर पर अलग-अलग होते हैं।",
+  'fld.vet.vet_name.label':"मुख्य पशु-चिकित्सक — नाम",
+  'fld.vet.vet_name.ph':"जैसे Dr. Anita Singh",
+  'fld.vet.vet_clinic.label':"क्लिनिक का नाम",
+  'fld.vet.vet_clinic.ph':"जैसे Bayview Animal Clinic",
+  'fld.vet.vet_phone.label':"क्लिनिक का फ़ोन",
+  'fld.vet.vet_phone.ph':"जैसे (416) 555-0142",
+  'fld.vet.vet_address.label':"क्लिनिक का पता",
+  'fld.vet.vet_address.ph':"जैसे 1450 Bayview Ave, Toronto",
+  'fld.vet.er_clinic.label':"आपातकालीन / 24 घंटे खुला क्लिनिक",
+  'fld.vet.er_clinic.sub':"यह आपके नियमित पशु-चिकित्सक से अलग होता है। अगर अभी तक पता नहीं है, तो इसे अभी खोज लें।",
+  'fld.vet.er_clinic.ph':"जैसे Toronto Veterinary Emergency Hospital — (416) 247-VETS",
+  'fld.vet.conditions.label':"मौजूदा चिकित्सीय स्थितियाँ",
+  'fld.vet.conditions.sub':"सटीक जानकारी दें। पशु-चिकित्सक के पास निदान (डायग्नोसिस) के नाम मायने रखते हैं।",
+  'fld.vet.conditions.prm.0':"एटोपिक डर्मेटाइटिस (त्वचा की एलर्जी)। रोज़ Apoquel से नियंत्रित।",
+  'fld.vet.conditions.prm.1':"बाएँ कूल्हे में हिप डिसप्लेसिया — 2024 में निदान हुआ। तेज़ झटके वाली गतिविधियों से बचें, सीढ़ियाँ ठीक हैं।",
+  'fld.vet.conditions.prm.2':"हाइपरथायरॉइडिज़्म (बिल्ली) — दिन में दो बार Methimazole से नियंत्रित।",
+  'fld.vet.conditions.prm.3':"डायबिटिक (मधुमेह) — दिन में दो बार इंसुलिन, हर तिमाही जाँच।",
+  'fld.vet.conditions.prm.4':"कोई मौजूदा बीमारी नहीं — आम तौर पर स्वस्थ, ब्लडवर्क अप-टू-डेट।",
+  'fld.vet.allergies.label':"एलर्जी (भोजन, दवा, पर्यावरण)",
+  'fld.vet.allergies.prm.0':"पेनिसिलिन और किसी भी बीटा-लैक्टम एंटीबायोटिक से गंभीर एलर्जिक रिएक्शन।",
+  'fld.vet.allergies.prm.1':"भोजन: चिकन — पेट ख़राब करता है। सिर्फ़ मेमने का मांस, मछली या बत्तख ही दें।",
+  'fld.vet.allergies.prm.2':"पर्यावरण: घास का पराग — वसंत में बढ़ जाती है। Apoquel से नियंत्रित रहती है।",
+  'fld.vet.allergies.prm.3':"कोई ज्ञात एलर्जी नहीं।",
+  'fld.vet.vaccines.label':"टीकाकरण की स्थिति",
+  'fld.vet.vaccines.sub':"आख़िरी रेबीज़ टीका, आख़िरी DHPP/FVRCP आदि। बोर्डिंग या सीमा पार करने के लिए देखभालकर्ता को इसकी ज़रूरत पड़ सकती है।",
+  'fld.vet.vaccines.ph':"जैसे रेबीज़ अप-टू-डेट — जुलाई 2027 में समाप्त। DHPP भी अप-टू-डेट।",
+  'fld.vet.insurance.label':"पेट बीमा कंपनी + पॉलिसी नंबर (यदि हो)",
+  'fld.vet.insurance.ph':"जैसे Trupanion — पॉलिसी #PT-204771",
+  'fld.vet.insurance_notes.label':"क्लेम कैसे करें / क्या-क्या कवर है",
+  'fld.vet.insurance_notes.sub':"तनाव की घड़ी में देखभालकर्ता को यह सब सीखना न पड़े।",
+  'fld.vet.insurance_notes.prm.0':"क्लेम Trupanion ऐप से किए जाते हैं — लॉगिन मेरे पासवर्ड मैनेजर में है।",
+  'fld.vet.insurance_notes.prm.1':"पॉलिसी दुर्घटना और बीमारी का 90% कवर करती है, $500 डिडक्टिबल। वेलनेस कवरेज शामिल नहीं है।",
+  'fld.vet.insurance_notes.prm.2':"बीमा नहीं है — देखभालकर्ता को $500–$3,000 तक के आपातकालीन पशु-चिकित्सा बिल की उम्मीद रखनी चाहिए; यह अनुभाग G के नकद उपहार से कवर होगा।"
+});
+
+// ── Section · routine — full field content (AI first-pass; flag for native review) ──
+Object.assign(I18N.fr, {
+  'sec.routine.intro': "Un animal dont la routine s'effondre devient anxieux, cesse de manger et adopte des comportements auxquels le gardien ne s'attendait pas. <b>Dix minutes de détails ici épargnent à votre gardien des semaines de tâtonnements.</b>",
+  'sec.routine.tip': "<b>Soyez précis.</b> « Nourrissez-le le matin » ne sert à rien. « 1 tasse d'Acana Senior à 7 h, croquettes seulement, dans le bol en céramique vert » — voilà la norme.",
+  'fld.routine.feeding.label': "Alimentation — horaire, nourriture, portions",
+  'fld.routine.feeding.sub': "Marque, formule, portions exactes, heures de la journée, où vous rangez la nourriture.",
+  'fld.routine.feeding.prm.0': "2 tasses de nourriture pour chien Acana Senior, croquettes sèches, deux fois par jour — 7 h et 18 h. Rangée dans l'armoire au-dessus du réfrigérateur.",
+  'fld.routine.feeding.prm.1': "1/2 tasse de Royal Canin Hairball Care + 1 sachet de pâté Sheba, deux fois par jour. Bol en acier inoxydable, sur le comptoir de la cuisine.",
+  'fld.routine.feeding.prm.2': "Croquettes en libre accès (Hill's Science Diet) toute la journée ; un repas de nourriture humide à 18 h.",
+  'fld.routine.feeding.prm.3': "3 petits repas — 7 h, midi, 18 h. Une demi-tasse chacun. Estomac sensible, ne jamais sauter un repas.",
+  'fld.routine.water.label': "Eau",
+  'fld.routine.water.ph': "p. ex. Eau filtrée, renouvelée deux fois par jour — fontaine dans la cuisine",
+  'fld.routine.treats.label': "Friandises — ce qui est permis et ce qui ne l'est pas",
+  'fld.routine.treats.prm.0': "Permis : petites friandises d'entraînement (Zuke's Mini Naturals), 1/4 de bâtonnet de carotte, 1 lamelle dentaire au coucher.",
+  'fld.routine.treats.prm.1': "JAMAIS : chocolat, raisins, raisins secs, xylitol (gomme à mâcher sans sucre), oignons, restes de table.",
+  'fld.routine.treats.prm.2': "Limiter à 5 petites friandises par jour — prend facilement du poids.",
+  'fld.routine.exercise.label': "Exercice / promenades",
+  'fld.routine.exercise.sub': "Quand, combien de temps, où, en laisse ou sans laisse.",
+  'fld.routine.exercise.prm.0': "Deux promenades par jour — 30 min le matin avant le petit-déjeuner, 20 min le soir. En laisse ; harnais de préférence plutôt que collier.",
+  'fld.routine.exercise.prm.1': "Le jeu sans laisse au parc est permis, mais SEULEMENT si les autres chiens ne sont pas agressifs — tire vers les petits chiens.",
+  'fld.routine.exercise.prm.2': "Animal âgé — promenades courtes et lentes, 15 min deux fois par jour. Éviter les escaliers et les pentes raides.",
+  'fld.routine.exercise.prm.3': "Jeu à l'intérieur seulement — pointeur laser, jouet à plumes, 10–15 min deux fois par jour. Perchoir près de la fenêtre pour la stimulation pendant la journée.",
+  'fld.routine.sleep.label': "Routine de sommeil",
+  'fld.routine.sleep.ph': "p. ex. Dort dans sa cage à côté du lit, extinction des lumières à 23 h",
+  'fld.routine.comforts.label': "Objets réconfortants et petits rituels",
+  'fld.routine.comforts.sub': "Les petites choses qui l'apaisent.",
+  'fld.routine.comforts.prm.0': "Os couineur bleu — non négociable au coucher.",
+  'fld.routine.comforts.prm.1': "A une couverture préférée depuis qu'il est chiot. Elle sent la maison.",
+  'fld.routine.comforts.prm.2': "Aime la musique classique laissée en sourdine quand il est seul à la maison.",
+  'fld.routine.comforts.prm.3': "Caresses sur le ventre après le souper = rituel quotidien essentiel."
+});
+Object.assign(I18N.es, {
+  'sec.routine.intro': "Una mascota cuya rutina se derrumba se pone ansiosa, deja de comer y empieza a comportarse de formas que el cuidador no esperaba. <b>Diez minutos de detalle aquí le ahorran a tu cuidador semanas de adivinanzas.</b>",
+  'sec.routine.tip': "<b>Sé específico.</b> \"Dale de comer por la mañana\" no sirve de nada. \"1 taza de Acana Senior a las 7 AM, solo croquetas, en el tazón de cerámica verde\" es el estándar.",
+  'fld.routine.feeding.label': "Alimentación — horario, comida, porciones",
+  'fld.routine.feeding.sub': "Marca, fórmula, porciones exactas, horas del día, dónde guardas la comida.",
+  'fld.routine.feeding.prm.0': "2 tazas de comida para perro Acana Senior, croquetas secas, dos veces al día — 7 AM y 6 PM. Guardada en la alacena arriba del refrigerador.",
+  'fld.routine.feeding.prm.1': "1/2 taza de Royal Canin Hairball Care + 1 sobre de paté Sheba, dos veces al día. Tazón de acero inoxidable, en el mostrador de la cocina.",
+  'fld.routine.feeding.prm.2': "Croquetas a libre disposición (Hill's Science Diet) todo el día; una comida de alimento húmedo a las 6 PM.",
+  'fld.routine.feeding.prm.3': "3 comidas pequeñas — 7 AM, mediodía, 6 PM. Media taza cada una. Estómago sensible, nunca le saltes una comida.",
+  'fld.routine.water.label': "Agua",
+  'fld.routine.water.ph': "p. ej. Agua filtrada, rellenada dos veces al día — fuente en la cocina",
+  'fld.routine.treats.label': "Premios — qué está permitido y qué no",
+  'fld.routine.treats.prm.0': "PERMITIDO: premios pequeños de entrenamiento (Zuke's Mini Naturals), 1/4 de bastón de zanahoria, 1 premio dental antes de dormir.",
+  'fld.routine.treats.prm.1': "NUNCA: chocolate, uvas, pasas, xilitol (chicle sin azúcar), cebolla, sobras de la mesa.",
+  'fld.routine.treats.prm.2': "Limitar a 5 premios pequeños al día — sube de peso con facilidad.",
+  'fld.routine.exercise.label': "Ejercicio / paseos",
+  'fld.routine.exercise.sub': "Cuándo, cuánto tiempo, dónde, con o sin correa.",
+  'fld.routine.exercise.prm.0': "Dos paseos al día — 30 min por la mañana antes del desayuno, 20 min por la tarde. Con correa; mejor arnés que collar.",
+  'fld.routine.exercise.prm.1': "Jugar sin correa en el parque está bien, pero SOLO si los otros perros no son agresivos — tira de la correa hacia los perros pequeños.",
+  'fld.routine.exercise.prm.2': "Senior — paseos cortos y lentos, 15 min dos veces al día. Evitar escaleras y cuestas empinadas.",
+  'fld.routine.exercise.prm.3': "Solo juego en interiores — puntero láser, juguete de plumas, 10–15 min dos veces al día. Percha junto a la ventana para estimulación durante el día.",
+  'fld.routine.sleep.label': "Rutina de sueño",
+  'fld.routine.sleep.ph': "p. ej. Duerme en su jaula junto a la cama, luces apagadas a las 11 PM",
+  'fld.routine.comforts.label': "Objetos y rutinas reconfortantes",
+  'fld.routine.comforts.sub': "Las pequeñas cosas que lo mantienen tranquilo.",
+  'fld.routine.comforts.prm.0': "Su hueso azul chillón — innegociable a la hora de dormir.",
+  'fld.routine.comforts.prm.1': "Tiene una manta favorita de cuando era cachorro. Huele a hogar.",
+  'fld.routine.comforts.prm.2': "Le gusta que dejen música clásica a bajo volumen cuando se queda solo en casa.",
+  'fld.routine.comforts.prm.3': "Caricias en la panza después de la cena = ritual diario esencial."
+});
+Object.assign(I18N.pt, {
+  'sec.routine.intro': "Um animal cuja rotina se desmorona fica ansioso, deixa de comer e começa a comportar-se de formas que o cuidador não esperava. <b>Dez minutos de detalhe aqui poupam ao seu cuidador semanas de adivinhação.</b>",
+  'sec.routine.tip': "<b>Seja específico.</b> «Dê-lhe de comer de manhã» não serve de nada. «1 chávena de Acana Senior às 7 h, apenas ração seca, na tigela de cerâmica verde» é o padrão.",
+  'fld.routine.feeding.label': "Alimentação — horário, comida, porções",
+  'fld.routine.feeding.sub': "Marca, fórmula, porções exatas, horas do dia, onde guarda a comida.",
+  'fld.routine.feeding.prm.0': "2 chávenas de ração para cão Acana Senior, ração seca, duas vezes por dia — 7 h e 18 h. Guardada no armário por cima do frigorífico.",
+  'fld.routine.feeding.prm.1': "1/2 chávena de Royal Canin Hairball Care + 1 saqueta de patê Sheba, duas vezes por dia. Tigela de aço inoxidável, na bancada da cozinha.",
+  'fld.routine.feeding.prm.2': "Ração seca à discrição (Hill's Science Diet) durante todo o dia; uma refeição de comida húmida às 18 h.",
+  'fld.routine.feeding.prm.3': "3 pequenas refeições — 7 h, meio-dia, 18 h. Meia chávena cada uma. Estômago sensível, nunca salte uma refeição.",
+  'fld.routine.water.label': "Água",
+  'fld.routine.water.ph': "p. ex. Água filtrada, mudada duas vezes por dia — fonte na cozinha",
+  'fld.routine.treats.label': "Guloseimas — o que pode e o que não pode",
+  'fld.routine.treats.prm.0': "PODE: pequenas guloseimas de treino (Zuke's Mini Naturals), 1/4 de palito de cenoura, 1 snack dentário ao deitar.",
+  'fld.routine.treats.prm.1': "NUNCA: chocolate, uvas, passas, xilitol (pastilhas elásticas sem açúcar), cebola, restos da mesa.",
+  'fld.routine.treats.prm.2': "Limitar a 5 pequenas guloseimas por dia — engorda com facilidade.",
+  'fld.routine.exercise.label': "Exercício / passeios",
+  'fld.routine.exercise.sub': "Quando, quanto tempo, onde, com ou sem trela.",
+  'fld.routine.exercise.prm.0': "Dois passeios por dia — 30 min de manhã antes do pequeno-almoço, 20 min à noite. Com trela; de preferência peitoral em vez de coleira.",
+  'fld.routine.exercise.prm.1': "Brincar sem trela no parque não faz mal, mas APENAS se os outros cães não forem agressivos — puxa na direção dos cães pequenos.",
+  'fld.routine.exercise.prm.2': "Sénior — passeios curtos e lentos, 15 min duas vezes por dia. Evitar escadas e subidas íngremes.",
+  'fld.routine.exercise.prm.3': "Brincadeira apenas dentro de casa — ponteiro laser, brinquedo de penas, 10–15 min duas vezes por dia. Poleiro à janela para estimulação durante o dia.",
+  'fld.routine.sleep.label': "Rotina de sono",
+  'fld.routine.sleep.ph': "p. ex. Dorme na jaula ao lado da cama, luzes apagadas às 23 h",
+  'fld.routine.comforts.label': "Objetos e rotinas de conforto",
+  'fld.routine.comforts.sub': "As pequenas coisas que o mantêm calmo.",
+  'fld.routine.comforts.prm.0': "Osso azul que chia — inegociável à hora de deitar.",
+  'fld.routine.comforts.prm.1': "Tem uma manta preferida dos tempos de cachorro. Cheira a casa.",
+  'fld.routine.comforts.prm.2': "Gosta de música clássica em volume baixo quando fica sozinho em casa.",
+  'fld.routine.comforts.prm.3': "Festas na barriga depois do jantar = ritual diário essencial."
+});
+Object.assign(I18N.hi, {
+  'sec.routine.intro': "जिस पालतू जानवर की दिनचर्या बिगड़ जाती है, वह बेचैन हो जाता है, खाना छोड़ देता है और ऐसा व्यवहार करने लगता है जिसकी देखभाल करने वाले को उम्मीद नहीं थी। <b>यहाँ दस मिनट की बारीकी आपके देखभालकर्ता को हफ़्तों के अंदाज़े लगाने से बचा लेती है।</b>",
+  'sec.routine.tip': "<b>सटीक रहें।</b> \"सुबह खाना खिला देना\" किसी काम का नहीं। \"सुबह 7 बजे 1 कप Acana Senior, सिर्फ़ सूखा किबल, हरे सिरेमिक कटोरे में\" — यही मानक है।",
+  'fld.routine.feeding.label': "खाना — समय-सारणी, भोजन, मात्रा",
+  'fld.routine.feeding.sub': "ब्रांड, फ़ॉर्मूला, सटीक मात्रा, दिन के समय, और खाना कहाँ रखा है।",
+  'fld.routine.feeding.prm.0': "2 कप Acana Senior डॉग फ़ूड, सूखा किबल, दिन में दो बार — सुबह 7 बजे और शाम 6 बजे। फ्रिज के ऊपर वाली अलमारी में रखा है।",
+  'fld.routine.feeding.prm.1': "1/2 कप Royal Canin Hairball Care + 1 पैकेट Sheba पाटे, दिन में दो बार। स्टेनलेस स्टील का कटोरा, किचन काउंटर पर।",
+  'fld.routine.feeding.prm.2': "दिन भर किबल खुला रखा रहता है (Hill's Science Diet); शाम 6 बजे एक बार गीला खाना।",
+  'fld.routine.feeding.prm.3': "3 छोटे भोजन — सुबह 7 बजे, दोपहर, शाम 6 बजे। हर बार आधा कप। पेट संवेदनशील है, कभी कोई भोजन न छोड़ें।",
+  'fld.routine.water.label': "पानी",
+  'fld.routine.water.ph': "जैसे फ़िल्टर किया हुआ पानी, दिन में दो बार बदला जाता है — रसोई में फ़ाउंटेन",
+  'fld.routine.treats.label': "ट्रीट्स — क्या ठीक है और क्या नहीं",
+  'fld.routine.treats.prm.0': "ठीक है: छोटे ट्रेनिंग ट्रीट्स (Zuke's Mini Naturals), 1/4 गाजर का टुकड़ा, सोने से पहले 1 डेंटल च्यू।",
+  'fld.routine.treats.prm.1': "कभी नहीं: चॉकलेट, अंगूर, किशमिश, ज़ाइलिटोल (शुगर-फ़्री च्युइंग गम), प्याज़, मेज़ का बचा-खुचा खाना।",
+  'fld.routine.treats.prm.2': "दिन में 5 छोटे ट्रीट्स तक ही सीमित रखें — आसानी से वज़न बढ़ जाता है।",
+  'fld.routine.exercise.label': "व्यायाम / सैर",
+  'fld.routine.exercise.sub': "कब, कितनी देर, कहाँ, पट्टे (लीश) के साथ या बिना।",
+  'fld.routine.exercise.prm.0': "रोज़ दो सैर — सुबह नाश्ते से पहले 30 मिनट, शाम को 20 मिनट। पट्टे के साथ; कॉलर की बजाय हार्नेस बेहतर।",
+  'fld.routine.exercise.prm.1': "पार्क में बिना पट्टे के खेलना ठीक है, लेकिन सिर्फ़ तभी जब दूसरे कुत्ते आक्रामक न हों — छोटे कुत्तों की ओर खिंचता है।",
+  'fld.routine.exercise.prm.2': "बुज़ुर्ग — छोटी, धीमी सैर, दिन में दो बार 15 मिनट। सीढ़ियों और खड़ी चढ़ाई से बचें।",
+  'fld.routine.exercise.prm.3': "सिर्फ़ घर के अंदर खेल — लेज़र पॉइंटर, पंख वाला खिलौना, दिन में दो बार 10–15 मिनट। दिन में मानसिक उत्तेजना के लिए खिड़की के पास बैठने की जगह।",
+  'fld.routine.sleep.label': "सोने की दिनचर्या",
+  'fld.routine.sleep.ph': "जैसे बिस्तर के पास क्रेट में सोता है, रात 11 बजे बत्ती बंद",
+  'fld.routine.comforts.label': "आराम देने वाली चीज़ें और आदतें",
+  'fld.routine.comforts.sub': "वे छोटी-छोटी चीज़ें जो उन्हें शांत रखती हैं।",
+  'fld.routine.comforts.prm.0': "नीली चूं-चूं वाली खिलौना हड्डी — सोते समय इसके बिना काम नहीं चलता।",
+  'fld.routine.comforts.prm.1': "पिल्ले के दिनों का एक पसंदीदा कंबल है। उसमें घर की खुशबू बसी है।",
+  'fld.routine.comforts.prm.2': "घर में अकेले होने पर धीमी आवाज़ में क्लासिकल संगीत चलना पसंद है।",
+  'fld.routine.comforts.prm.3': "रात के खाने के बाद पेट सहलाना = रोज़ का ज़रूरी रिवाज़।"
+});
+
+// ── Section · meds — full field content (AI first-pass; flag for native review) ──
+Object.assign(I18N.fr, {
+  'sec.meds.intro': "Listez <b>tout</b> — y compris les suppléments, les traitements contre les puces et les tiques, la prévention du ver du cœur et tout traitement saisonnier. Tout ce que vous remarqueriez si vous l'oubliiez.",
+  'sec.meds.tip': "<b>Les renouvellements sont un piège.</b> Manquer une dose d'insuline ou d'anticonvulsivant est dangereux. Notez où chaque médicament se renouvelle et combien de temps dure la réserve.",
+  'fld.meds.med_list.label': "Médicaments actuels — liste complète",
+  'fld.meds.med_list.sub': "Format : nom — dose — moment — mode d'administration. Un par ligne.",
+  'fld.meds.med_list.prm.0': "Apoquel 16mg — 1 comprimé avec le repas du matin — pour les allergies cutanées.",
+  'fld.meds.med_list.prm.1': "Heartgard Plus — 1 comprimé à croquer le 1er de chaque mois — ver du cœur + parasites intestinaux.",
+  'fld.meds.med_list.prm.2': "Bravecto — 1 comprimé à mâcher tous les 3 mois — puces et tiques.",
+  'fld.meds.med_list.prm.3': "Methimazole 5mg — 1/2 comprimé deux fois par jour, matin et soir, avec de la nourriture — hyperthyroïdie.",
+  'fld.meds.med_list.prm.4': "Vetmedin 5mg — 1 capsule deux fois par jour, 1 h avant le repas — médicament pour le cœur.",
+  'fld.meds.med_list.prm.5': "Insuline (Vetsulin) — 4 unités deux fois par jour, après les repas, à conserver au réfrigérateur — diabète.",
+  'fld.meds.med_list.prm.6': "Aucun médicament régulier.",
+  'fld.meds.pharmacy.label': "Pharmacie / où les ordonnances sont préparées",
+  'fld.meds.pharmacy.ph': "p. ex. Pet Wellness Pharmacy — (416) 555-0190 — renouvellement automatique activé",
+  'fld.meds.supply.label': "Réserve actuelle de médicaments",
+  'fld.meds.supply.sub': "Combien de jours de médicaments y a-t-il à la maison en ce moment ?",
+  'fld.meds.supply.ph': "p. ex. ~30 jours pour tous les médicaments ; l'insuline est dans le compartiment à beurre du réfrigérateur",
+  'fld.meds.where_kept.label': "Où les médicaments sont rangés",
+  'fld.meds.where_kept.ph': "p. ex. Tiroir du haut de la cuisine, sauf l'insuline (réfrigérateur) et le Bravecto (armoire à friandises)",
+  'fld.meds.med_notes.label': "Instructions particulières",
+  'fld.meds.med_notes.sub': "Astuces pour faire prendre les médicaments, quoi faire en cas de dose oubliée, etc.",
+  'fld.meds.med_notes.prm.0': "Cachez le comprimé dans un petit morceau de fromage ou de beurre d'arachide — c'est la seule façon de le faire avaler.",
+  'fld.meds.med_notes.prm.1': "En cas de dose oubliée, donnez-la dès que vous y pensez, SAUF s'il reste moins de 4 heures avant la prochaine dose — dans ce cas, sautez-la et reprenez l'horaire normal.",
+  'fld.meds.med_notes.prm.2': "L'insuline ne doit PAS être administrée si elle n'a pas mangé — attendez toujours qu'elle ait terminé son repas.",
+  'fld.meds.med_notes.prm.3': "Le Vetmedin doit être donné à jeun — au moins 1 heure avant la nourriture."
+});
+Object.assign(I18N.es, {
+  'sec.meds.intro': "Anota <b>todo</b> — incluidos suplementos, tratamientos contra pulgas y garrapatas, prevención del gusano del corazón y cualquier cosa estacional. Todo aquello que notarías si lo olvidaras.",
+  'sec.meds.tip': "<b>Los resurtidos son una trampa.</b> Omitir una dosis de insulina o de un medicamento anticonvulsivo es peligroso. Anota dónde se resurte cada medicamento y para cuántos días alcanza la reserva.",
+  'fld.meds.med_list.label': "Medicamentos actuales — lista completa",
+  'fld.meds.med_list.sub': "Formato: nombre — dosis — horario — cómo se administra. Uno por línea.",
+  'fld.meds.med_list.prm.0': "Apoquel 16mg — 1 tableta con el desayuno — para alergias en la piel.",
+  'fld.meds.med_list.prm.1': "Heartgard Plus — 1 masticable el día 1 de cada mes — gusano del corazón + parásitos intestinales.",
+  'fld.meds.med_list.prm.2': "Bravecto — 1 masticable cada 3 meses — pulgas y garrapatas.",
+  'fld.meds.med_list.prm.3': "Methimazole 5mg — 1/2 tableta dos veces al día, mañana y noche, con comida — hipertiroidismo.",
+  'fld.meds.med_list.prm.4': "Vetmedin 5mg — 1 cápsula dos veces al día, 1 hora antes de la comida — medicamento para el corazón.",
+  'fld.meds.med_list.prm.5': "Insulina (Vetsulin) — 4 unidades dos veces al día, después de las comidas, refrigerada — diabetes.",
+  'fld.meds.med_list.prm.6': "No toma medicamentos regulares.",
+  'fld.meds.pharmacy.label': "Farmacia / dónde se surten las recetas",
+  'fld.meds.pharmacy.ph': "p. ej. Pet Wellness Pharmacy — (416) 555-0190 — resurtido automático configurado",
+  'fld.meds.supply.label': "Reserva actual disponible",
+  'fld.meds.supply.sub': "¿Para cuántos días de medicamentos hay en casa ahora mismo?",
+  'fld.meds.supply.ph': "p. ej. ~30 días de todos los medicamentos; la insulina está en el estante de la mantequilla del refrigerador",
+  'fld.meds.where_kept.label': "Dónde se guardan los medicamentos",
+  'fld.meds.where_kept.ph': "p. ej. Cajón superior de la cocina, excepto la insulina (refrigerador) y el Bravecto (alacena de premios)",
+  'fld.meds.med_notes.label': "Instrucciones especiales",
+  'fld.meds.med_notes.sub': "Trucos para que tome los medicamentos, qué hacer si se omite una dosis, etc.",
+  'fld.meds.med_notes.prm.0': "Esconde la pastilla en un trocito de queso o de mantequilla de maní — no la toma de ninguna otra forma.",
+  'fld.meds.med_notes.prm.1': "Si se omite una dosis, dásela en cuanto lo recuerdes, A MENOS que falten menos de 4 horas para la siguiente dosis — en ese caso, sáltala y retoma el horario normal.",
+  'fld.meds.med_notes.prm.2': "NO se debe administrar la insulina si no ha comido — espera siempre a que termine su comida.",
+  'fld.meds.med_notes.prm.3': "El Vetmedin debe darse con el estómago vacío — al menos 1 hora antes de la comida."
+});
+Object.assign(I18N.pt, {
+  'sec.meds.intro': "Indique <b>tudo</b> — incluindo suplementos, tratamentos contra pulgas e carraças, prevenção da dirofilariose (verme do coração) e qualquer tratamento sazonal. Tudo aquilo cuja falta notaria.",
+  'sec.meds.tip': "<b>As renovações de receitas são uma armadilha.</b> Falhar uma dose de insulina ou de medicação anticonvulsiva é perigoso. Anote onde cada medicamento é renovado e quanto tempo dura a reserva.",
+  'fld.meds.med_list.label': "Medicação atual — lista completa",
+  'fld.meds.med_list.sub': "Formato: nome — dose — horário — modo de administração. Um por linha.",
+  'fld.meds.med_list.prm.0': "Apoquel 16mg — 1 comprimido com o pequeno-almoço — para alergias de pele.",
+  'fld.meds.med_list.prm.1': "Heartgard Plus — 1 comprimido mastigável no dia 1 de cada mês — dirofilariose + parasitas intestinais.",
+  'fld.meds.med_list.prm.2': "Bravecto — 1 mastigável a cada 3 meses — pulgas e carraças.",
+  'fld.meds.med_list.prm.3': "Methimazole 5mg — 1/2 comprimido duas vezes por dia, de manhã e à noite, com comida — hipertiroidismo.",
+  'fld.meds.med_list.prm.4': "Vetmedin 5mg — 1 cápsula duas vezes por dia, 1 hora antes da comida — medicação para o coração.",
+  'fld.meds.med_list.prm.5': "Insulina (Vetsulin) — 4 unidades duas vezes por dia, após as refeições, no frigorífico — diabetes.",
+  'fld.meds.med_list.prm.6': "Sem medicação regular.",
+  'fld.meds.pharmacy.label': "Farmácia / onde as receitas são aviadas",
+  'fld.meds.pharmacy.ph': "p. ex. Pet Wellness Pharmacy — (416) 555-0190 — renovação automática ativada",
+  'fld.meds.supply.label': "Reserva atual em casa",
+  'fld.meds.supply.sub': "Para quantos dias de medicação há em casa neste momento?",
+  'fld.meds.supply.ph': "p. ex. ~30 dias de toda a medicação; a insulina está na prateleira da manteiga do frigorífico",
+  'fld.meds.where_kept.label': "Onde a medicação está guardada",
+  'fld.meds.where_kept.ph': "p. ex. Gaveta de cima da cozinha, exceto a insulina (frigorífico) e o Bravecto (armário das guloseimas)",
+  'fld.meds.med_notes.label': "Instruções especiais",
+  'fld.meds.med_notes.sub': "Truques para fazer tomar a medicação, o que fazer se falhar uma dose, etc.",
+  'fld.meds.med_notes.prm.0': "Esconda o comprimido num pedacinho de queijo ou de manteiga de amendoim — não o toma de outra forma.",
+  'fld.meds.med_notes.prm.1': "Se falhar uma dose, dê-a assim que se lembrar, EXCETO se faltarem menos de 4 horas para a dose seguinte — nesse caso, salte-a e retome o horário normal.",
+  'fld.meds.med_notes.prm.2': "A insulina NÃO deve ser administrada se ela não tiver comido — espere sempre que acabe a refeição.",
+  'fld.meds.med_notes.prm.3': "O Vetmedin deve ser dado com o estômago vazio — pelo menos 1 hora antes da comida."
+});
+Object.assign(I18N.hi, {
+  'sec.meds.intro': "<b>सब कुछ</b> सूचीबद्ध करें — सप्लीमेंट, पिस्सू/किलनी की दवाएँ, हार्टवॉर्म की रोकथाम और कोई भी मौसमी इलाज शामिल करें। हर वह चीज़ जिसके छूटने पर आपको फ़र्क महसूस हो।",
+  'sec.meds.tip': "<b>रीफ़िल एक जाल है।</b> इंसुलिन या दौरे (सीज़र) की दवा की खुराक छूटना खतरनाक है। नोट करें कि हर दवा कहाँ से रीफ़िल होती है और स्टॉक कितने दिन चलता है।",
+  'fld.meds.med_list.label': "वर्तमान दवाएँ — पूरी सूची",
+  'fld.meds.med_list.sub': "प्रारूप: नाम — खुराक — समय — कैसे दी जाती है। प्रति पंक्ति एक।",
+  'fld.meds.med_list.prm.0': "Apoquel 16mg — 1 गोली नाश्ते के साथ — त्वचा की एलर्जी के लिए।",
+  'fld.meds.med_list.prm.1': "Heartgard Plus — हर महीने की 1 तारीख़ को 1 चबाने वाली गोली — हार्टवॉर्म + आँतों के परजीवी।",
+  'fld.meds.med_list.prm.2': "Bravecto — हर 3 महीने में 1 चबाने वाली गोली — पिस्सू और किलनी।",
+  'fld.meds.med_list.prm.3': "Methimazole 5mg — 1/2 गोली दिन में दो बार, सुबह और शाम, खाने के साथ — हाइपरथायरॉयडिज़्म।",
+  'fld.meds.med_list.prm.4': "Vetmedin 5mg — 1 कैप्सूल दिन में दो बार, खाने से 1 घंटा पहले — दिल की दवा।",
+  'fld.meds.med_list.prm.5': "इंसुलिन (Vetsulin) — 4 यूनिट दिन में दो बार, भोजन के बाद, फ्रिज में रखें — डायबिटीज़।",
+  'fld.meds.med_list.prm.6': "कोई नियमित दवा नहीं।",
+  'fld.meds.pharmacy.label': "फ़ार्मेसी / जहाँ से प्रिस्क्रिप्शन की दवाएँ मिलती हैं",
+  'fld.meds.pharmacy.ph': "जैसे Pet Wellness Pharmacy — (416) 555-0190 — ऑटो-रीफ़िल सेट है",
+  'fld.meds.supply.label': "घर में मौजूदा स्टॉक",
+  'fld.meds.supply.sub': "इस समय घर में कितने दिनों की दवाएँ हैं?",
+  'fld.meds.supply.ph': "जैसे सभी दवाओं का ~30 दिन का स्टॉक; इंसुलिन फ्रिज की बटर शेल्फ़ में",
+  'fld.meds.where_kept.label': "दवाएँ कहाँ रखी जाती हैं",
+  'fld.meds.where_kept.ph': "जैसे रसोई की ऊपरी दराज़ में, सिवाय इंसुलिन (फ्रिज) और Bravecto (ट्रीट की अलमारी) के",
+  'fld.meds.med_notes.label': "विशेष निर्देश",
+  'fld.meds.med_notes.sub': "दवा खिलाने की तरकीबें, खुराक छूट जाए तो क्या करें, आदि।",
+  'fld.meds.med_notes.prm.0': "गोली को चीज़ या पीनट बटर के एक छोटे टुकड़े में छिपाकर दें — किसी और तरीके से दवा लेना मंज़ूर नहीं।",
+  'fld.meds.med_notes.prm.1': "अगर खुराक छूट जाए, तो याद आते ही दे दें, सिवाय इसके कि अगली खुराक में 4 घंटे से कम बचे हों — ऐसे में उस खुराक को छोड़ दें और सामान्य शेड्यूल पर लौट आएँ।",
+  'fld.meds.med_notes.prm.2': "अगर उसने खाना नहीं खाया है तो इंसुलिन बिल्कुल न दें — हमेशा उसका खाना खत्म होने तक प्रतीक्षा करें।",
+  'fld.meds.med_notes.prm.3': "Vetmedin खाली पेट देना ज़रूरी है — खाने से कम से कम 1 घंटा पहले।"
+});
+
+// ── Section · behaviour — full field content (AI first-pass; flag for native review) ──
+Object.assign(I18N.fr, {
+  'sec.behaviour.intro': "La personnalité de votre animal reste invisible jusqu'à ce que la personne qui s'en occupe se heurte à un déclencheur dont elle ignorait l'existence. <b>Prévenez-la dès le départ.</b>",
+  'sec.behaviour.tip': "Les gardiens se sentent terriblement mal quand un animal mord, se cache ou panique. Presque toujours, c'est parce que <b>personne ne leur a dit ce qui le fait réagir</b>. Vous pouvez éviter cela ici.",
+  'fld.behaviour.temperament.label': "Tempérament général",
+  'fld.behaviour.temperament.prm.0': "Amical et sociable avec tout le monde. Remue la queue devant les inconnus. Idéal dans une famille active.",
+  'fld.behaviour.temperament.prm.1': "Timide au début, s'ouvre au bout de quelques jours. S'attache profondément une fois la confiance établie. Préfère un foyer calme.",
+  'fld.behaviour.temperament.prm.2': "Très énergique et sûr de lui. A besoin de stimulation mentale quotidienne, sinon il devient destructeur.",
+  'fld.behaviour.temperament.prm.3': "Âgée — calme, posée, dort la majeure partie de la journée. Aime la routine et rester dans la même pièce que son humain.",
+  'fld.behaviour.triggers.label': "Déclencheurs, peurs, choses à éviter",
+  'fld.behaviour.triggers.sub': "Sons, situations, personnes, autres animaux — tout ce qui provoque du stress, de la peur ou de l'agressivité.",
+  'fld.behaviour.triggers.prm.0': "Terrifiée par les feux d'artifice et le tonnerre — doit rester à l'intérieur, avec un bruit blanc et sa couverture.",
+  'fld.behaviour.triggers.prm.1': "Réactive envers les autres chiens en laisse — gérable avec des friandises et de la distance, mais ne la laissez jamais approcher des chiens sans laisse.",
+  'fld.behaviour.triggers.prm.2': "N'aime pas les hommes qui portent un chapeau. Elle aboie et recule. Laissez-lui le temps, pas de présentations forcées.",
+  'fld.behaviour.triggers.prm.3': "Déteste l'aspirateur — mettez-la dans la chambre avant de l'allumer.",
+  'fld.behaviour.triggers.prm.4': "Protège sa gamelle (protection de ressources) — ne pas la caresser ni l'approcher pendant qu'elle mange.",
+  'fld.behaviour.kids.label': "Comment votre animal se comporte-t-il avec les enfants ?",
+  'fld.behaviour.kids.opt.0': "Excellent — recherche activement les enfants",
+  'fld.behaviour.kids.opt.1': "Bien — à l'aise si les enfants sont doux et supervisés",
+  'fld.behaviour.kids.opt.2': "Avec prudence — préférable seulement avec des enfants plus âgés",
+  'fld.behaviour.kids.opt.3': "Non recommandé — doit être tenu à l'écart des jeunes enfants",
+  'fld.behaviour.kids.opt.4': "Aucune expérience — inconnu",
+  'fld.behaviour.pets.label': "Comment votre animal se comporte-t-il avec les autres animaux ?",
+  'fld.behaviour.pets.opt.0': "Adore les autres chiens/chats — sociable",
+  'fld.behaviour.pets.opt.1': "À l'aise avec d'autres animaux si les présentations se font progressivement",
+  'fld.behaviour.pets.opt.2': "Préfère être le seul animal — sélectif avec les autres",
+  'fld.behaviour.pets.opt.3': "Ne s'entend pas avec les autres animaux — à garder séparé",
+  'fld.behaviour.pets.opt.4': "Inconnu / aucune expérience",
+  'fld.behaviour.commands.label': "Commandes connues / comment il communique",
+  'fld.behaviour.commands.prm.0': "Connaît : assis, pas bouger, couché, viens, laisse, donne la patte, roule. Les signaux de la main fonctionnent aussi.",
+  'fld.behaviour.commands.prm.1': "Va à la porte et fait sonner la clochette quand elle a besoin de sortir.",
+  'fld.behaviour.commands.prm.2': "Fixe sa gamelle quand elle en veut plus (ne cédez pas — elle a déjà eu sa portion).",
+  'fld.behaviour.commands.prm.3': "Dressée au « place » — va dans son panier sur demande. Utile quand il y a des visiteurs."
+});
+Object.assign(I18N.es, {
+  'sec.behaviour.intro': "La personalidad de tu mascota es invisible hasta que su cuidador se topa con un detonante que no sabía que existía. <b>Avísale desde el principio.</b>",
+  'sec.behaviour.tip': "Los cuidadores se sienten fatal cuando una mascota muerde, se esconde o entra en pánico. Casi siempre es porque <b>nadie les dijo qué la altera</b>. Aquí puedes evitarlo.",
+  'fld.behaviour.temperament.label': "Temperamento general",
+  'fld.behaviour.temperament.prm.0': "Amigable y sociable con todos. Mueve la cola con los desconocidos. Ideal para familias activas.",
+  'fld.behaviour.temperament.prm.1': "Tímido al principio, agarra confianza en unos días. Crea un vínculo profundo una vez que confía. Prefiere un hogar tranquilo.",
+  'fld.behaviour.temperament.prm.2': "Mucha energía y mucha seguridad. Necesita estimulación mental diaria o se vuelve destructivo.",
+  'fld.behaviour.temperament.prm.3': "Senior — tranquila, relajada, duerme casi todo el día. Le gusta la rutina y estar en la misma habitación que su persona.",
+  'fld.behaviour.triggers.label': "Detonantes, miedos y cosas que evitar",
+  'fld.behaviour.triggers.sub': "Sonidos, situaciones, personas, otros animales — cualquier cosa que cause estrés, miedo o agresividad.",
+  'fld.behaviour.triggers.prm.0': "Le aterran los fuegos artificiales y los truenos — necesita estar adentro, con ruido blanco y su cobija.",
+  'fld.behaviour.triggers.prm.1': "Reactiva con otros perros cuando va con correa — se maneja con premios y distancia, pero nunca dejes que se acerque a perros sueltos.",
+  'fld.behaviour.triggers.prm.2': "No le gustan los hombres con sombrero. Ladra y retrocede. Dale tiempo, sin presentaciones forzadas.",
+  'fld.behaviour.triggers.prm.3': "Odia la aspiradora — llévala al dormitorio antes de encenderla.",
+  'fld.behaviour.triggers.prm.4': "Protege su plato de comida (protección de recursos) — no la acaricies ni te acerques mientras come.",
+  'fld.behaviour.kids.label': "¿Cómo se comporta tu mascota con los niños?",
+  'fld.behaviour.kids.opt.0': "Excelente — busca activamente a los niños",
+  'fld.behaviour.kids.opt.1': "Bien — sin problema si los niños son suaves y hay supervisión",
+  'fld.behaviour.kids.opt.2': "Con precaución — mejor solo con niños mayores",
+  'fld.behaviour.kids.opt.3': "No recomendado — debe mantenerse separada de los niños pequeños",
+  'fld.behaviour.kids.opt.4': "Sin experiencia — se desconoce",
+  'fld.behaviour.pets.label': "¿Cómo se comporta tu mascota con otros animales?",
+  'fld.behaviour.pets.opt.0': "Adora a otros perros/gatos — sociable",
+  'fld.behaviour.pets.opt.1': "Bien con otros animales si se presentan poco a poco",
+  'fld.behaviour.pets.opt.2': "Prefiere ser la única mascota — selectiva con otros",
+  'fld.behaviour.pets.opt.3': "No se lleva bien con otros animales — mantener separados",
+  'fld.behaviour.pets.opt.4': "Se desconoce / sin experiencia",
+  'fld.behaviour.commands.label': "Órdenes que conoce / cómo se comunica",
+  'fld.behaviour.commands.prm.0': "Conoce: sentado, quieto, echado, ven, déjalo, pata, gira. También responde a señales con la mano.",
+  'fld.behaviour.commands.prm.1': "Va a la puerta y toca la campanita cuando necesita salir.",
+  'fld.behaviour.commands.prm.2': "Se queda mirando su plato cuando quiere más (no cedas — ya comió su porción).",
+  'fld.behaviour.commands.prm.3': "Entrenada con \"a tu lugar\" — va a su cama cuando se lo pides. Útil cuando hay visitas."
+});
+Object.assign(I18N.pt, {
+  'sec.behaviour.intro': "A personalidade do seu animal é invisível até o cuidador se deparar com um gatilho que não sabia que existia. <b>Avise-o desde o início.</b>",
+  'sec.behaviour.tip': "Os cuidadores sentem-se pessimamente quando um animal morde, se esconde ou entra em pânico. Quase sempre é porque <b>ninguém lhes disse o que o perturba</b>. Pode evitar isso aqui.",
+  'fld.behaviour.temperament.label': "Temperamento geral",
+  'fld.behaviour.temperament.prm.0': "Simpático e sociável com toda a gente. Abana a cauda a estranhos. Ideal para famílias ativas.",
+  'fld.behaviour.temperament.prm.1': "Tímido ao início, ganha confiança ao fim de alguns dias. Cria laços profundos depois de confiar. Prefere uma casa sossegada.",
+  'fld.behaviour.temperament.prm.2': "Muita energia e muita confiança. Precisa de estimulação mental diária, caso contrário torna-se destrutivo.",
+  'fld.behaviour.temperament.prm.3': "Sénior — calma, tranquila, dorme a maior parte do dia. Gosta de rotina e de estar na mesma divisão que a sua pessoa.",
+  'fld.behaviour.triggers.label': "Gatilhos, medos e coisas a evitar",
+  'fld.behaviour.triggers.sub': "Sons, situações, pessoas, outros animais — tudo o que cause stress, medo ou agressividade.",
+  'fld.behaviour.triggers.prm.0': "Tem pavor a fogo de artifício e trovoada — precisa de ficar dentro de casa, com ruído branco e a manta dela.",
+  'fld.behaviour.triggers.prm.1': "Reativa a outros cães quando está à trela — controlável com guloseimas e distância, mas nunca a deixe aproximar-se de cães soltos.",
+  'fld.behaviour.triggers.prm.2': "Não gosta de homens de chapéu. Ladra e recua. Dê-lhe tempo, nada de apresentações forçadas.",
+  'fld.behaviour.triggers.prm.3': "Odeia o aspirador — ponha-a no quarto antes de o ligar.",
+  'fld.behaviour.triggers.prm.4': "Protege a tigela da comida (proteção de recursos) — não lhe faça festas nem se aproxime enquanto come.",
+  'fld.behaviour.kids.label': "Como se comporta o seu animal com crianças?",
+  'fld.behaviour.kids.opt.0': "Excelente — procura ativamente as crianças",
+  'fld.behaviour.kids.opt.1': "Bom — sem problemas se as crianças forem meigas e estiverem supervisionadas",
+  'fld.behaviour.kids.opt.2': "Com cautela — melhor apenas com crianças mais velhas",
+  'fld.behaviour.kids.opt.3': "Não recomendado — deve manter-se separado de crianças pequenas",
+  'fld.behaviour.kids.opt.4': "Sem experiência — desconhecido",
+  'fld.behaviour.pets.label': "Como se comporta o seu animal com outros animais?",
+  'fld.behaviour.pets.opt.0': "Adora outros cães/gatos — sociável",
+  'fld.behaviour.pets.opt.1': "Dá-se bem com outros animais se forem apresentados devagar",
+  'fld.behaviour.pets.opt.2': "Prefere ser o único animal — seletivo com os outros",
+  'fld.behaviour.pets.opt.3': "Não se dá bem com outros animais — manter separados",
+  'fld.behaviour.pets.opt.4': "Desconhecido / sem experiência",
+  'fld.behaviour.commands.label': "Comandos que conhece / como comunica",
+  'fld.behaviour.commands.prm.0': "Conhece: senta, fica, deita, anda cá, deixa, dá a pata, rebola. Também responde a sinais com a mão.",
+  'fld.behaviour.commands.prm.1': "Vai até à porta e toca a campainha quando precisa de sair.",
+  'fld.behaviour.commands.prm.2': "Fica a olhar para a tigela quando quer mais (não ceda — já comeu a porção dela).",
+  'fld.behaviour.commands.prm.3': "Treinada com \"lugar\" — vai para a cama dela quando lho dizem. Útil quando há visitas."
+});
+Object.assign(I18N.hi, {
+  'sec.behaviour.intro': "आपके पालतू जानवर का व्यक्तित्व तब तक नज़र नहीं आता जब तक देखभाल करने वाले का सामना किसी ऐसे ट्रिगर से न हो जाए जिसके बारे में उन्हें पता ही नहीं था। <b>उन्हें पहले से ही बता दें।</b>",
+  'sec.behaviour.tip': "देखभाल करने वालों को बहुत बुरा लगता है जब कोई पालतू जानवर काट ले, छिप जाए या घबरा जाए। लगभग हमेशा इसकी वजह यह होती है कि <b>किसी ने उन्हें बताया ही नहीं कि जानवर को क्या चीज़ भड़काती है</b>। आप यहाँ इसे रोक सकते हैं।",
+  'fld.behaviour.temperament.label': "समग्र स्वभाव",
+  'fld.behaviour.temperament.prm.0': "सबके साथ दोस्ताना और मिलनसार। अजनबियों को देखकर पूँछ हिलाता है। सक्रिय परिवारों के साथ सबसे अच्छा रहता है।",
+  'fld.behaviour.temperament.prm.1': "शुरू में शर्मीला, कुछ दिनों में घुल-मिल जाता है। भरोसा बनने पर गहरा लगाव बना लेता है। शांत घर पसंद करता है।",
+  'fld.behaviour.temperament.prm.2': "बहुत ऊर्जावान और आत्मविश्वासी। रोज़ मानसिक व्यायाम (मेंटल स्टिमुलेशन) चाहिए, वरना चीज़ें तोड़ने-फोड़ने लगता है।",
+  'fld.behaviour.temperament.prm.3': "बुज़ुर्ग — शांत, सहज, दिन का ज़्यादातर समय सोती है। दिनचर्या पसंद है और अपने इंसान के साथ एक ही कमरे में रहना अच्छा लगता है।",
+  'fld.behaviour.triggers.label': "ट्रिगर, डर और बचने योग्य चीज़ें",
+  'fld.behaviour.triggers.sub': "आवाज़ें, परिस्थितियाँ, लोग, दूसरे जानवर — कुछ भी जिससे तनाव, डर या आक्रामकता पैदा हो।",
+  'fld.behaviour.triggers.prm.0': "पटाखों और बादलों की गरज से बहुत डरती है — उसे घर के अंदर रखें, व्हाइट नॉइज़ चालू करें और उसका कंबल साथ रखें।",
+  'fld.behaviour.triggers.prm.1': "पट्टे (लीश) पर दूसरे कुत्तों को देखकर भड़कती है — ट्रीट और दूरी से संभल जाती है, पर उसे कभी खुले घूम रहे कुत्तों के पास न जाने दें।",
+  'fld.behaviour.triggers.prm.2': "टोपी पहने पुरुषों को पसंद नहीं करती। भौंकेगी और पीछे हट जाएगी। उसे समय दें, ज़बरदस्ती मिलवाने की कोशिश न करें।",
+  'fld.behaviour.triggers.prm.3': "वैक्यूम क्लीनर से नफ़रत है — वैक्यूम चालू करने से पहले उसे बेडरूम में ले जाएँ।",
+  'fld.behaviour.triggers.prm.4': "अपने खाने के कटोरे की रखवाली करती है (रिसोर्स गार्डिंग) — खाते समय न सहलाएँ, न पास जाएँ।",
+  'fld.behaviour.kids.label': "बच्चों के साथ आपका पालतू जानवर कैसा रहता है?",
+  'fld.behaviour.kids.opt.0': "बहुत बढ़िया — खुद बच्चों के पास जाता है",
+  'fld.behaviour.kids.opt.1': "अच्छा — बच्चे नरमी से पेश आएँ और निगरानी हो तो ठीक रहता है",
+  'fld.behaviour.kids.opt.2': "सावधानी ज़रूरी — केवल बड़े बच्चों के साथ बेहतर",
+  'fld.behaviour.kids.opt.3': "अनुशंसित नहीं — छोटे बच्चों से अलग रखा जाए",
+  'fld.behaviour.kids.opt.4': "कोई अनुभव नहीं — पता नहीं",
+  'fld.behaviour.pets.label': "दूसरे जानवरों के साथ आपका पालतू जानवर कैसा रहता है?",
+  'fld.behaviour.pets.opt.0': "दूसरे कुत्तों/बिल्लियों से बहुत प्यार — मिलनसार",
+  'fld.behaviour.pets.opt.1': "धीरे-धीरे मिलवाया जाए तो दूसरे जानवरों के साथ ठीक",
+  'fld.behaviour.pets.opt.2': "अकेला पालतू रहना पसंद — दूसरों के साथ चुनिंदा",
+  'fld.behaviour.pets.opt.3': "दूसरे जानवरों के साथ अच्छा नहीं — अलग रखें",
+  'fld.behaviour.pets.opt.4': "पता नहीं / कोई अनुभव नहीं",
+  'fld.behaviour.commands.label': "कौन-से कमांड जानता है / कैसे संवाद करता है",
+  'fld.behaviour.commands.prm.0': "जानता है: सिट, स्टे, डाउन, कम, लीव इट, पॉ (पंजा), रोल ओवर। हाथ के इशारे भी काम करते हैं।",
+  'fld.behaviour.commands.prm.1': "बाहर जाना हो तो दरवाज़े के पास जाकर घंटी बजाती है।",
+  'fld.behaviour.commands.prm.2': "और खाना चाहिए तो अपने कटोरे को घूरती है (मानें नहीं — उसका हिस्सा मिल चुका है)।",
+  'fld.behaviour.commands.prm.3': "\"प्लेस\" कमांड सिखाया गया है — कहने पर अपने बिस्तर पर चली जाती है। मेहमानों के आने पर काम आता है।"
+});
+
+// ── Section · financial — full field content (AI first-pass; flag for native review) ──
+Object.assign(I18N.fr, {
+'sec.financial.intro': "Vous ne pouvez pas légalement léguer d'argent <b>à</b> votre animal — les animaux sont considérés comme des biens au Canada et aux États-Unis. La formule la plus simple est un <b>don en argent au gardien</b>, calculé selon les coûts réels des soins.",
+'sec.financial.tip': "<b>Soyez réaliste.</b> La courbe du vieillissement compte — les frais vétérinaires <em>doublent</em> généralement au cours des 2 ou 3 dernières années de vie d'un animal. Prévoyez-le dans votre budget.",
+'fld.financial.monthly_food.label': "Coût mensuel estimé de la nourriture et des fournitures de base",
+'fld.financial.monthly_food.ph': "p. ex. $120",
+'fld.financial.monthly_meds.label': "Coût mensuel estimé des médicaments",
+'fld.financial.monthly_meds.ph': "p. ex. $80",
+'fld.financial.annual_vet.label': "Frais vétérinaires annuels estimés (soins de routine)",
+'fld.financial.annual_vet.sub': "Examen annuel, vaccins, soins dentaires, prévention des parasites.",
+'fld.financial.annual_vet.ph': "p. ex. $600 / an",
+'fld.financial.extras.label': "Autres dépenses régulières",
+'fld.financial.extras.sub': "Toilettage, pension, promeneur, dressage, prime d'assurance.",
+'fld.financial.extras.ph': "p. ex. Toilettage $80/mois + assurance $55/mois",
+'fld.financial.gift_amount.label': "Montant du don en argent à laisser au gardien",
+'fld.financial.gift_amount.sub': "Une règle générale courante : <b>coût mensuel × 12 × années de vie restantes × 1,4</b> (le 1,4 couvre les coûts liés au vieillissement).",
+'fld.financial.gift_amount.ph': "p. ex. $25,000",
+'fld.financial.gift_source.label': "Provenance du don en argent",
+'fld.financial.gift_source.opt.0': "Legs particulier dans mon testament (simple — argent provenant de la succession)",
+'fld.financial.gift_source.opt.1': "Désignation de bénéficiaire sur une petite police d'assurance vie",
+'fld.financial.gift_source.opt.2': "Somme détenue en fiducie par mon exécuteur testamentaire, avec des instructions",
+'fld.financial.gift_source.opt.3': "Autre — précisé ci-dessous",
+'fld.financial.gift_conditions.label': "Conditions liées au don (facultatif)",
+'fld.financial.gift_conditions.sub': "Vous pouvez préciser que le don est « pour les soins de [nom de l'animal] » sans le rendre juridiquement contraignant — la plupart des gardiens respectent naturellement cette volonté.",
+'fld.financial.gift_conditions.prm.0': "Pour les soins de Carrot. Aucune reddition de comptes formelle exigée — je fais confiance à Maria.",
+'fld.financial.gift_conditions.prm.1': "Pour les soins de tous mes animaux, principalement pour les frais vétérinaires, la nourriture et les dépenses de fin de vie.",
+'fld.financial.gift_conditions.prm.2': "Si Carrot s'éteint avant l'épuisement des fonds, le solde reste au gardien, en remerciement de son engagement.",
+'fld.financial.gift_conditions.prm.3': "Somme détenue en fiducie par mon exécuteur testamentaire ; $500/mois versés pour les soins courants, et paiement direct de l'intégralité des factures vétérinaires.",
+'fld.financial.pet_trust.label': "Souhaitez-vous plutôt une fiducie formelle pour votre animal ?",
+'fld.financial.pet_trust.opt.0': "Non — un don en argent au gardien me convient",
+'fld.financial.pet_trust.opt.1': "Peut-être — à noter pour une discussion de suivi avec Donsky & Donsky ou Barrett",
+'fld.financial.pet_trust.opt.2': "Oui — j'en ai déjà une en place",
+'fld.financial.pet_trust.opt.3': "Oui — veuillez me mettre en contact avec quelqu'un pour en établir une"
+});
+Object.assign(I18N.es, {
+'sec.financial.intro': "Legalmente no puedes dejarle dinero <b>a</b> tu mascota — las mascotas se consideran propiedad en Canadá y Estados Unidos. La opción más limpia es un <b>regalo en efectivo al cuidador</b>, calculado según los costos reales del cuidado.",
+'sec.financial.tip': "<b>Sé realista.</b> La curva de envejecimiento importa — los gastos veterinarios suelen <em>duplicarse</em> en los últimos 2 o 3 años de vida de una mascota. Inclúyelo en el cálculo.",
+'fld.financial.monthly_food.label': "Costo mensual estimado de alimento y suministros básicos",
+'fld.financial.monthly_food.ph': "p. ej. $120",
+'fld.financial.monthly_meds.label': "Costo mensual estimado de medicamentos",
+'fld.financial.monthly_meds.ph': "p. ej. $80",
+'fld.financial.annual_vet.label': "Costos veterinarios anuales estimados (de rutina)",
+'fld.financial.annual_vet.sub': "Chequeo anual, vacunas, limpieza dental, prevención de parásitos.",
+'fld.financial.annual_vet.ph': "p. ej. $600 / año",
+'fld.financial.extras.label': "Otros gastos regulares",
+'fld.financial.extras.sub': "Peluquería, pensión, paseador, entrenamiento, prima del seguro.",
+'fld.financial.extras.ph': "p. ej. Peluquería $80/mes + seguro $55/mes",
+'fld.financial.gift_amount.label': "Monto del regalo en efectivo que dejarás al cuidador",
+'fld.financial.gift_amount.sub': "Una regla práctica común: <b>costo mensual × 12 × años de vida restantes × 1.4</b> (el 1.4 cubre los costos de la curva de envejecimiento).",
+'fld.financial.gift_amount.ph': "p. ej. $25,000",
+'fld.financial.gift_source.label': "De dónde saldrá el regalo en efectivo",
+'fld.financial.gift_source.opt.0': "Legado específico en mi testamento (lo más sencillo — efectivo del patrimonio)",
+'fld.financial.gift_source.opt.1': "Designación de beneficiario en una pequeña póliza de seguro de vida",
+'fld.financial.gift_source.opt.2': "Administrado en fideicomiso por mi albacea, con instrucciones",
+'fld.financial.gift_source.opt.3': "Otro — explicado abajo",
+'fld.financial.gift_conditions.label': "Condiciones del regalo (opcional)",
+'fld.financial.gift_conditions.sub': "Puedes especificar que el regalo es \"para el cuidado de [nombre de la mascota]\" sin hacerlo legalmente restrictivo — la mayoría de los cuidadores lo respetan de forma natural.",
+'fld.financial.gift_conditions.prm.0': "Para el cuidado de Carrot. No se requiere rendición de cuentas formal — confío en Maria.",
+'fld.financial.gift_conditions.prm.1': "Para el cuidado de todas mis mascotas, principalmente para gastos veterinarios, alimento y gastos de final de vida.",
+'fld.financial.gift_conditions.prm.2': "Si Carrot fallece antes de que se agoten los fondos, el resto queda para el cuidador como agradecimiento por haber asumido el compromiso.",
+'fld.financial.gift_conditions.prm.3': "Administrado en fideicomiso por mi albacea; se liberan $500/mes para el cuidado de rutina, y las facturas veterinarias se pagan completas directamente.",
+'fld.financial.pet_trust.label': "¿Prefieres en cambio un fideicomiso formal para tu mascota?",
+'fld.financial.pet_trust.opt.0': "No — el regalo en efectivo al cuidador está bien",
+'fld.financial.pet_trust.opt.1': "Tal vez — marcar para una conversación de seguimiento con Donsky & Donsky o Barrett",
+'fld.financial.pet_trust.opt.2': "Sí — ya tengo uno establecido",
+'fld.financial.pet_trust.opt.3': "Sí — por favor conéctenme con alguien para establecer uno"
+});
+Object.assign(I18N.pt, {
+'sec.financial.intro': "Legalmente, não pode deixar dinheiro <b>ao</b> seu animal — os animais são considerados propriedade no Canadá e nos EUA. A solução mais simples é uma <b>doação em dinheiro ao cuidador</b>, calculada com base nos custos reais dos cuidados.",
+'sec.financial.tip': "<b>Seja realista.</b> A curva de envelhecimento conta — os custos veterinários normalmente <em>duplicam</em> nos últimos 2-3 anos de vida de um animal. Inclua isso nas contas.",
+'fld.financial.monthly_food.label': "Custo mensal estimado de alimentação + artigos básicos",
+'fld.financial.monthly_food.ph': "p. ex. $120",
+'fld.financial.monthly_meds.label': "Custo mensal estimado de medicamentos",
+'fld.financial.monthly_meds.ph': "p. ex. $80",
+'fld.financial.annual_vet.label': "Custos veterinários anuais estimados (rotina)",
+'fld.financial.annual_vet.sub': "Check-up anual, vacinas, cuidados dentários, prevenção de parasitas.",
+'fld.financial.annual_vet.ph': "p. ex. $600 / ano",
+'fld.financial.extras.label': "Outros custos regulares",
+'fld.financial.extras.sub': "Banhos e tosquias, alojamento, passeador, treino, prémio do seguro.",
+'fld.financial.extras.ph': "p. ex. Tosquia $80/mês + seguro $55/mês",
+'fld.financial.gift_amount.label': "Montante da doação em dinheiro a deixar ao cuidador",
+'fld.financial.gift_amount.sub': "Uma regra prática comum: <b>custo mensal × 12 × anos de vida restantes × 1,4</b> (o 1,4 cobre os custos da curva de envelhecimento).",
+'fld.financial.gift_amount.ph': "p. ex. $25,000",
+'fld.financial.gift_source.label': "De onde vem a doação em dinheiro",
+'fld.financial.gift_source.opt.0': "Legado específico no meu testamento (simples — dinheiro da herança)",
+'fld.financial.gift_source.opt.1': "Designação de beneficiário numa pequena apólice de seguro de vida",
+'fld.financial.gift_source.opt.2': "Mantido em fideicomisso pelo meu testamenteiro, com instruções",
+'fld.financial.gift_source.opt.3': "Outro — explicado abaixo",
+'fld.financial.gift_conditions.label': "Condições da doação (opcional)",
+'fld.financial.gift_conditions.sub': "Pode especificar que a doação se destina \"aos cuidados de [nome do animal]\" sem a tornar juridicamente vinculativa — a maioria dos cuidadores respeita-o naturalmente.",
+'fld.financial.gift_conditions.prm.0': "Para os cuidados do Carrot. Não é exigida prestação de contas formal — confio na Maria.",
+'fld.financial.gift_conditions.prm.1': "Para os cuidados de todos os meus animais, sobretudo para contas do veterinário, alimentação e despesas de fim de vida.",
+'fld.financial.gift_conditions.prm.2': "Se o Carrot falecer antes de os fundos se esgotarem, o remanescente fica com o cuidador, como agradecimento por ter assumido o papel.",
+'fld.financial.gift_conditions.prm.3': "Mantido em fideicomisso pelo meu testamenteiro; libertados $500/mês para os cuidados de rotina, com as contas do veterinário pagas diretamente na totalidade.",
+'fld.financial.pet_trust.label': "Prefere antes um fideicomisso formal para o seu animal?",
+'fld.financial.pet_trust.opt.0': "Não — a doação em dinheiro ao cuidador é suficiente",
+'fld.financial.pet_trust.opt.1': "Talvez — assinalar para uma conversa de seguimento com Donsky & Donsky ou Barrett",
+'fld.financial.pet_trust.opt.2': "Sim — já tenho um constituído",
+'fld.financial.pet_trust.opt.3': "Sim — por favor, ponham-me em contacto com alguém para constituir um"
+});
+Object.assign(I18N.hi, {
+'sec.financial.intro': "क़ानूनी रूप से आप अपने पालतू जानवर <b>को</b> पैसा नहीं छोड़ सकते — कनाडा और अमेरिका में पालतू जानवर संपत्ति माने जाते हैं। सबसे सरल तरीक़ा है <b>देखभालकर्ता को नक़द उपहार</b> देना, जिसकी राशि देखभाल की वास्तविक लागत के हिसाब से तय की गई हो।",
+'sec.financial.tip': "<b>यथार्थवादी रहें।</b> बढ़ती उम्र का असर मायने रखता है — पालतू जानवर के जीवन के आख़िरी 2-3 वर्षों में पशु-चिकित्सा का खर्च आम तौर पर <em>दोगुना</em> हो जाता है। इसे अपनी योजना में शामिल करें।",
+'fld.financial.monthly_food.label': "भोजन + बुनियादी सामान का अनुमानित मासिक खर्च",
+'fld.financial.monthly_food.ph': "जैसे $120",
+'fld.financial.monthly_meds.label': "दवाओं का अनुमानित मासिक खर्च",
+'fld.financial.monthly_meds.ph': "जैसे $80",
+'fld.financial.annual_vet.label': "अनुमानित वार्षिक पशु-चिकित्सा खर्च (नियमित)",
+'fld.financial.annual_vet.sub': "वार्षिक जाँच, टीके, दाँतों की देखभाल, परजीवियों से बचाव।",
+'fld.financial.annual_vet.ph': "जैसे $600 / वर्ष",
+'fld.financial.extras.label': "अन्य नियमित खर्च",
+'fld.financial.extras.sub': "ग्रूमिंग, बोर्डिंग, डॉग वॉकर, प्रशिक्षण, बीमा प्रीमियम।",
+'fld.financial.extras.ph': "जैसे ग्रूमिंग $80/माह + बीमा $55/माह",
+'fld.financial.gift_amount.label': "देखभालकर्ता के लिए छोड़ी जाने वाली नक़द उपहार राशि",
+'fld.financial.gift_amount.sub': "एक आम व्यावहारिक सूत्र: <b>मासिक खर्च × 12 × शेष जीवन के वर्ष × 1.4</b> (1.4 बढ़ती उम्र से जुड़े खर्चों को कवर करता है)।",
+'fld.financial.gift_amount.ph': "जैसे $25,000",
+'fld.financial.gift_source.label': "नक़द उपहार कहाँ से आएगा",
+'fld.financial.gift_source.opt.0': "मेरी वसीयत में विशिष्ट वसीयती उपहार (सरल — एस्टेट से नक़द)",
+'fld.financial.gift_source.opt.1': "किसी छोटी जीवन बीमा पॉलिसी पर लाभार्थी नामांकन",
+'fld.financial.gift_source.opt.2': "मेरे निष्पादक (एग्ज़ीक्यूटर) के पास निर्देशों सहित ट्रस्ट में रखा जाए",
+'fld.financial.gift_source.opt.3': "अन्य — नीचे समझाया गया है",
+'fld.financial.gift_conditions.label': "उपहार पर शर्तें (वैकल्पिक)",
+'fld.financial.gift_conditions.sub': "आप यह लिख सकते हैं कि उपहार \"[पालतू का नाम] की देखभाल के लिए\" है, बिना इसे क़ानूनी रूप से बाध्यकारी बनाए — अधिकांश देखभालकर्ता स्वाभाविक रूप से इसका सम्मान करते हैं।",
+'fld.financial.gift_conditions.prm.0': "Carrot की देखभाल के लिए। किसी औपचारिक हिसाब-किताब की ज़रूरत नहीं — मुझे Maria पर भरोसा है।",
+'fld.financial.gift_conditions.prm.1': "मेरे सभी पालतू जानवरों की देखभाल के लिए, मुख्य रूप से पशु-चिकित्सा बिल, भोजन और जीवन के अंतिम समय के खर्चों के लिए।",
+'fld.financial.gift_conditions.prm.2': "अगर धनराशि समाप्त होने से पहले Carrot का देहांत हो जाए, तो शेष राशि देखभालकर्ता के पास ही रहे — ज़िम्मेदारी उठाने के धन्यवाद के रूप में।",
+'fld.financial.gift_conditions.prm.3': "मेरे निष्पादक के पास ट्रस्ट में रखा जाए; नियमित देखभाल के लिए $500/माह जारी हों, और पशु-चिकित्सा के पूरे बिल सीधे चुकाए जाएँ।",
+'fld.financial.pet_trust.label': "क्या आप इसके बजाय औपचारिक पेट ट्रस्ट चाहते हैं?",
+'fld.financial.pet_trust.opt.0': "नहीं — देखभालकर्ता को नक़द उपहार ही ठीक है",
+'fld.financial.pet_trust.opt.1': "शायद — Donsky & Donsky या Barrett के साथ आगे की बातचीत के लिए चिह्नित करें",
+'fld.financial.pet_trust.opt.2': "हाँ — पहले से बना हुआ है",
+'fld.financial.pet_trust.opt.3': "हाँ — कृपया मुझे ऐसा ट्रस्ट बनवाने के लिए किसी से जोड़ें"
+});
+
+// ── Section · emergency — full field content (AI first-pass; flag for native review) ──
+Object.assign(I18N.fr, {
+  'sec.emergency.intro': "Il y a généralement un <b>délai administratif de 2 à 3 semaines</b> avant qu'un testament prenne effet. Votre animal a besoin de nourriture, de ses médicaments et d'un environnement calme <em>dès ce soir</em>. Voici le plan de transition.",
+  'sec.emergency.tip': "Choisissez quelqu'un <b>qui habite tout près</b> pour le plan de transition — même si ce n'est pas le gardien à long terme. L'objectif : aucun vide entre le moment où vous ne rentrez pas et l'arrivée de quelqu'un qui a les clés.",
+  'fld.emergency.first_call.label': "Première personne à appeler si je ne rentre pas à la maison",
+  'fld.emergency.first_call.sub': "Quelqu'un du quartier — capable d'être à votre porte en quelques heures.",
+  'fld.emergency.first_call.ph': "p. ex. Maria Chen (gardienne principale) — la même qu'à la section B",
+  'fld.emergency.key_holder.label': "Qui a une clé de la maison ?",
+  'fld.emergency.key_holder.ph': "p. ex. Janet, la voisine du 47, le concierge de l'immeuble, ma sœur",
+  'fld.emergency.building_info.label': "Accès à l'immeuble / à la propriété",
+  'fld.emergency.building_info.sub': "Codes de porte, code d'alarme, codes de barrière — tout ce qu'ils rencontreront.",
+  'fld.emergency.building_info.ph': "p. ex. Code de porte 4-7-2-9. Alarme : armer/désarmer avec 1-1-2-3-OFF.",
+  'fld.emergency.boarding.label': "Pension d'urgence / gardien d'animaux",
+  'fld.emergency.boarding.sub': "Si le gardien ne peut pas prendre l'animal immédiatement.",
+  'fld.emergency.boarding.ph': "p. ex. Wagsville Boarding — (416) 555-9090 — un dossier est déjà ouvert à mon nom",
+  'fld.emergency.first_steps.label': "Priorités des premières 24 heures",
+  'fld.emergency.first_steps.prm.0': "Donnez à Carrot son repas habituel à l'heure habituelle. Ne changez pas sa nourriture — estomac sensible.",
+  'fld.emergency.first_steps.prm.1': "Donnez à Carrot son Apoquel avec son repas du matin. Le flacon est dans le tiroir du haut de la cuisine.",
+  'fld.emergency.first_steps.prm.2': "Sortez Carrot pour sa promenade habituelle du soir — il en a ABSOLUMENT besoin pour réduire son stress.",
+  'fld.emergency.first_steps.prm.3': "Appelez Maria (gardienne principale) et informez-la de la situation. Elle viendra dans les 24 heures.",
+  'fld.emergency.first_steps.prm.4': "Ne déplacez pas Carrot vers un nouveau foyer pendant au moins 48 heures, sauf nécessité absolue — laissez-le dans son environnement.",
+  'fld.emergency.avoid.label': "Ce qu'il ne faut PAS faire dans les premières 48 heures",
+  'fld.emergency.avoid.prm.0': "Ne l'emmenez au refuge sous aucun prétexte.",
+  'fld.emergency.avoid.prm.1': "Ne changez pas sa nourriture, même si vous n'avez pas sa marque sous la main — appelez d'abord mon vétérinaire.",
+  'fld.emergency.avoid.prm.2': "Ne sautez pas son insuline. Si vous ne savez pas comment l'administrer, appelez la clinique d'urgence — ils vous guideront étape par étape.",
+  'fld.emergency.avoid.prm.3': "Ne la présentez pas à d'autres chiens dans les premières 48 heures — elle sera stressée et réactive."
+});
+Object.assign(I18N.es, {
+  'sec.emergency.intro': "Normalmente hay un <b>retraso de trámites de 2 a 3 semanas</b> antes de que un testamento entre en vigor. Tu mascota necesita comida, medicamentos y un ambiente tranquilo <em>esta misma noche</em>. Este es el plan puente.",
+  'sec.emergency.tip': "Elige a alguien <b>que viva cerca</b> para el plan puente — aunque no sea el cuidador a largo plazo. La idea es que no haya ningún vacío entre que tú no llegues a casa y que llegue alguien con llaves.",
+  'fld.emergency.first_call.label': "Primera persona a la que llamar si no llego a casa",
+  'fld.emergency.first_call.sub': "Alguien local — que pueda estar en tu puerta en cuestión de horas.",
+  'fld.emergency.first_call.ph': "p. ej. Maria Chen (cuidadora principal) — la misma de la Sección B",
+  'fld.emergency.key_holder.label': "¿Quién tiene llave de la casa?",
+  'fld.emergency.key_holder.ph': "p. ej. Janet, la vecina del 47, el conserje del edificio, mi hermana",
+  'fld.emergency.building_info.label': "Información de acceso al edificio / la propiedad",
+  'fld.emergency.building_info.sub': "Códigos de puerta, código de alarma, códigos del portón — todo lo que se van a encontrar.",
+  'fld.emergency.building_info.ph': "p. ej. Código de la puerta 4-7-2-9. Alarma: activar/desactivar con 1-1-2-3-OFF.",
+  'fld.emergency.boarding.label': "Guardería de emergencia / cuidador de mascotas",
+  'fld.emergency.boarding.sub': "Por si el cuidador no puede hacerse cargo de la mascota de inmediato.",
+  'fld.emergency.boarding.ph': "p. ej. Wagsville Boarding — (416) 555-9090 — ya tienen mi perfil registrado",
+  'fld.emergency.first_steps.label': "Prioridades de las primeras 24 horas",
+  'fld.emergency.first_steps.prm.0': "Dale a Carrot su comida habitual a su hora habitual. No le cambies el alimento — tiene el estómago sensible.",
+  'fld.emergency.first_steps.prm.1': "Dale a Carrot su Apoquel con el desayuno. El frasco está en el cajón de arriba de la cocina.",
+  'fld.emergency.first_steps.prm.2': "Saca a Carrot a su paseo habitual de la noche — lo NECESITA para reducir el estrés.",
+  'fld.emergency.first_steps.prm.3': "Llama a Maria (cuidadora principal) y cuéntale lo que está pasando. Ella llegará en menos de 24 horas.",
+  'fld.emergency.first_steps.prm.4': "No lleves a Carrot a un nuevo hogar durante al menos 48 horas, salvo que sea absolutamente necesario — déjalo quedarse en su entorno.",
+  'fld.emergency.avoid.label': "Qué NO hacer en las primeras 48 horas",
+  'fld.emergency.avoid.prm.0': "No la lleves al refugio bajo ninguna circunstancia.",
+  'fld.emergency.avoid.prm.1': "No le cambies el alimento, aunque no tengas su marca a la mano — llama primero a mi veterinario.",
+  'fld.emergency.avoid.prm.2': "No le saltes la insulina. Si no estás seguro de cómo aplicársela, llama a la clínica de emergencias — te irán guiando paso a paso.",
+  'fld.emergency.avoid.prm.3': "No la presentes a otros perros en las primeras 48 horas — va a estar estresada y reactiva."
+});
+Object.assign(I18N.pt, {
+  'sec.emergency.intro': "Normalmente há um <b>atraso burocrático de 2 a 3 semanas</b> até um testamento produzir efeitos. O seu animal precisa de comida, medicamentos e de um ambiente calmo <em>já esta noite</em>. Este é o plano-ponte.",
+  'sec.emergency.tip': "Escolha alguém <b>que more perto</b> para o plano-ponte — mesmo que não seja o cuidador de longo prazo. O objetivo é não haver qualquer intervalo entre o momento em que não chega a casa e a chegada de alguém com as chaves.",
+  'fld.emergency.first_call.label': "Primeira pessoa a contactar se eu não chegar a casa",
+  'fld.emergency.first_call.sub': "Alguém local — que possa estar à sua porta numa questão de horas.",
+  'fld.emergency.first_call.ph': "p. ex. Maria Chen (cuidadora principal) — a mesma da Secção B",
+  'fld.emergency.key_holder.label': "Quem tem a chave de casa?",
+  'fld.emergency.key_holder.ph': "p. ex. A vizinha Janet do n.º 47, o porteiro do prédio, a minha irmã",
+  'fld.emergency.building_info.label': "Informações de acesso ao prédio / à propriedade",
+  'fld.emergency.building_info.sub': "Códigos da porta, código do alarme, códigos do portão — tudo o que vão encontrar.",
+  'fld.emergency.building_info.ph': "p. ex. Código da porta 4-7-2-9. Alarme: armar/desarmar com 1-1-2-3-OFF.",
+  'fld.emergency.boarding.label': "Alojamento de emergência / pet sitter",
+  'fld.emergency.boarding.sub': "Caso o cuidador não possa ficar com o animal de imediato.",
+  'fld.emergency.boarding.ph': "p. ex. Wagsville Boarding — (416) 555-9090 — já têm a minha ficha registada",
+  'fld.emergency.first_steps.label': "Prioridades das primeiras 24 horas",
+  'fld.emergency.first_steps.prm.0': "Dê ao Carrot a refeição habitual à hora habitual. Não mude a ração — tem o estômago sensível.",
+  'fld.emergency.first_steps.prm.1': "Dê ao Carrot o Apoquel com o pequeno-almoço. O frasco está na gaveta de cima da cozinha.",
+  'fld.emergency.first_steps.prm.2': "Leve o Carrot ao passeio habitual da noite — ele PRECISA disto para reduzir o stress.",
+  'fld.emergency.first_steps.prm.3': "Ligue à Maria (cuidadora principal) e informe-a do que se está a passar. Ela virá dentro de 24 horas.",
+  'fld.emergency.first_steps.prm.4': "Não mude o Carrot para uma nova casa durante pelo menos 48 horas, salvo se for absolutamente necessário — deixe-o ficar no seu ambiente.",
+  'fld.emergency.avoid.label': "O que NÃO fazer nas primeiras 48 horas",
+  'fld.emergency.avoid.prm.0': "Não a leve para o abrigo em circunstância alguma.",
+  'fld.emergency.avoid.prm.1': "Não lhe mude a ração, mesmo que não tenha a marca dela à mão — ligue primeiro ao meu veterinário.",
+  'fld.emergency.avoid.prm.2': "Não falhe a insulina dela. Se não tiver a certeza de como a administrar, ligue para a clínica de urgência — eles orientam-no passo a passo.",
+  'fld.emergency.avoid.prm.3': "Não a apresente a outros cães nas primeiras 48 horas — ela vai ficar stressada e reativa."
+});
+Object.assign(I18N.hi, {
+  'sec.emergency.intro': "आम तौर पर वसीयत लागू होने से पहले <b>2–3 हफ़्तों की काग़ज़ी देरी</b> होती है। आपके पालतू को खाना, दवाइयाँ और शांत माहौल <em>आज रात ही</em> चाहिए। यही ब्रिज प्लान (अंतरिम योजना) है।",
+  'sec.emergency.tip': "ब्रिज प्लान के लिए किसी <b>स्थानीय</b> व्यक्ति को चुनें — भले ही वह लंबी अवधि का देखभालकर्ता न हो। मक़सद यह है कि आपके घर न लौटने और चाबी वाले किसी व्यक्ति के पहुँचने के बीच कोई ख़ाली समय न रहे।",
+  'fld.emergency.first_call.label': "अगर मैं घर न लौटूँ तो सबसे पहले किसे फ़ोन करें",
+  'fld.emergency.first_call.sub': "कोई स्थानीय व्यक्ति — जो कुछ घंटों के भीतर आपके दरवाज़े पर पहुँच सके।",
+  'fld.emergency.first_call.ph': "जैसे Maria Chen (मुख्य देखभालकर्ता) — सेक्शन B वाली ही",
+  'fld.emergency.key_holder.label': "घर की चाबी किसके पास है?",
+  'fld.emergency.key_holder.ph': "जैसे #47 वाली पड़ोसी Janet, बिल्डिंग का केयरटेकर, मेरी बहन",
+  'fld.emergency.building_info.label': "बिल्डिंग / प्रॉपर्टी में प्रवेश की जानकारी",
+  'fld.emergency.building_info.sub': "दरवाज़े के कोड, अलार्म कोड, गेट कोड — जो भी उनके सामने आएगा।",
+  'fld.emergency.building_info.ph': "जैसे दरवाज़े का कोड 4-7-2-9। अलार्म: 1-1-2-3-OFF से चालू/बंद करें।",
+  'fld.emergency.boarding.label': "आपातकालीन बोर्डिंग / पेट सिटर",
+  'fld.emergency.boarding.sub': "अगर देखभालकर्ता पालतू को तुरंत न ले जा सके।",
+  'fld.emergency.boarding.ph': "जैसे Wagsville Boarding — (416) 555-9090 — मेरी प्रोफ़ाइल पहले से उनके पास है",
+  'fld.emergency.first_steps.label': "पहले 24 घंटों की प्राथमिकताएँ",
+  'fld.emergency.first_steps.prm.0': "Carrot को उसका रोज़ का खाना उसके तय समय पर दें। खाना न बदलें — उसका पेट संवेदनशील है।",
+  'fld.emergency.first_steps.prm.1': "Carrot को नाश्ते के साथ उसकी Apoquel दें। बोतल रसोई की सबसे ऊपर वाली दराज़ में है।",
+  'fld.emergency.first_steps.prm.2': "Carrot को उसकी रोज़ की शाम की सैर पर ज़रूर ले जाएँ — तनाव कम करने के लिए उसे इसकी सख़्त ज़रूरत है।",
+  'fld.emergency.first_steps.prm.3': "Maria (मुख्य देखभालकर्ता) को फ़ोन करके बताएँ कि क्या हो रहा है। वह 24 घंटों के भीतर आ जाएँगी।",
+  'fld.emergency.first_steps.prm.4': "जब तक बिल्कुल ज़रूरी न हो, कम से कम 48 घंटे तक Carrot को किसी नए घर में न ले जाएँ — उसे उसके अपने माहौल में रहने दें।",
+  'fld.emergency.avoid.label': "पहले 48 घंटों में क्या बिल्कुल न करें",
+  'fld.emergency.avoid.prm.0': "उसे किसी भी हालत में शेल्टर (आश्रय गृह) न ले जाएँ।",
+  'fld.emergency.avoid.prm.1': "उसका खाना न बदलें, भले ही उसका ब्रांड आपके पास न हो — पहले मेरे पशु चिकित्सक को फ़ोन करें।",
+  'fld.emergency.avoid.prm.2': "उसकी इंसुलिन कभी न छोड़ें। अगर समझ न आए कि कैसे देनी है, तो इमरजेंसी क्लिनिक को फ़ोन करें — वे आपको पूरी प्रक्रिया समझा देंगे।",
+  'fld.emergency.avoid.prm.3': "पहले 48 घंटों में उसे दूसरे कुत्तों से न मिलवाएँ — वह तनाव में होगी और तीखी प्रतिक्रिया दे सकती है।"
+});
+
+// ── Section · eol — full field content (AI first-pass; flag for native review) ──
+Object.assign(I18N.fr, {
+  'sec.eol.intro': "C'est la section que la plupart des gens sautent. <b>Ne le faites pas.</b> Si votre animal est malade ou vieillissant et que vous n'êtes pas là, votre gardien devra prendre des décisions de vie ou de mort pour un animal qu'il aime, mais qu'il n'a pas élevé. Vous pouvez lui retirer ce poids dès maintenant.",
+  'sec.eol.tip': "<b>Vous n'êtes pas morbide — vous êtes généreux.</b> Ce que vous consignez ici, c'est ce que votre gardien devrait autrement inventer sous pression, en plein deuil.",
+  'fld.eol.qol_threshold.label': "Mon seuil de qualité de vie",
+  'fld.eol.qol_threshold.sub': "Le moment où vous voudriez qu'on envisage l'euthanasie. Soyez honnête avec vous-même.",
+  'fld.eol.qol_threshold.prm.0': "Quand elle ne peut plus manger, boire ou se lever seule sans douleur importante.",
+  'fld.eol.qol_threshold.prm.1': "Quand les mauvais jours dépassent clairement les bons — quand elle ne veut plus marcher, jouer ou m'accueillir à la porte.",
+  'fld.eol.qol_threshold.prm.2': "Quand le vétérinaire le recommande et que sa douleur ne peut plus être soulagée par des médicaments.",
+  'fld.eol.qol_threshold.prm.3': "Je ne veux pas qu'elle souffre pour moi. Le gardien ne devrait pas se sentir coupable de choisir la paix pour elle.",
+  'fld.eol.euthanasia_pref.label': "Préférences concernant l'euthanasie",
+  'fld.eol.euthanasia_pref.opt.0': "Euthanasie à domicile si possible (plus calme, moins stressant)",
+  'fld.eol.euthanasia_pref.opt.1': "Chez le vétérinaire habituel",
+  'fld.eol.euthanasia_pref.opt.2': "L'option la plus paisible pour l'animal à ce moment-là",
+  'fld.eol.euthanasia_pref.opt.3': "Je fais confiance au gardien et au vétérinaire pour prendre la bonne décision",
+  'fld.eol.after_care.label': "Préférences pour les soins après le décès",
+  'fld.eol.after_care.opt.0': "Crémation — cendres remises à la famille",
+  'fld.eol.after_care.opt.1': "Crémation — collective (sans retour des cendres)",
+  'fld.eol.after_care.opt.2': "Inhumation dans un cimetière pour animaux",
+  'fld.eol.after_care.opt.3': "Inhumation sur un terrain privé (là où c'est permis)",
+  'fld.eol.after_care.opt.4': "Ce que le gardien décidera — je lui fais confiance",
+  'fld.eol.mementos.label': "Souvenirs et commémoration",
+  'fld.eol.mementos.sub': "Empreinte de patte, mèche de poils, photos — tout ce que vous voudriez conserver.",
+  'fld.eol.mementos.prm.0': "Empreinte de patte en argile et mèche de poils pour notre famille.",
+  'fld.eol.mementos.prm.1': "Cendres dans une petite boîte en bois gravée à son nom — à conserver un jour avec mes propres cendres.",
+  'fld.eol.mementos.prm.2': "Un don à son nom à la SPCA locale plutôt que tout autre hommage.",
+  'fld.eol.mementos.prm.3': "J'aimerais qu'un collage de photos soit créé et partagé avec la famille qui l'a connue.",
+  'fld.eol.eol_notes.label': "Autre chose à dire au gardien sur ce moment",
+  'fld.eol.eol_notes.prm.0': "S'il vous plaît, ne la laissez pas seule à la fin. Tenez-la, parlez-lui, laissez-la entendre une voix familière.",
+  'fld.eol.eol_notes.prm.1': "Apportez sa couverture préférée. Elle l'a depuis toujours.",
+  'fld.eol.eol_notes.prm.2': "Ne vous sentez pas coupable. La laisser partir paisiblement est la chose la plus bienveillante que vous puissiez faire pour elle.",
+  'fld.eol.eol_notes.prm.3': "Prenez une photo d'elle lors de sa dernière belle journée. C'est celle dont je voudrais qu'on se souvienne."
+});
+Object.assign(I18N.es, {
+  'sec.eol.intro': "Esta es la sección que la mayoría de la gente se salta. <b>No lo hagas.</b> Si tu mascota está enferma o envejeciendo y tú no estás, tu cuidador tendrá que tomar decisiones de vida o muerte por un animal que ama pero que no crió. Puedes quitarle ese peso de encima ahora.",
+  'sec.eol.tip': "<b>No estás siendo morboso — estás siendo generoso.</b> Lo que dejas registrado aquí es lo que tu cuidador tendría que inventar bajo presión, en pleno duelo.",
+  'fld.eol.qol_threshold.label': "Mi umbral de calidad de vida",
+  'fld.eol.qol_threshold.sub': "Cuándo querrías que consideraran la eutanasia. Sé honesto contigo mismo.",
+  'fld.eol.qol_threshold.prm.0': "Cuando ya no pueda comer, beber o levantarse por sí sola sin un dolor significativo.",
+  'fld.eol.qol_threshold.prm.1': "Cuando los días malos superen claramente a los buenos — cuando deje de querer pasear, jugar o recibirme en la puerta.",
+  'fld.eol.qol_threshold.prm.2': "Cuando el veterinario lo recomiende y su dolor no pueda controlarse con medicamentos.",
+  'fld.eol.qol_threshold.prm.3': "No quiero que sufra por mí. El cuidador no debería sentirse culpable por elegir la paz para ella.",
+  'fld.eol.euthanasia_pref.label': "Preferencias sobre la eutanasia",
+  'fld.eol.euthanasia_pref.opt.0': "Eutanasia en casa si es posible (más tranquila, menos estresante)",
+  'fld.eol.euthanasia_pref.opt.1': "En el veterinario habitual",
+  'fld.eol.euthanasia_pref.opt.2': "La opción más serena para la mascota en ese momento",
+  'fld.eol.euthanasia_pref.opt.3': "Confío en que el cuidador y el veterinario tomarán la decisión correcta",
+  'fld.eol.after_care.label': "Preferencias para después del fallecimiento",
+  'fld.eol.after_care.opt.0': "Cremación — cenizas devueltas a la familia",
+  'fld.eol.after_care.opt.1': "Cremación — colectiva (sin devolución de cenizas)",
+  'fld.eol.after_care.opt.2': "Entierro en un cementerio de mascotas",
+  'fld.eol.after_care.opt.3': "Entierro en una propiedad privada (donde esté permitido)",
+  'fld.eol.after_care.opt.4': "Lo que el cuidador decida — confío en él",
+  'fld.eol.mementos.label': "Recuerdos y conmemoración",
+  'fld.eol.mementos.sub': "Huella de la pata, mechón de pelo, fotos — cualquier cosa que quieras conservar.",
+  'fld.eol.mementos.prm.0': "Huella de la pata en arcilla y un mechón de pelo para nuestra familia.",
+  'fld.eol.mementos.prm.1': "Las cenizas en una pequeña caja de madera con su nombre grabado — para que algún día se guarden junto a mis propios restos.",
+  'fld.eol.mementos.prm.2': "Una donación a su nombre a la SPCA local en lugar de cualquier otro homenaje.",
+  'fld.eol.mementos.prm.3': "Me gustaría que se hiciera un collage de fotos y se compartiera con la familia que la conoció.",
+  'fld.eol.eol_notes.label': "Algo más para el cuidador sobre este momento",
+  'fld.eol.eol_notes.prm.0': "Por favor, no dejes que esté sola al final. Abrázala, háblale, deja que escuche una voz familiar.",
+  'fld.eol.eol_notes.prm.1': "Lleva su manta favorita. La ha tenido toda su vida.",
+  'fld.eol.eol_notes.prm.2': "No te sientas culpable. Dejarla ir en paz es lo más bondadoso que puedes hacer por ella.",
+  'fld.eol.eol_notes.prm.3': "Tómale una foto en su último buen día. Esa es la que quiero que se recuerde."
+});
+Object.assign(I18N.pt, {
+  'sec.eol.intro': "Esta é a secção que a maioria das pessoas salta. <b>Não o faça.</b> Se o seu animal estiver doente ou a envelhecer e você não estiver presente, o cuidador terá de tomar decisões de vida ou de morte por um animal que ama mas que não criou. Pode tirar-lhe esse peso dos ombros agora.",
+  'sec.eol.tip': "<b>Não está a ser mórbido — está a ser generoso.</b> O que regista aqui é o que o cuidador teria, de outro modo, de inventar sob pressão, em pleno luto.",
+  'fld.eol.qol_threshold.label': "O meu limiar de qualidade de vida",
+  'fld.eol.qol_threshold.sub': "Quando quereria que considerassem a eutanásia. Seja honesto consigo mesmo.",
+  'fld.eol.qol_threshold.prm.0': "Quando ela já não conseguir comer, beber ou levantar-se sozinha sem dor significativa.",
+  'fld.eol.qol_threshold.prm.1': "Quando os dias maus superarem claramente os bons — quando ela deixar de querer passear, brincar ou vir receber-me à porta.",
+  'fld.eol.qol_threshold.prm.2': "Quando o veterinário o recomendar e a dor dela não puder ser controlada com medicação.",
+  'fld.eol.qol_threshold.prm.3': "Não quero que ela sofra por minha causa. O cuidador não deve sentir-se culpado por escolher a paz para ela.",
+  'fld.eol.euthanasia_pref.label': "Preferências quanto à eutanásia",
+  'fld.eol.euthanasia_pref.opt.0': "Eutanásia ao domicílio, se possível (mais calma, menos stressante)",
+  'fld.eol.euthanasia_pref.opt.1': "No veterinário habitual",
+  'fld.eol.euthanasia_pref.opt.2': "A opção mais serena para o animal nesse momento",
+  'fld.eol.euthanasia_pref.opt.3': "Confio no cuidador e no veterinário para tomarem a decisão certa",
+  'fld.eol.after_care.label': "Preferências para depois da morte",
+  'fld.eol.after_care.opt.0': "Cremação — cinzas devolvidas à família",
+  'fld.eol.after_care.opt.1': "Cremação — coletiva (sem devolução das cinzas)",
+  'fld.eol.after_care.opt.2': "Enterro num cemitério de animais",
+  'fld.eol.after_care.opt.3': "Enterro em propriedade privada (onde for permitido)",
+  'fld.eol.after_care.opt.4': "O que o cuidador decidir — confio nele",
+  'fld.eol.mementos.label': "Recordações e homenagem",
+  'fld.eol.mementos.sub': "Impressão da pata, madeixa de pelo, fotografias — tudo o que gostaria que fosse guardado.",
+  'fld.eol.mementos.prm.0': "Impressão da pata em barro e uma madeixa de pelo para a nossa família.",
+  'fld.eol.mementos.prm.1': "As cinzas numa pequena caixa de madeira com o nome dela gravado — para um dia ficarem junto dos meus próprios restos mortais.",
+  'fld.eol.mementos.prm.2': "Um donativo em nome dela à SPCA local, em vez de qualquer outra homenagem.",
+  'fld.eol.mementos.prm.3': "Gostaria que fizessem uma colagem de fotografias e a partilhassem com a família que a conheceu.",
+  'fld.eol.eol_notes.label': "Mais alguma coisa para o cuidador sobre este momento",
+  'fld.eol.eol_notes.prm.0': "Por favor, não a deixe sozinha no fim. Segure-a, fale com ela, deixe-a ouvir uma voz familiar.",
+  'fld.eol.eol_notes.prm.1': "Leve a manta preferida dela. Acompanha-a desde sempre.",
+  'fld.eol.eol_notes.prm.2': "Não se sinta culpado. Deixá-la partir em paz é a coisa mais bondosa que pode fazer por ela.",
+  'fld.eol.eol_notes.prm.3': "Tire-lhe uma fotografia no último dia bom dela. É essa que eu quereria que ficasse na memória."
+});
+Object.assign(I18N.hi, {
+  'sec.eol.intro': "यह वह सेक्शन है जिसे ज़्यादातर लोग छोड़ देते हैं। <b>आप ऐसा न करें।</b> अगर आपका पालतू बीमार है या बूढ़ा हो रहा है और आप वहाँ नहीं हैं, तो आपके देखभालकर्ता को एक ऐसे जानवर के लिए जीवन-मृत्यु के फ़ैसले लेने होंगे जिससे वे प्यार तो करते हैं, पर जिसे उन्होंने पाला नहीं। आप यह बोझ अभी उनके कंधों से उतार सकते हैं।",
+  'sec.eol.tip': "<b>आप अशुभ बातें नहीं कर रहे — आप उदारता दिखा रहे हैं।</b> आप यहाँ जो दर्ज करते हैं, वह वही है जो आपके देखभालकर्ता को अन्यथा दबाव में, शोक के बीच, खुद सोचना पड़ता।",
+  'fld.eol.qol_threshold.label': "जीवन-गुणवत्ता की मेरी सीमा-रेखा",
+  'fld.eol.qol_threshold.sub': "वह समय जब आप चाहेंगे कि इच्छामृत्यु (यूथनेसिया) पर विचार किया जाए। खुद के साथ ईमानदार रहें।",
+  'fld.eol.qol_threshold.prm.0': "जब वह काफ़ी दर्द सहे बिना खुद से खा, पी या उठ न सके।",
+  'fld.eol.qol_threshold.prm.1': "जब बुरे दिन साफ़ तौर पर अच्छे दिनों से ज़्यादा हो जाएँ — जब वह टहलना, खेलना या दरवाज़े पर मेरा स्वागत करना छोड़ दे।",
+  'fld.eol.qol_threshold.prm.2': "जब पशु-चिकित्सक इसकी सलाह दें और उसका दर्द दवाओं से काबू में न आ सके।",
+  'fld.eol.qol_threshold.prm.3': "मैं नहीं चाहता/चाहती कि वह मेरी ख़ातिर तकलीफ़ सहे। देखभालकर्ता को उसके लिए शांति चुनने पर अपराध-बोध नहीं होना चाहिए।",
+  'fld.eol.euthanasia_pref.label': "इच्छामृत्यु (यूथनेसिया) संबंधी प्राथमिकताएँ",
+  'fld.eol.euthanasia_pref.opt.0': "हो सके तो घर पर इच्छामृत्यु (ज़्यादा शांत, कम तनावपूर्ण)",
+  'fld.eol.euthanasia_pref.opt.1': "नियमित पशु-चिकित्सक के यहाँ",
+  'fld.eol.euthanasia_pref.opt.2': "जो भी उस समय पालतू के लिए सबसे शांतिपूर्ण हो",
+  'fld.eol.euthanasia_pref.opt.3': "मुझे भरोसा है कि देखभालकर्ता और पशु-चिकित्सक सही फ़ैसला लेंगे",
+  'fld.eol.after_care.label': "मृत्यु के बाद की व्यवस्था संबंधी प्राथमिकताएँ",
+  'fld.eol.after_care.opt.0': "दाह-संस्कार — राख परिवार को लौटाई जाए",
+  'fld.eol.after_care.opt.1': "दाह-संस्कार — सामूहिक (राख वापस नहीं दी जाती)",
+  'fld.eol.after_care.opt.2': "पालतू जानवरों के क़ब्रिस्तान में दफ़न",
+  'fld.eol.after_care.opt.3': "निजी ज़मीन पर दफ़न (जहाँ अनुमति हो)",
+  'fld.eol.after_care.opt.4': "जो भी देखभालकर्ता तय करें — मुझे उन पर भरोसा है",
+  'fld.eol.mementos.label': "यादगार चीज़ें और स्मृति",
+  'fld.eol.mementos.sub': "पंजे की छाप, फ़र का गुच्छा, तस्वीरें — जो भी आप संभालकर रखवाना चाहें।",
+  'fld.eol.mementos.prm.0': "हमारे परिवार के लिए मिट्टी (क्ले) में पंजे की छाप और फ़र का गुच्छा।",
+  'fld.eol.mementos.prm.1': "राख एक छोटे लकड़ी के बक्से में, जिस पर उसका नाम खुदा हो — ताकि आगे चलकर वह मेरी अपनी अस्थियों के साथ रखी जाए।",
+  'fld.eol.mementos.prm.2': "किसी और स्मारक की बजाय उसके नाम पर स्थानीय SPCA को दान।",
+  'fld.eol.mementos.prm.3': "मैं चाहूँगा/चाहूँगी कि उसकी तस्वीरों का एक कोलाज बनाकर उस परिवार के साथ साझा किया जाए जो उसे जानता था।",
+  'fld.eol.eol_notes.label': "इस घड़ी के बारे में देखभालकर्ता के लिए और कुछ",
+  'fld.eol.eol_notes.prm.0': "कृपया अंत समय में उसे अकेला न छोड़ें। उसे गोद में लें, उससे बात करें, उसे कोई जानी-पहचानी आवाज़ सुनने दें।",
+  'fld.eol.eol_notes.prm.1': "उसका पसंदीदा कंबल साथ लाएँ। वह उसकी पूरी ज़िंदगी उसके साथ रहा है।",
+  'fld.eol.eol_notes.prm.2': "अपराध-बोध न करें। उसे शांति से विदा करना सबसे दयालु काम है जो आप उसके लिए कर सकते हैं।",
+  'fld.eol.eol_notes.prm.3': "उसके आख़िरी अच्छे दिन की एक तस्वीर लें। मैं चाहूँगा/चाहूँगी कि वही याद रखी जाए।"
+});
+
+// ── Section · letter — full field content (AI first-pass; flag for native review) ──
+Object.assign(I18N.fr, {
+  'sec.letter.intro': "Les neuf autres sections sont d'ordre pratique. <b>Celle-ci est personnelle.</b> Un court mot de vous à la personne qui prendra la relève — ce que votre animal représente pour vous, pourquoi c'est elle que vous avez choisie, et tout ce que vous voulez qu'elle sache. Ajoutez un message vocal ou vidéo si vous voulez qu'elle entende votre voix.",
+  'sec.letter.tip': "<b>Court, c'est très bien.</b> Deux paragraphes suffisent. Ce qui compte, ce n'est pas la longueur — c'est la présence. Votre gardien lira ce mot dans un moment difficile. Assurez-vous qu'il sonne comme vous.",
+  'fld.letter.letter_open.label': "Phrase d'ouverture",
+  'fld.letter.letter_open.sub': "La façon dont vous commenceriez une lettre à cette personne — un ton informel est idéal.",
+  'fld.letter.letter_open.ph': "p. ex. Maria, si tu lis ces lignes…",
+  'fld.letter.letter_body.label': "La lettre",
+  'fld.letter.letter_body.prm.0': "Si tu lis ces lignes, c'est que quelque chose est arrivé — et je suis tellement reconnaissant(e) que ce soit toi qui sois là pour [nom de l'animal]. Tu le connaissais. Tu l'aimais. Ça compte plus que n'importe quel document.",
+  'fld.letter.letter_body.prm.1': "Merci d'avoir dit oui quand je te l'ai demandé. Merci d'être là. Je sais que ce n'est pas facile et je sais qu'il y aura des jours difficiles — mais tout ira bien pour [nom de l'animal] parce que tu es à ses côtés.",
+  'fld.letter.letter_body.prm.2': "Ne t'inquiète pas de faire les choses parfaitement. [Nom de l'animal] n'a pas besoin de perfection. Il a besoin de toi. Nourris-le, promène-le, laisse-le dormir sur le canapé. C'est ça, tout le travail.",
+  'fld.letter.letter_body.prm.3': "Je veux que tu saches que le don en argent est à toi : utilise-le comme bon te semble pour [nom de l'animal]. Tu n'as pas de comptes à rendre ni de reçus à garder. Je te fais entièrement confiance. C'est pour ça que tu es là.",
+  'fld.letter.letter_body.prm.4': "Quand le moment viendra — et il viendra — ne le laisse pas seul, je t'en prie. Tiens-le dans tes bras. Laisse-le entendre ta voix. Ensuite, prends soin de toi, parce que le perdre va faire mal, et c'est normal.",
+  'fld.letter.letter_body.prm.5': "Je t'aime. Merci. Pour toujours.",
+  'fld.letter.letter_signoff.label': "Formule de clôture",
+  'fld.letter.letter_signoff.ph': "p. ex. De tout mon cœur, [Votre nom]",
+  'fld.letter.letter_media.label': "Ajouter un message vocal, une vidéo ou des photos",
+  'fld.letter.letter_media.sub': "Facultatif — mais fortement recommandé. Entendre votre voix ou voir votre visage comptera plus que tout pour votre gardien dans un moment difficile. Conservé chiffré dans FutureVault."
+});
+Object.assign(I18N.es, {
+  'sec.letter.intro': "Las otras nueve secciones son operativas. <b>Esta es personal.</b> Una nota breve de ti para la persona que se hará cargo — qué significa tu mascota para ti, por qué la elegiste como cuidadora y todo lo que quieras que sepa. Agrega un mensaje de voz o video si quieres que escuche tu voz.",
+  'sec.letter.tip': "<b>Corta está bien.</b> Con dos párrafos basta. Lo que importa no es la extensión — es la presencia. Tu cuidador leerá esto en un momento difícil. Asegúrate de que suene como tú.",
+  'fld.letter.letter_open.label': "Frase inicial",
+  'fld.letter.letter_open.sub': "Cómo empezarías una carta a esta persona — lo informal es lo mejor.",
+  'fld.letter.letter_open.ph': "p. ej. Maria, si estás leyendo esto…",
+  'fld.letter.letter_body.label': "La carta",
+  'fld.letter.letter_body.prm.0': "Si estás leyendo esto, algo pasó — y agradezco tanto que seas tú quien está ahí para [nombre de la mascota]. Lo conocías. Lo querías. Eso importa más de lo que cualquier documento importará jamás.",
+  'fld.letter.letter_body.prm.1': "Gracias por decir que sí cuando te lo pedí. Gracias por estar ahí. Sé que esto no es fácil y sé que habrá días duros — pero [nombre de la mascota] va a estar bien porque tú estás con él.",
+  'fld.letter.letter_body.prm.2': "No te preocupes por hacerlo perfecto. [Nombre de la mascota] no necesita perfección. Te necesita a ti. Dale de comer, sácalo a pasear, déjalo dormir en el sofá. Ese es todo el trabajo.",
+  'fld.letter.letter_body.prm.3': "Quiero que sepas que el regalo en efectivo es tuyo, para usarlo como tenga sentido para [nombre de la mascota]. No tienes que rendir cuentas ni guardar recibos. Confío plenamente en ti. Por eso estás aquí.",
+  'fld.letter.letter_body.prm.4': "Cuando llegue el momento — y va a llegar — por favor no dejes que esté solo. Abrázalo. Deja que escuche tu voz. Y después cuídate tú, porque perderlo va a doler, y está bien que así sea.",
+  'fld.letter.letter_body.prm.5': "Te quiero. Gracias. Por siempre.",
+  'fld.letter.letter_signoff.label': "Despedida",
+  'fld.letter.letter_signoff.ph': "p. ej. Con todo lo que tengo, [Tu nombre]",
+  'fld.letter.letter_media.label': "Agrega voz, video o fotos",
+  'fld.letter.letter_media.sub': "Opcional — pero muy recomendado. Escuchar tu voz o ver tu rostro lo significará todo para tu cuidador en un momento difícil. Se guarda cifrado en FutureVault."
+});
+Object.assign(I18N.pt, {
+  'sec.letter.intro': "As outras nove secções são operacionais. <b>Esta é pessoal.</b> Uma breve nota sua para a pessoa que vai assumir o cuidado — o que o seu animal significa para si, porque a escolheu como cuidadora e tudo o que quiser que ela saiba. Acrescente uma mensagem de voz ou vídeo se quiser que ela ouça a sua voz.",
+  'sec.letter.tip': "<b>Curto está ótimo.</b> Dois parágrafos chegam. O que importa não é a extensão — é a presença. O seu cuidador vai ler isto num momento difícil. Certifique-se de que parece mesmo escrito por si.",
+  'fld.letter.letter_open.label': "Frase de abertura",
+  'fld.letter.letter_open.sub': "Como começaria uma carta a esta pessoa — o tom informal é o ideal.",
+  'fld.letter.letter_open.ph': "p. ex. Maria, se estás a ler isto…",
+  'fld.letter.letter_body.label': "A carta",
+  'fld.letter.letter_body.prm.0': "Se estás a ler isto, algo aconteceu — e estou tão grato(a) por seres tu quem está aí para [nome do animal]. Já o conhecias. Já o amavas. Isso vale mais do que qualquer documento alguma vez valerá.",
+  'fld.letter.letter_body.prm.1': "Obrigado(a) por teres dito que sim quando te pedi. Obrigado(a) por estares presente. Sei que isto não é fácil e sei que haverá dias difíceis — mas [nome do animal] vai ficar bem porque estás com ele.",
+  'fld.letter.letter_body.prm.2': "Não te preocupes em fazer tudo na perfeição. [Nome do animal] não precisa de perfeição. Precisa de ti. Dá-lhe de comer, leva-o a passear, deixa-o dormir no sofá. O trabalho é só isso.",
+  'fld.letter.letter_body.prm.3': "Quero que saibas que a oferta em dinheiro é tua, para a usares como fizer sentido para [nome do animal]. Não precisas de prestar contas nem de guardar recibos. Confio totalmente em ti. É por isso que estás aqui.",
+  'fld.letter.letter_body.prm.4': "Quando chegar o momento — e vai chegar — por favor, não o deixes sozinho. Segura-o nos braços. Deixa-o ouvir a tua voz. Depois, cuida de ti, porque perdê-lo vai doer, e não faz mal.",
+  'fld.letter.letter_body.prm.5': "Amo-te. Obrigado(a). Para sempre.",
+  'fld.letter.letter_signoff.label': "Despedida",
+  'fld.letter.letter_signoff.ph': "p. ex. Com tudo o que tenho, [O seu nome]",
+  'fld.letter.letter_media.label': "Adicionar voz, vídeo ou fotografias",
+  'fld.letter.letter_media.sub': "Opcional — mas altamente recomendado. Ouvir a sua voz ou ver o seu rosto significará tudo para o seu cuidador num momento difícil. Guardado de forma encriptada no FutureVault."
+});
+Object.assign(I18N.hi, {
+  'sec.letter.intro': "बाक़ी नौ सेक्शन व्यावहारिक जानकारी के लिए हैं। <b>यह वाला निजी है।</b> आपकी ओर से उस व्यक्ति के नाम एक छोटा-सा संदेश, जो ज़िम्मेदारी संभालेगा — आपका पालतू आपके लिए क्या मायने रखता है, आपने देखभाल के लिए उन्हें ही क्यों चुना, और जो कुछ भी आप उन्हें बताना चाहते हैं। अगर आप चाहते हैं कि वे आपकी आवाज़ सुन सकें, तो एक वॉयस या वीडियो संदेश जोड़ें।",
+  'sec.letter.tip': "<b>छोटा भी चलेगा।</b> दो पैराग्राफ़ काफ़ी हैं। बात लंबाई की नहीं — आपकी मौजूदगी की है। आपका देखभालकर्ता इसे एक कठिन घड़ी में पढ़ेगा। ध्यान रखें कि यह बिलकुल आपकी अपनी आवाज़ जैसा लगे।",
+  'fld.letter.letter_open.label': "शुरुआती पंक्ति",
+  'fld.letter.letter_open.sub': "आप इस व्यक्ति को चिट्ठी कैसे शुरू करेंगे — अनौपचारिक अंदाज़ सबसे अच्छा रहता है।",
+  'fld.letter.letter_open.ph': "जैसे Maria, अगर तुम यह पढ़ रही हो…",
+  'fld.letter.letter_body.label': "पत्र",
+  'fld.letter.letter_body.prm.0': "अगर तुम यह पढ़ रहे हो, तो कुछ हुआ है — और मैं बहुत शुक्रगुज़ार हूँ कि [पालतू का नाम] के पास तुम हो। तुम उसे जानते थे। तुम उससे प्यार करते थे। यह बात किसी भी दस्तावेज़ से कहीं ज़्यादा मायने रखती है।",
+  'fld.letter.letter_body.prm.1': "जब मैंने पूछा तो हाँ कहने के लिए शुक्रिया। साथ खड़े रहने के लिए शुक्रिया। मुझे पता है कि यह आसान नहीं है और मुश्किल दिन भी आएँगे — लेकिन [पालतू का नाम] ठीक रहेगा, क्योंकि तुम उसके साथ हो।",
+  'fld.letter.letter_body.prm.2': "सब कुछ परफ़ेक्ट करने की चिंता मत करो। [पालतू का नाम] को परफ़ेक्ट नहीं चाहिए। उसे तुम चाहिए। उसे खाना दो, सैर कराओ, सोफ़े पर सोने दो। बस यही पूरा काम है।",
+  'fld.letter.letter_body.prm.3': "तुम्हें यह पता होना चाहिए कि नक़द उपहार तुम्हारा है — इसे [पालतू का नाम] के लिए जैसे भी ठीक लगे, वैसे इस्तेमाल करो। न कोई हिसाब देना है, न रसीदें संभालकर रखनी हैं। मुझे तुम पर पूरा भरोसा है। इसीलिए तुम यहाँ हो।",
+  'fld.letter.letter_body.prm.4': "जब वह घड़ी आए — और वह आएगी ज़रूर — तो कृपया उसे अकेला मत छोड़ना। उसे गोद में लेना। उसे अपनी आवाज़ सुनने देना। फिर अपना भी ख़याल रखना, क्योंकि उसे खोने का दर्द होगा, और ऐसा होना स्वाभाविक है।",
+  'fld.letter.letter_body.prm.5': "तुमसे बहुत प्यार है। शुक्रिया। हमेशा के लिए।",
+  'fld.letter.letter_signoff.label': "समापन पंक्ति",
+  'fld.letter.letter_signoff.ph': "जैसे पूरे दिल से, [आपका नाम]",
+  'fld.letter.letter_media.label': "आवाज़, वीडियो या फ़ोटो जोड़ें",
+  'fld.letter.letter_media.sub': "वैकल्पिक — लेकिन हम इसकी पुरज़ोर सलाह देते हैं। कठिन घड़ी में आपकी आवाज़ सुनना या आपका चेहरा देखना आपके देखभालकर्ता के लिए सब कुछ होगा। FutureVault में एन्क्रिप्टेड रूप में सुरक्षित रहता है।"
+});
+
+// ── Modals + media block + toasts (AI first-pass; flag for native review) ──
+Object.assign(I18N.en, {
+  "mod.share.h": "Share with your caregiver",
+  "mod.share.sub": "We'll send your primary caregiver a secure read-only link to the Pet Protection Plan. They'll see everything they need: routine, vet, meds, behaviour notes, your letter to them.",
+  "mod.share.phName": "Caregiver's name (auto-filled from Section B)",
+  "mod.share.phEmail": "Caregiver's email",
+  "mod.share.phOwner": "Your email (optional — get a copy + ack notification)",
+  "mod.share.btn": "Send the plan",
+  "mod.share.note": "Your caregiver gets read-only access. Updates sync automatically when you change anything.",
+  "mod.updates.h": "Set update reminders",
+  "mod.updates.sub": "Pet care changes constantly. We'll nudge you to review your plan when these things happen — quick check-ins, two minutes each.",
+  "mod.updates.btn": "Save reminders",
+  "mod.upgrade.h": "Pet Protection covers death. POA covers the rest.",
+  "mod.upgrade.sub": "Statistically, you're far more likely to be temporarily incapacitated — hospital stay, surgery recovery, cognitive decline — than to die suddenly. A Power of Attorney is the document that lets your chosen person act on your behalf during those windows.",
+  "mod.upgrade.completeName": "Complete Plan — $159",
+  "mod.upgrade.completeDesc": "Will + POA for Property + POA for Health + Treasure Chest + <b>Pet Protection Promise included free</b>.",
+  "mod.upgrade.couplesName": "Couples Plan — $249",
+  "mod.upgrade.couplesDesc": "Everything in Complete, for both partners. <b>2× POA for Property, 2× POA for Health.</b> Pet Protection covers shared pets in one plan.",
+  "mod.upgrade.btn": "Continue with Pet Protection only",
+  "mod.wallet.h": "Your pet's emergency wallet card",
+  "mod.wallet.sub": "A printable mini-card with the essentials a stranger or first-responder would need if you're incapacitated and your pet is found. Print, fold, keep in wallet.",
+  "mod.wallet.btn": "Print this card",
+  "mod.checkout.h": "Unlock your Pet Protection Plan",
+  "mod.checkout.sub": "Pay once or subscribe — then share with your caregiver, store medical records, and get annual reminders.",
+  "mod.checkout.phEmail": "Your email address",
+  "mod.checkout.phDiscount": "Discount code (optional)",
+  "mod.checkout.applyBtn": "Apply",
+  "mod.checkout.payWith": "Pay with",
+  "mod.checkout.cardBtn": "💳 Card",
+  "mod.checkout.paypalBtn": "🅿 PayPal",
+  "mod.checkout.warn": "Discount codes aren't available for PayPal subscriptions. Use Card, or remove the code.",
+  "mod.checkout.goBtn": "Continue to payment →",
+  "mod.checkout.secureNote": "Secure checkout via Stripe or PayPal. Cancel anytime for subscriptions.",
+  "media.recordVoice": "🎙 Record voice",
+  "media.recordVideo": "📹 Record video",
+  "media.upload": "📷 Upload photos / clips",
+  "media.dropH": "Drag &amp; drop, or click to browse",
+  "media.dropSub": "Photos, videos, or audio · up to 10MB each",
+  "media.remove": "Remove",
+  "toast.inserted": "Inserted — edit it to make it yours",
+  "toast.fileTooBig": "{name} is over 10MB — skipped",
+  "toast.filesAdded": "✓ {count} file(s) added",
+  "toast.removeConfirm": "Remove this item? It cannot be undone.",
+  "toast.removed": "Removed",
+  "toast.recUnsupported": "Recording not supported in this browser — try uploading a file instead",
+  "toast.permissionDenied": "Microphone / camera permission denied",
+  "toast.recStartFail": "Could not start recording",
+  "toast.recEmpty": "Recording was empty",
+  "toast.msgSaved": "✓ {kind} message saved",
+  "toast.kindVideo": "Video",
+  "toast.kindVoice": "Voice",
+  "toast.restartConfirm": "Restart from scratch? Your current entries will be permanently deleted.",
+  "toast.planReady": "Plan ready — export the PDF below ↓",
+  "toast.pricingUnavailable": "⚠ Pricing unavailable — try again shortly.",
+  "toast.emailRequired": "A valid email is required.",
+  "toast.selectPlan": "Select a plan.",
+  "toast.paymentUnavailable": "Payment unavailable — try again.",
+  "toast.payServerFail": "⚠ Could not reach the payment server.",
+  "toast.fillNameEmail": "Fill in name and email",
+  "toast.planSavedWarn": "⚠ Plan saved — {warning}",
+  "toast.planSent": "✓ Plan sent to {name} at {email}",
+  "toast.serverUnreachable": "⚠ Could not reach the server. Is it running?",
+  "toast.saveFirst": "Save your plan first — it needs to be on the server before you can invite your vet.",
+  "toast.inviteFail": "Could not generate invite: {error}",
+  "toast.copyLink": "Copy this link:",
+  "toast.deleteRecord": "Delete this record?",
+  "toast.deleteRecordFail": "Could not delete record",
+  "toast.paymentComplete": "✓ Payment complete{provider} — share your plan now.",
+  "toast.paymentCancelled": "Payment cancelled — your plan is saved.",
+  "toast.paymentFailed": "⚠ Payment could not be completed — please try again.",
+  "toast.restoreFail": "⚠ Could not restore plan — link may have expired.",
+  "toast.serverFail": "⚠ Could not reach server."
+});
+Object.assign(I18N.fr, {
+  "mod.share.h": "Partagez avec votre gardien",
+  "mod.share.sub": "Nous enverrons à votre gardien principal un lien sécurisé en lecture seule vers le Pet Protection Plan. Il y trouvera tout ce dont il a besoin : routine, vétérinaire, médicaments, notes de comportement, votre lettre à son intention.",
+  "mod.share.phName": "Nom du gardien (pré-rempli depuis la section B)",
+  "mod.share.phEmail": "E-mail du gardien",
+  "mod.share.phOwner": "Votre e-mail (facultatif — recevez une copie + une notification d'accusé de réception)",
+  "mod.share.btn": "Envoyer le plan",
+  "mod.share.note": "Votre gardien dispose d'un accès en lecture seule. Les mises à jour se synchronisent automatiquement dès que vous modifiez quoi que ce soit.",
+  "mod.updates.h": "Programmer des rappels de mise à jour",
+  "mod.updates.sub": "Les soins d'un animal évoluent constamment. Nous vous inviterons à revoir votre plan lorsque ces événements surviennent — de rapides vérifications, deux minutes chacune.",
+  "mod.updates.btn": "Enregistrer les rappels",
+  "mod.upgrade.h": "Pet Protection couvre le décès. La procuration couvre le reste.",
+  "mod.upgrade.sub": "Statistiquement, vous êtes bien plus susceptible d'être temporairement dans l'incapacité d'agir — hospitalisation, convalescence après une opération, déclin cognitif — que de décéder subitement. Une procuration (Power of Attorney) est le document qui permet à la personne de votre choix d'agir en votre nom pendant ces périodes.",
+  "mod.upgrade.completeName": "Plan Complet — $159",
+  "mod.upgrade.completeDesc": "Testament + procuration pour les biens + procuration pour la santé + Treasure Chest + <b>Pet Protection Promise inclus gratuitement</b>.",
+  "mod.upgrade.couplesName": "Plan Couples — $249",
+  "mod.upgrade.couplesDesc": "Tout le contenu du Plan Complet, pour les deux partenaires. <b>2× procuration pour les biens, 2× procuration pour la santé.</b> Pet Protection couvre les animaux partagés dans un seul plan.",
+  "mod.upgrade.btn": "Continuer avec Pet Protection uniquement",
+  "mod.wallet.h": "La carte d'urgence de votre animal, format portefeuille",
+  "mod.wallet.sub": "Une mini-carte imprimable avec l'essentiel dont un inconnu ou un secouriste aurait besoin si vous êtes dans l'incapacité d'agir et que votre animal est retrouvé. Imprimez, pliez, gardez dans votre portefeuille.",
+  "mod.wallet.btn": "Imprimer cette carte",
+  "mod.checkout.h": "Débloquez votre Pet Protection Plan",
+  "mod.checkout.sub": "Payez une seule fois ou abonnez-vous — puis partagez avec votre gardien, conservez les dossiers médicaux et recevez des rappels annuels.",
+  "mod.checkout.phEmail": "Votre adresse e-mail",
+  "mod.checkout.phDiscount": "Code de réduction (facultatif)",
+  "mod.checkout.applyBtn": "Appliquer",
+  "mod.checkout.payWith": "Payer avec",
+  "mod.checkout.cardBtn": "💳 Carte",
+  "mod.checkout.paypalBtn": "🅿 PayPal",
+  "mod.checkout.warn": "Les codes de réduction ne sont pas disponibles pour les abonnements PayPal. Utilisez la carte, ou retirez le code.",
+  "mod.checkout.goBtn": "Continuer vers le paiement →",
+  "mod.checkout.secureNote": "Paiement sécurisé via Stripe ou PayPal. Les abonnements sont résiliables à tout moment.",
+  "media.recordVoice": "🎙 Enregistrer la voix",
+  "media.recordVideo": "📹 Enregistrer une vidéo",
+  "media.upload": "📷 Importer des photos / clips",
+  "media.dropH": "Glissez-déposez, ou cliquez pour parcourir",
+  "media.dropSub": "Photos, vidéos ou audio · jusqu'à 10 Mo chacun",
+  "media.remove": "Supprimer",
+  "toast.inserted": "Inséré — modifiez-le pour vous l'approprier",
+  "toast.fileTooBig": "{name} dépasse 10 Mo — ignoré",
+  "toast.filesAdded": "✓ {count} fichier(s) ajouté(s)",
+  "toast.removeConfirm": "Supprimer cet élément ? Cette action est irréversible.",
+  "toast.removed": "Supprimé",
+  "toast.recUnsupported": "L'enregistrement n'est pas pris en charge par ce navigateur — essayez plutôt d'importer un fichier",
+  "toast.permissionDenied": "Autorisation micro / caméra refusée",
+  "toast.recStartFail": "Impossible de démarrer l'enregistrement",
+  "toast.recEmpty": "L'enregistrement était vide",
+  "toast.msgSaved": "✓ Message {kind} enregistré",
+  "toast.kindVideo": "vidéo",
+  "toast.kindVoice": "vocal",
+  "toast.restartConfirm": "Tout recommencer ? Vos entrées actuelles seront définitivement supprimées.",
+  "toast.planReady": "Plan prêt — exportez le PDF ci-dessous ↓",
+  "toast.pricingUnavailable": "⚠ Tarifs indisponibles — réessayez dans un instant.",
+  "toast.emailRequired": "Une adresse e-mail valide est requise.",
+  "toast.selectPlan": "Sélectionnez une formule.",
+  "toast.paymentUnavailable": "Paiement indisponible — réessayez.",
+  "toast.payServerFail": "⚠ Impossible de joindre le serveur de paiement.",
+  "toast.fillNameEmail": "Renseignez le nom et l'e-mail",
+  "toast.planSavedWarn": "⚠ Plan enregistré — {warning}",
+  "toast.planSent": "✓ Plan envoyé à {name} à l'adresse {email}",
+  "toast.serverUnreachable": "⚠ Impossible de joindre le serveur. Est-il démarré ?",
+  "toast.saveFirst": "Enregistrez d'abord votre plan — il doit être sur le serveur avant de pouvoir inviter votre vétérinaire.",
+  "toast.inviteFail": "Impossible de générer l'invitation : {error}",
+  "toast.copyLink": "Copiez ce lien :",
+  "toast.deleteRecord": "Supprimer ce document ?",
+  "toast.deleteRecordFail": "Impossible de supprimer le document",
+  "toast.paymentComplete": "✓ Paiement effectué{provider} — partagez votre plan dès maintenant.",
+  "toast.paymentCancelled": "Paiement annulé — votre plan est enregistré.",
+  "toast.paymentFailed": "⚠ Le paiement n'a pas pu être effectué — veuillez réessayer.",
+  "toast.restoreFail": "⚠ Impossible de restaurer le plan — le lien a peut-être expiré.",
+  "toast.serverFail": "⚠ Impossible de joindre le serveur."
+});
+Object.assign(I18N.es, {
+  "mod.share.h": "Comparte con tu cuidador",
+  "mod.share.sub": "Le enviaremos a tu cuidador principal un enlace seguro de solo lectura al Pet Protection Plan. Verá todo lo que necesita: rutina, veterinario, medicamentos, notas de comportamiento y tu carta para él.",
+  "mod.share.phName": "Nombre del cuidador (autocompletado desde la Sección B)",
+  "mod.share.phEmail": "Correo del cuidador",
+  "mod.share.phOwner": "Tu correo (opcional — recibe una copia + notificación de confirmación)",
+  "mod.share.btn": "Enviar el plan",
+  "mod.share.note": "Tu cuidador obtiene acceso de solo lectura. Las actualizaciones se sincronizan automáticamente cuando cambias algo.",
+  "mod.updates.h": "Configura recordatorios de actualización",
+  "mod.updates.sub": "El cuidado de tu mascota cambia constantemente. Te avisaremos para revisar tu plan cuando ocurran estas cosas — revisiones rápidas, de dos minutos cada una.",
+  "mod.updates.btn": "Guardar recordatorios",
+  "mod.upgrade.h": "Pet Protection cubre el fallecimiento. El poder notarial cubre el resto.",
+  "mod.upgrade.sub": "Estadísticamente, es mucho más probable que quedes incapacitado temporalmente — hospitalización, recuperación de una cirugía, deterioro cognitivo — a que fallezcas de repente. Un poder notarial (Power of Attorney) es el documento que permite a la persona que elijas actuar en tu nombre durante esos periodos.",
+  "mod.upgrade.completeName": "Plan Completo — $159",
+  "mod.upgrade.completeDesc": "Testamento + poder notarial sobre bienes + poder notarial de salud + Treasure Chest + <b>Pet Protection Promise incluido gratis</b>.",
+  "mod.upgrade.couplesName": "Plan para Parejas — $249",
+  "mod.upgrade.couplesDesc": "Todo lo del Plan Completo, para ambos miembros de la pareja. <b>2× poder notarial sobre bienes, 2× poder notarial de salud.</b> Pet Protection cubre las mascotas compartidas en un solo plan.",
+  "mod.upgrade.btn": "Continuar solo con Pet Protection",
+  "mod.wallet.h": "La tarjeta de emergencia de tu mascota para la cartera",
+  "mod.wallet.sub": "Una minitarjeta imprimible con lo esencial que necesitaría un desconocido o un socorrista si quedas incapacitado y encuentran a tu mascota. Imprímela, dóblala y llévala en la cartera.",
+  "mod.wallet.btn": "Imprimir esta tarjeta",
+  "mod.checkout.h": "Desbloquea tu Pet Protection Plan",
+  "mod.checkout.sub": "Paga una vez o suscríbete — luego comparte con tu cuidador, guarda los registros médicos y recibe recordatorios anuales.",
+  "mod.checkout.phEmail": "Tu correo electrónico",
+  "mod.checkout.phDiscount": "Código de descuento (opcional)",
+  "mod.checkout.applyBtn": "Aplicar",
+  "mod.checkout.payWith": "Pagar con",
+  "mod.checkout.cardBtn": "💳 Tarjeta",
+  "mod.checkout.paypalBtn": "🅿 PayPal",
+  "mod.checkout.warn": "Los códigos de descuento no están disponibles para las suscripciones de PayPal. Usa tarjeta o elimina el código.",
+  "mod.checkout.goBtn": "Continuar al pago →",
+  "mod.checkout.secureNote": "Pago seguro a través de Stripe o PayPal. Cancela tu suscripción cuando quieras.",
+  "media.recordVoice": "🎙 Grabar voz",
+  "media.recordVideo": "📹 Grabar video",
+  "media.upload": "📷 Subir fotos / clips",
+  "media.dropH": "Arrastra y suelta, o haz clic para explorar",
+  "media.dropSub": "Fotos, videos o audio · hasta 10 MB cada uno",
+  "media.remove": "Eliminar",
+  "toast.inserted": "Insertado — edítalo para hacerlo tuyo",
+  "toast.fileTooBig": "{name} supera los 10 MB — omitido",
+  "toast.filesAdded": "✓ {count} archivo(s) añadido(s)",
+  "toast.removeConfirm": "¿Eliminar este elemento? No se puede deshacer.",
+  "toast.removed": "Eliminado",
+  "toast.recUnsupported": "La grabación no es compatible con este navegador — intenta subir un archivo",
+  "toast.permissionDenied": "Permiso de micrófono / cámara denegado",
+  "toast.recStartFail": "No se pudo iniciar la grabación",
+  "toast.recEmpty": "La grabación estaba vacía",
+  "toast.msgSaved": "✓ Mensaje de {kind} guardado",
+  "toast.kindVideo": "video",
+  "toast.kindVoice": "voz",
+  "toast.restartConfirm": "¿Empezar de cero? Tus entradas actuales se eliminarán de forma permanente.",
+  "toast.planReady": "Plan listo — exporta el PDF abajo ↓",
+  "toast.pricingUnavailable": "⚠ Precios no disponibles — inténtalo de nuevo en un momento.",
+  "toast.emailRequired": "Se requiere un correo electrónico válido.",
+  "toast.selectPlan": "Selecciona un plan.",
+  "toast.paymentUnavailable": "Pago no disponible — inténtalo de nuevo.",
+  "toast.payServerFail": "⚠ No se pudo conectar con el servidor de pagos.",
+  "toast.fillNameEmail": "Completa el nombre y el correo",
+  "toast.planSavedWarn": "⚠ Plan guardado — {warning}",
+  "toast.planSent": "✓ Plan enviado a {name} a {email}",
+  "toast.serverUnreachable": "⚠ No se pudo conectar con el servidor. ¿Está en ejecución?",
+  "toast.saveFirst": "Guarda tu plan primero — debe estar en el servidor antes de poder invitar a tu veterinario.",
+  "toast.inviteFail": "No se pudo generar la invitación: {error}",
+  "toast.copyLink": "Copia este enlace:",
+  "toast.deleteRecord": "¿Eliminar este registro?",
+  "toast.deleteRecordFail": "No se pudo eliminar el registro",
+  "toast.paymentComplete": "✓ Pago completado{provider} — comparte tu plan ahora.",
+  "toast.paymentCancelled": "Pago cancelado — tu plan está guardado.",
+  "toast.paymentFailed": "⚠ El pago no se pudo completar — inténtalo de nuevo.",
+  "toast.restoreFail": "⚠ No se pudo restaurar el plan — el enlace puede haber expirado.",
+  "toast.serverFail": "⚠ No se pudo conectar con el servidor."
+});
+Object.assign(I18N.pt, {
+  "mod.share.h": "Partilhe com o seu cuidador",
+  "mod.share.sub": "Enviaremos ao seu cuidador principal uma ligação segura, apenas de leitura, para o Pet Protection Plan. Ele verá tudo o que precisa: rotina, veterinário, medicamentos, notas de comportamento e a sua carta para ele.",
+  "mod.share.phName": "Nome do cuidador (preenchido automaticamente a partir da Secção B)",
+  "mod.share.phEmail": "Email do cuidador",
+  "mod.share.phOwner": "O seu email (opcional — receba uma cópia + notificação de confirmação)",
+  "mod.share.btn": "Enviar o plano",
+  "mod.share.note": "O seu cuidador tem acesso apenas de leitura. As atualizações sincronizam-se automaticamente sempre que alterar algo.",
+  "mod.updates.h": "Definir lembretes de atualização",
+  "mod.updates.sub": "Os cuidados com o seu animal mudam constantemente. Iremos lembrá-lo de rever o seu plano quando estas coisas acontecerem — verificações rápidas, de dois minutos cada.",
+  "mod.updates.btn": "Guardar lembretes",
+  "mod.upgrade.h": "Pet Protection cobre o falecimento. A procuração cobre o resto.",
+  "mod.upgrade.sub": "Estatisticamente, é muito mais provável ficar temporariamente incapacitado — internamento hospitalar, recuperação de uma cirurgia, declínio cognitivo — do que falecer subitamente. Uma procuração (Power of Attorney) é o documento que permite à pessoa da sua escolha agir em seu nome durante esses períodos.",
+  "mod.upgrade.completeName": "Plano Completo — $159",
+  "mod.upgrade.completeDesc": "Testamento + procuração para bens + procuração para saúde + Treasure Chest + <b>Pet Protection Promise incluído gratuitamente</b>.",
+  "mod.upgrade.couplesName": "Plano para Casais — $249",
+  "mod.upgrade.couplesDesc": "Tudo o que está no Plano Completo, para ambos os parceiros. <b>2× procuração para bens, 2× procuração para saúde.</b> O Pet Protection cobre os animais partilhados num único plano.",
+  "mod.upgrade.btn": "Continuar apenas com Pet Protection",
+  "mod.wallet.h": "O cartão de emergência do seu animal para a carteira",
+  "mod.wallet.sub": "Um mini-cartão imprimível com o essencial de que um desconhecido ou socorrista precisaria se ficar incapacitado e o seu animal for encontrado. Imprima, dobre e guarde na carteira.",
+  "mod.wallet.btn": "Imprimir este cartão",
+  "mod.checkout.h": "Desbloqueie o seu Pet Protection Plan",
+  "mod.checkout.sub": "Pague uma vez ou subscreva — depois partilhe com o seu cuidador, guarde os registos médicos e receba lembretes anuais.",
+  "mod.checkout.phEmail": "O seu endereço de email",
+  "mod.checkout.phDiscount": "Código de desconto (opcional)",
+  "mod.checkout.applyBtn": "Aplicar",
+  "mod.checkout.payWith": "Pagar com",
+  "mod.checkout.cardBtn": "💳 Cartão",
+  "mod.checkout.paypalBtn": "🅿 PayPal",
+  "mod.checkout.warn": "Os códigos de desconto não estão disponíveis para subscrições PayPal. Use cartão ou remova o código.",
+  "mod.checkout.goBtn": "Continuar para o pagamento →",
+  "mod.checkout.secureNote": "Pagamento seguro através de Stripe ou PayPal. Pode cancelar a subscrição a qualquer momento.",
+  "media.recordVoice": "🎙 Gravar voz",
+  "media.recordVideo": "📹 Gravar vídeo",
+  "media.upload": "📷 Carregar fotos / clipes",
+  "media.dropH": "Arraste e largue, ou clique para procurar",
+  "media.dropSub": "Fotos, vídeos ou áudio · até 10 MB cada",
+  "media.remove": "Remover",
+  "toast.inserted": "Inserido — edite-o para o tornar seu",
+  "toast.fileTooBig": "{name} excede 10 MB — ignorado",
+  "toast.filesAdded": "✓ {count} ficheiro(s) adicionado(s)",
+  "toast.removeConfirm": "Remover este item? Esta ação não pode ser anulada.",
+  "toast.removed": "Removido",
+  "toast.recUnsupported": "A gravação não é suportada neste navegador — experimente carregar um ficheiro",
+  "toast.permissionDenied": "Permissão de microfone / câmara recusada",
+  "toast.recStartFail": "Não foi possível iniciar a gravação",
+  "toast.recEmpty": "A gravação estava vazia",
+  "toast.msgSaved": "✓ Mensagem de {kind} guardada",
+  "toast.kindVideo": "vídeo",
+  "toast.kindVoice": "voz",
+  "toast.restartConfirm": "Recomeçar do zero? As suas entradas atuais serão eliminadas definitivamente.",
+  "toast.planReady": "Plano pronto — exporte o PDF abaixo ↓",
+  "toast.pricingUnavailable": "⚠ Preços indisponíveis — tente novamente dentro de momentos.",
+  "toast.emailRequired": "É necessário um email válido.",
+  "toast.selectPlan": "Selecione um plano.",
+  "toast.paymentUnavailable": "Pagamento indisponível — tente novamente.",
+  "toast.payServerFail": "⚠ Não foi possível contactar o servidor de pagamentos.",
+  "toast.fillNameEmail": "Preencha o nome e o email",
+  "toast.planSavedWarn": "⚠ Plano guardado — {warning}",
+  "toast.planSent": "✓ Plano enviado a {name} para {email}",
+  "toast.serverUnreachable": "⚠ Não foi possível contactar o servidor. Está em execução?",
+  "toast.saveFirst": "Guarde primeiro o seu plano — tem de estar no servidor antes de poder convidar o seu veterinário.",
+  "toast.inviteFail": "Não foi possível gerar o convite: {error}",
+  "toast.copyLink": "Copie esta ligação:",
+  "toast.deleteRecord": "Eliminar este registo?",
+  "toast.deleteRecordFail": "Não foi possível eliminar o registo",
+  "toast.paymentComplete": "✓ Pagamento concluído{provider} — partilhe já o seu plano.",
+  "toast.paymentCancelled": "Pagamento cancelado — o seu plano está guardado.",
+  "toast.paymentFailed": "⚠ Não foi possível concluir o pagamento — tente novamente.",
+  "toast.restoreFail": "⚠ Não foi possível restaurar o plano — a ligação pode ter expirado.",
+  "toast.serverFail": "⚠ Não foi possível contactar o servidor."
+});
+Object.assign(I18N.hi, {
+  "mod.share.h": "अपने देखभालकर्ता के साथ साझा करें",
+  "mod.share.sub": "हम आपके मुख्य देखभालकर्ता को Pet Protection Plan का एक सुरक्षित रीड-ओनली लिंक भेजेंगे। उन्हें ज़रूरत की हर चीज़ दिखेगी: दिनचर्या, पशु-चिकित्सक, दवाएँ, व्यवहार संबंधी नोट्स और उनके नाम आपका पत्र।",
+  "mod.share.phName": "देखभालकर्ता का नाम (सेक्शन B से स्वतः भरा गया)",
+  "mod.share.phEmail": "देखभालकर्ता का ईमेल",
+  "mod.share.phOwner": "आपका ईमेल (वैकल्पिक — एक प्रति + पावती सूचना पाएँ)",
+  "mod.share.btn": "योजना भेजें",
+  "mod.share.note": "आपके देखभालकर्ता को केवल रीड-ओनली पहुँच मिलती है। आपके कुछ भी बदलते ही अपडेट अपने आप सिंक हो जाते हैं।",
+  "mod.updates.h": "अपडेट रिमाइंडर सेट करें",
+  "mod.updates.sub": "पालतू जानवर की देखभाल लगातार बदलती रहती है। जब ये बातें हों, तो हम आपको योजना की समीक्षा के लिए याद दिलाएँगे — झटपट जाँच, हर बार बस दो मिनट।",
+  "mod.updates.btn": "रिमाइंडर सहेजें",
+  "mod.upgrade.h": "Pet Protection मृत्यु की स्थिति को कवर करता है। POA बाकी सब कवर करता है।",
+  "mod.upgrade.sub": "आँकड़ों के अनुसार, अचानक मृत्यु की तुलना में आपके अस्थायी रूप से असमर्थ होने की संभावना कहीं अधिक है — अस्पताल में भर्ती, सर्जरी के बाद रिकवरी, संज्ञानात्मक गिरावट। Power of Attorney (POA) वह दस्तावेज़ है जो ऐसे समय में आपके चुने हुए व्यक्ति को आपकी ओर से कार्य करने की अनुमति देता है।",
+  "mod.upgrade.completeName": "कम्प्लीट प्लान — $159",
+  "mod.upgrade.completeDesc": "वसीयत + संपत्ति के लिए POA + स्वास्थ्य के लिए POA + Treasure Chest + <b>Pet Protection Promise मुफ़्त शामिल</b>।",
+  "mod.upgrade.couplesName": "कपल्स प्लान — $249",
+  "mod.upgrade.couplesDesc": "कम्प्लीट प्लान की हर चीज़, दोनों साथियों के लिए। <b>2× संपत्ति के लिए POA, 2× स्वास्थ्य के लिए POA।</b> Pet Protection एक ही योजना में साझा पालतू जानवरों को कवर करता है।",
+  "mod.upgrade.btn": "केवल Pet Protection के साथ जारी रखें",
+  "mod.wallet.h": "आपके पालतू का इमरजेंसी वॉलेट कार्ड",
+  "mod.wallet.sub": "एक प्रिंट करने योग्य मिनी-कार्ड जिसमें वे ज़रूरी जानकारियाँ हैं जो किसी अजनबी या आपातकालीन सहायक को तब चाहिए होंगी जब आप असमर्थ हों और आपका पालतू मिले। प्रिंट करें, मोड़ें, बटुए में रखें।",
+  "mod.wallet.btn": "यह कार्ड प्रिंट करें",
+  "mod.checkout.h": "अपना Pet Protection Plan अनलॉक करें",
+  "mod.checkout.sub": "एक बार भुगतान करें या सब्सक्राइब करें — फिर अपने देखभालकर्ता के साथ साझा करें, मेडिकल रिकॉर्ड संग्रहीत करें और वार्षिक रिमाइंडर पाएँ।",
+  "mod.checkout.phEmail": "आपका ईमेल पता",
+  "mod.checkout.phDiscount": "डिस्काउंट कोड (वैकल्पिक)",
+  "mod.checkout.applyBtn": "लागू करें",
+  "mod.checkout.payWith": "भुगतान का तरीका",
+  "mod.checkout.cardBtn": "💳 कार्ड",
+  "mod.checkout.paypalBtn": "🅿 PayPal",
+  "mod.checkout.warn": "PayPal सब्सक्रिप्शन के लिए डिस्काउंट कोड उपलब्ध नहीं हैं। कार्ड का उपयोग करें, या कोड हटाएँ।",
+  "mod.checkout.goBtn": "भुगतान के लिए आगे बढ़ें →",
+  "mod.checkout.secureNote": "Stripe या PayPal के ज़रिए सुरक्षित चेकआउट। सब्सक्रिप्शन कभी भी रद्द करें।",
+  "media.recordVoice": "🎙 आवाज़ रिकॉर्ड करें",
+  "media.recordVideo": "📹 वीडियो रिकॉर्ड करें",
+  "media.upload": "📷 फ़ोटो / क्लिप अपलोड करें",
+  "media.dropH": "खींचकर छोड़ें, या ब्राउज़ करने के लिए क्लिक करें",
+  "media.dropSub": "फ़ोटो, वीडियो या ऑडियो · प्रत्येक अधिकतम 10MB",
+  "media.remove": "हटाएँ",
+  "toast.inserted": "जोड़ दिया गया — इसे अपना बनाने के लिए संपादित करें",
+  "toast.fileTooBig": "{name} 10MB से बड़ी है — छोड़ दी गई",
+  "toast.filesAdded": "✓ {count} फ़ाइलें जोड़ी गईं",
+  "toast.removeConfirm": "यह आइटम हटाएँ? इसे पूर्ववत नहीं किया जा सकता।",
+  "toast.removed": "हटा दिया गया",
+  "toast.recUnsupported": "इस ब्राउज़र में रिकॉर्डिंग समर्थित नहीं है — इसके बजाय फ़ाइल अपलोड करके देखें",
+  "toast.permissionDenied": "माइक्रोफ़ोन / कैमरा अनुमति अस्वीकृत",
+  "toast.recStartFail": "रिकॉर्डिंग शुरू नहीं हो सकी",
+  "toast.recEmpty": "रिकॉर्डिंग खाली थी",
+  "toast.msgSaved": "✓ {kind} संदेश सहेजा गया",
+  "toast.kindVideo": "वीडियो",
+  "toast.kindVoice": "वॉइस",
+  "toast.restartConfirm": "फिर से शुरू करें? आपकी मौजूदा प्रविष्टियाँ स्थायी रूप से हटा दी जाएँगी।",
+  "toast.planReady": "योजना तैयार — नीचे PDF निर्यात करें ↓",
+  "toast.pricingUnavailable": "⚠ मूल्य उपलब्ध नहीं — थोड़ी देर में फिर से प्रयास करें।",
+  "toast.emailRequired": "एक मान्य ईमेल आवश्यक है।",
+  "toast.selectPlan": "एक प्लान चुनें।",
+  "toast.paymentUnavailable": "भुगतान उपलब्ध नहीं — फिर से प्रयास करें।",
+  "toast.payServerFail": "⚠ भुगतान सर्वर से संपर्क नहीं हो सका।",
+  "toast.fillNameEmail": "नाम और ईमेल भरें",
+  "toast.planSavedWarn": "⚠ योजना सहेजी गई — {warning}",
+  "toast.planSent": "✓ योजना {name} को {email} पर भेज दी गई",
+  "toast.serverUnreachable": "⚠ सर्वर से संपर्क नहीं हो सका। क्या वह चल रहा है?",
+  "toast.saveFirst": "पहले अपनी योजना सहेजें — अपने पशु-चिकित्सक को आमंत्रित करने से पहले यह सर्वर पर होनी चाहिए।",
+  "toast.inviteFail": "आमंत्रण नहीं बन सका: {error}",
+  "toast.copyLink": "यह लिंक कॉपी करें:",
+  "toast.deleteRecord": "यह रिकॉर्ड हटाएँ?",
+  "toast.deleteRecordFail": "रिकॉर्ड हटाया नहीं जा सका",
+  "toast.paymentComplete": "✓ भुगतान पूर्ण{provider} — अब अपनी योजना साझा करें।",
+  "toast.paymentCancelled": "भुगतान रद्द — आपकी योजना सहेजी हुई है।",
+  "toast.paymentFailed": "⚠ भुगतान पूरा नहीं हो सका — कृपया फिर से प्रयास करें।",
+  "toast.restoreFail": "⚠ योजना पुनर्स्थापित नहीं हो सकी — लिंक की अवधि समाप्त हो गई होगी।",
+  "toast.serverFail": "⚠ सर्वर से संपर्क नहीं हो सका।"
+});
+
 let currentLang = 'en';
 function detectLang(){
   const supported = LANGS.map(l => l.code);
@@ -1942,7 +3406,7 @@ const SECTIONS = [
         'Held in trust by my executor; released $500/month for routine care, with full vet bills paid directly.'
       ]},
      {key:'pet_trust', type:'radio', label:'Do you want a formal pet trust instead?',
-      options:['No — cash gift to caregiver is fine','Maybe — flag for a follow-up conversation with Donsky &amp; Donsky or Barrett','Yes — already have one set up','Yes — please connect me with someone to set one up']}
+      options:['No — cash gift to caregiver is fine','Maybe — flag for a follow-up conversation with Donsky & Donsky or Barrett','Yes — already have one set up','Yes — please connect me with someone to set one up']}
    ]},
 
   {id:'emergency', n:'H', icon:'🚨', title:'Emergency Plan', desc:'The first 24-48 hours.',
@@ -2212,9 +3676,9 @@ function renderSection(){
       const items = Array.isArray(val) ? val : [];
       html += '<div class="media-block">';
       html += '<div class="media-buttons">';
-      html += '<button class="media-btn" onclick="startRecord(\''+sec.id+'\',\''+f.key+'\',\'audio\')">🎙 Record voice</button>';
-      html += '<button class="media-btn" onclick="startRecord(\''+sec.id+'\',\''+f.key+'\',\'video\')">📹 Record video</button>';
-      html += '<button class="media-btn" onclick="triggerUpload(\''+sec.id+'\',\''+f.key+'\')">📷 Upload photos / clips</button>';
+      html += '<button class="media-btn" onclick="startRecord(\''+sec.id+'\',\''+f.key+'\',\'audio\')">' + t('media.recordVoice') + '</button>';
+      html += '<button class="media-btn" onclick="startRecord(\''+sec.id+'\',\''+f.key+'\',\'video\')">' + t('media.recordVideo') + '</button>';
+      html += '<button class="media-btn" onclick="triggerUpload(\''+sec.id+'\',\''+f.key+'\')">' + t('media.upload') + '</button>';
       html += '<input type="file" id="upload-' + sec.id + '-' + f.key + '" multiple accept="image/*,video/*,audio/*" style="display:none" onchange="handleUpload(event,\''+sec.id+'\',\''+f.key+'\')"/>';
       html += '</div>';
       // recording UI mount point
@@ -2222,8 +3686,8 @@ function renderSection(){
       // upload zone
       html += '<div class="upload-zone" id="dz-' + sec.id + '-' + f.key + '" onclick="triggerUpload(\''+sec.id+'\',\''+f.key+'\')">';
       html += '<div class="upload-zone-icon">📎</div>';
-      html += '<div class="upload-zone-h">Drag &amp; drop, or click to browse</div>';
-      html += '<div class="upload-zone-sub">Photos, videos, or audio · up to 10MB each</div>';
+      html += '<div class="upload-zone-h">' + t('media.dropH') + '</div>';
+      html += '<div class="upload-zone-sub">' + t('media.dropSub') + '</div>';
       html += '</div>';
       // existing items
       if (items.length) {
@@ -2236,7 +3700,7 @@ function renderSection(){
           html += '<div class="mi-name">' + escapeHtml(item.name || (item.kind + ' ' + (i+1))) + '</div>';
           html += '<div class="mi-meta">' + (item.sizeKB ? item.sizeKB + ' KB · ' : '') + new Date(item.ts).toLocaleDateString() + '</div>';
           html += '</div>';
-          html += '<button class="mi-del" onclick="removeMedia(\''+sec.id+'\',\''+f.key+'\','+i+')" title="Remove">';
+          html += '<button class="mi-del" onclick="removeMedia(\''+sec.id+'\',\''+f.key+'\','+i+')" title="' + t('media.remove') + '">';
           html += '<svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3,5 13,5"/><path d="M5 5 V13 a1 1 0 0 0 1 1 h4 a1 1 0 0 0 1 -1 V5"/><path d="M6 5 V3 a1 1 0 0 1 1 -1 h2 a1 1 0 0 1 1 1 V5"/></svg>';
           html += '</button>';
           html += '</div>';
@@ -2341,7 +3805,7 @@ function insertPrompt(secId, fieldKey, promptIdx){
       sel.setSelectionRange(sel.value.length, sel.value.length);
     }
   }, 50);
-  showToast('Inserted — edit it to make it yours');
+  showToast(t('toast.inserted'));
 }
 
 // ============================================================
@@ -2365,7 +3829,7 @@ function handleUpload(event, secId, fieldKey){
   let pending = files.length;
   Array.from(files).forEach(file => {
     if (file.size > 10 * 1024 * 1024) {
-      showToast(file.name + ' is over 10MB — skipped');
+      showToast(tf('toast.fileTooBig', {name: file.name}));
       pending--; return;
     }
     const reader = new FileReader();
@@ -2378,7 +3842,7 @@ function handleUpload(event, secId, fieldKey){
       pending--;
       if (pending === 0) {
         renderSection();
-        showToast('✓ ' + files.length + ' file' + (files.length>1?'s':'') + ' added');
+        showToast(tf('toast.filesAdded', {count: files.length}));
       }
     };
     reader.onerror = () => { pending--; };
@@ -2401,14 +3865,14 @@ function addMediaItem(secId, fieldKey, item){
 }
 
 function removeMedia(secId, fieldKey, idx){
-  if (!confirm('Remove this item? It cannot be undone.')) return;
+  if (!confirm(t('toast.removeConfirm'))) return;
   const arr = state.sections[secId][fieldKey];
   if (!Array.isArray(arr)) return;
   arr.splice(idx, 1);
   state.sections[secId][fieldKey] = arr;
   saveState();
   renderSection();
-  showToast('Removed');
+  showToast(t('toast.removed'));
 }
 
 async function startRecord(secId, fieldKey, kind){
@@ -2416,11 +3880,11 @@ async function startRecord(secId, fieldKey, kind){
   if (_activeRecorder) { stopRecord(); return; }
 
   if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
-    showToast('Recording not supported in this browser — try uploading a file instead');
+    showToast(t('toast.recUnsupported'));
     return;
   }
   if (!window.MediaRecorder) {
-    showToast('Recording not supported in this browser — try uploading a file instead');
+    showToast(t('toast.recUnsupported'));
     return;
   }
 
@@ -2429,7 +3893,7 @@ async function startRecord(secId, fieldKey, kind){
   try {
     stream = await navigator.mediaDevices.getUserMedia(constraints);
   } catch (e) {
-    showToast('Microphone / camera permission denied');
+    showToast(t('toast.permissionDenied'));
     return;
   }
 
@@ -2473,7 +3937,7 @@ async function startRecord(secId, fieldKey, kind){
   try {
     _activeRecorder = mime ? new MediaRecorder(stream, { mimeType: mime }) : new MediaRecorder(stream);
   } catch(e) {
-    showToast('Could not start recording'); cleanupRecording(); return;
+    showToast(t('toast.recStartFail')); cleanupRecording(); return;
   }
   _activeRecorder._kind = kind;
   _activeRecorder._secId = secId;
@@ -2527,7 +3991,7 @@ function onRecordStop(){
   if (cancelled || !secId) return;
 
   if (_recChunks.length === 0) {
-    showToast('Recording was empty');
+    showToast(t('toast.recEmpty'));
     if (_recMount) _recMount.innerHTML = '';
     return;
   }
@@ -2547,7 +4011,7 @@ function onRecordStop(){
       ts: ts
     });
     renderSection();
-    showToast('✓ ' + (kind === 'video' ? 'Video' : 'Voice') + ' message saved');
+    showToast(tf('toast.msgSaved', {kind: kind === 'video' ? t('toast.kindVideo') : t('toast.kindVoice')}));
   };
   reader.readAsDataURL(blob);
 }
@@ -2655,12 +4119,12 @@ function resumeProgram(){
   document.getElementById('welcome').classList.add('gone');
 }
 function restartProgram(){
-  if (!confirm('Restart from scratch? Your current entries will be permanently deleted.')) return;
+  if (!confirm(t('toast.restartConfirm'))) return;
   localStorage.removeItem(STORAGE_KEY);
   location.reload();
 }
 function finishProgram(){
-  showToast('Plan ready — export the PDF below ↓');
+  showToast(t('toast.planReady'));
   document.querySelector('.export-bar').scrollIntoView({behavior:'smooth', block:'center'});
 }
 
@@ -2695,7 +4159,7 @@ let CHECKOUT = { productKey: null, provider: 'stripe', discount: null };
 async function openCheckout(){
   if (!PRICING.products.length) await loadPricing();
   const products = PRICING.products;
-  if (!products.length) { showToast('⚠ Pricing unavailable — try again shortly.'); return; }
+  if (!products.length) { showToast(t('toast.pricingUnavailable')); return; }
   // Default to the one-time product if present, else the first product
   const oneTime = products.find(p => p.kind === 'one_time');
   CHECKOUT = { productKey: (oneTime || products[0]).key, provider: 'stripe', discount: null };
@@ -2751,7 +4215,7 @@ function updateCheckoutWarn(){
   const discountEl = document.getElementById('checkout-discount');
   if (isPaypalSub && (CHECKOUT.discount || discountEl.value.trim())) {
     warn.style.display = 'block';
-    warn.textContent = 'Discount codes aren\'t available for PayPal subscriptions. Use Card, or remove the code.';
+    warn.textContent = t('mod.checkout.warn');
     CHECKOUT.discount = null;
     document.getElementById('checkout-discount-msg').textContent = '';
   } else {
@@ -2786,9 +4250,9 @@ async function applyCheckoutDiscount(){
 
 async function startCheckout(){
   const email = document.getElementById('checkout-email').value.trim();
-  if (!email || !email.includes('@')) { showToast('A valid email is required.'); return; }
+  if (!email || !email.includes('@')) { showToast(t('toast.emailRequired')); return; }
   const p = currentCheckoutProduct();
-  if (!p) { showToast('Select a plan.'); return; }
+  if (!p) { showToast(t('toast.selectPlan')); return; }
   const go = document.getElementById('checkout-go');
   go.disabled = true; go.textContent = 'Redirecting…';
   const body = {
@@ -2807,9 +4271,9 @@ async function startCheckout(){
     const data = await res.json();
     const redirectUrl = data.url || data.approveUrl;
     if (redirectUrl) { window.location.href = redirectUrl; return; }
-    showToast('⚠ ' + (data.error || 'Payment unavailable — try again.'));
-  } catch(_) { showToast('⚠ Could not reach the payment server.'); }
-  go.disabled = false; go.textContent = 'Continue to payment →';
+    showToast('⚠ ' + (data.error || t('toast.paymentUnavailable')));
+  } catch(_) { showToast(t('toast.payServerFail')); }
+  go.disabled = false; go.textContent = t('mod.checkout.goBtn');
 }
 
 function renderReminders(){
@@ -2836,7 +4300,7 @@ async function sendShare(){
   const name = document.getElementById('share-name').value.trim();
   const email = document.getElementById('share-email').value.trim();
   const ownerEmail = document.getElementById('share-owner-email').value.trim();
-  if (!name || !email) { showToast('Fill in name and email'); return; }
+  if (!name || !email) { showToast(t('toast.fillNameEmail')); return; }
 
   const btn = document.querySelector('#modal-share .share-btn-primary');
   const origText = btn.textContent;
@@ -2880,12 +4344,12 @@ async function sendShare(){
     const data = await res.json();
     closeModal();
     if (data.emailWarning) {
-      showToast('⚠ Plan saved — ' + data.emailWarning);
+      showToast(tf('toast.planSavedWarn', {warning: data.emailWarning}));
     } else {
-      showToast('✓ Plan sent to ' + name + ' at ' + email);
+      showToast(tf('toast.planSent', {name: name, email: email}));
     }
   } catch(err) {
-    showToast('⚠ Could not reach the server. Is it running?');
+    showToast(t('toast.serverUnreachable'));
   } finally {
     btn.textContent = origText;
     btn.disabled = false;
@@ -3092,7 +4556,7 @@ function buildVetInviteHtml(){
 
 async function generateVetInvite(){
   if (!state.planId){
-    alert('Save your plan first — it needs to be on the server before you can invite your vet.');
+    alert(t('toast.saveFirst'));
     return;
   }
   const btn = document.querySelector('#vet-invite-ui button');
@@ -3110,7 +4574,7 @@ async function generateVetInvite(){
     if (!data.success) throw new Error(data.error || 'Failed to generate link');
     showVetInviteLink(data.url, vetName, clinicName, message);
   } catch(e) {
-    alert('Could not generate invite: ' + e.message);
+    alert(tf('toast.inviteFail', {error: e.message}));
     if (btn) { btn.disabled = false; btn.textContent = '🔗 Generate invite link'; }
   }
 }
@@ -3140,7 +4604,7 @@ function copyVetInviteLink(){
     const btn = document.getElementById('vi-copy-btn');
     btn.textContent = '✓ Copied!';
     setTimeout(() => { btn.textContent = '📋 Copy'; }, 2000);
-  }).catch(() => { prompt('Copy this link:', val); });
+  }).catch(() => { prompt(t('toast.copyLink'), val); });
 }
 
 // ============================================================
@@ -3273,11 +4737,11 @@ async function handleMedUpload(input){
 }
 
 async function deleteMedRecord(id){
-  if (!confirm('Delete this record?')) return;
+  if (!confirm(t('toast.deleteRecord'))) return;
   try {
     await fetch('/api/records/' + id, { method:'DELETE' });
     loadMedRecords();
-  } catch(_){ showToast('Could not delete record'); }
+  } catch(_){ showToast(t('toast.deleteRecordFail')); }
 }
 
 function fmtBytes(n){
@@ -3366,15 +4830,15 @@ function boot(){
     // For PayPal the capture/activation happens on /paypal/return before this
     // redirect; for subscriptions the webhook may lag slightly, so confirm
     // entitlement before prompting to share.
-    setTimeout(() => { openModal('share'); showToast('✓ Payment complete' + (prov === 'paypal' ? ' (PayPal)' : '') + ' — share your plan now.'); }, 400);
+    setTimeout(() => { openModal('share'); showToast(tf('toast.paymentComplete', {provider: prov === 'paypal' ? ' (PayPal)' : ''})); }, 400);
   }
   if (_up.get('payment') === 'cancelled') {
     window.history.replaceState({}, '', '/');
-    setTimeout(() => showToast('Payment cancelled — your plan is saved.'), 400);
+    setTimeout(() => showToast(t('toast.paymentCancelled')), 400);
   }
   if (_up.get('payment') === 'error') {
     window.history.replaceState({}, '', '/');
-    setTimeout(() => showToast('⚠ Payment could not be completed — please try again.'), 400);
+    setTimeout(() => showToast(t('toast.paymentFailed')), 400);
   }
 
   // Magic-link restore — ?restore=planId loads server-saved plan into localStorage
@@ -3389,9 +4853,9 @@ function boot(){
           localStorage.setItem(STORAGE_KEY, JSON.stringify({ ...remote, planId: _restoreId }));
           window.location.reload(); // reload with hydrated state
         } else {
-          showToast('⚠ Could not restore plan — link may have expired.');
+          showToast(t('toast.restoreFail'));
         }
-      } catch(_) { showToast('⚠ Could not reach server.'); }
+      } catch(_) { showToast(t('toast.serverFail')); }
     })();
     return; // boot() returns early; reload will re-run it with hydrated state
   }
