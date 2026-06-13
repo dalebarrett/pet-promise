@@ -271,6 +271,14 @@ button{cursor:pointer;border:none;background:none}
   background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 14 14' fill='none' stroke='white' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='3,7 6,10 11,4'/%3E%3C/svg%3E") center/12px no-repeat;
 }
 .opt-text{flex:1}
+/* Instant selected-state via :has() — radios/checks light up on click without
+   waiting for a re-render (QA §6.3 — feedback was delayed until scroll/nav). */
+.opt-row:has(input:checked){border-color:var(--terra);background:var(--terra-tint)}
+.opt-row:has(input:checked) .opt-text{color:var(--navy);font-weight:700}
+.opt-row:has(input:checked) .opt-bullet{border-color:var(--terra);background:var(--terra)}
+.opt-row:has(input:checked) .opt-bullet::after{content:"";position:absolute;inset:3px;background:#fff;border-radius:50%}
+.opt-row:has(input:checked) .opt-check{border-color:var(--terra);background:var(--terra)}
+.opt-row:has(input:checked) .opt-check::after{content:"";position:absolute;inset:0;background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 14 14' fill='none' stroke='white' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='3,7 6,10 11,4'/%3E%3C/svg%3E") center/12px no-repeat}
 
 /* prompts (click to insert) */
 .sec-prompts{
@@ -1192,6 +1200,7 @@ body.printing .top,body.printing .rail,body.printing .right,body.printing .expor
         </svg>
         <div class="dial-pct"><b id="dialPct">0</b><span>%&nbsp;<span data-i18n="ui.ready">ready</span></span></div>
       </div>
+      <div id="dialSections" style="text-align:center;font-size:12px;font-weight:800;color:var(--navy);margin:-4px 0 6px"></div>
       <div class="rt-meta" id="rtMeta">Start anywhere. Most people finish in <b>20 minutes</b>.</div>
     </div>
 
@@ -1526,6 +1535,55 @@ Object.assign(I18N.fr, {'ui.sectionsHeader':'Sections'});
 Object.assign(I18N.es, {'ui.sectionsHeader':'Secciones'});
 Object.assign(I18N.pt, {'ui.sectionsHeader':'Secções'});
 Object.assign(I18N.hi, {'ui.sectionsHeader':'अनुभाग'});
+Object.assign(I18N.en, {'toast.generating':'Generating…','toast.timeout':'⚠ Timed out — please try again.','ui.sectionsDone':'{done} of {total} sections done'});
+Object.assign(I18N.fr, {'ui.sectionsDone':'{done} sections sur {total} terminées'});
+Object.assign(I18N.es, {'ui.sectionsDone':'{done} de {total} secciones completadas'});
+Object.assign(I18N.pt, {'ui.sectionsDone':'{done} de {total} secções concluídas'});
+Object.assign(I18N.hi, {'ui.sectionsDone':'{total} में से {done} अनुभाग पूर्ण'});
+Object.assign(I18N.fr, {'toast.generating':'Génération…','toast.timeout':'⚠ Délai dépassé — veuillez réessayer.'});
+Object.assign(I18N.es, {'toast.generating':'Generando…','toast.timeout':'⚠ Tiempo agotado — inténtalo de nuevo.'});
+Object.assign(I18N.pt, {'toast.generating':'A gerar…','toast.timeout':'⚠ Tempo esgotado — tente novamente.'});
+Object.assign(I18N.hi, {'toast.generating':'बनाया जा रहा है…','toast.timeout':'⚠ समय समाप्त — कृपया फिर से प्रयास करें।'});
+Object.assign(I18N.en, {'pdf.subtitle':'Care plan & protection program','pdf.preparedVia':'Prepared via iFinallyWill','pdf.preparedByOwner':'Prepared by {owner}'});
+Object.assign(I18N.fr, {'pdf.subtitle':'Plan de soins et programme de protection','pdf.preparedVia':'Préparé via iFinallyWill','pdf.preparedByOwner':'Préparé par {owner}'});
+Object.assign(I18N.es, {'pdf.subtitle':'Plan de cuidados y programa de protección','pdf.preparedVia':'Preparado mediante iFinallyWill','pdf.preparedByOwner':'Preparado por {owner}'});
+Object.assign(I18N.pt, {'pdf.subtitle':'Plano de cuidados e programa de proteção','pdf.preparedVia':'Preparado via iFinallyWill','pdf.preparedByOwner':'Preparado por {owner}'});
+Object.assign(I18N.hi, {'pdf.subtitle':'देखभाल योजना और सुरक्षा कार्यक्रम','pdf.preparedVia':'iFinallyWill के माध्यम से तैयार','pdf.preparedByOwner':'{owner} द्वारा तैयार'});
+Object.assign(I18N.en, {'misc.yourPet':'your pet',
+  'wallet.owner':'Owner','wallet.medical':'Medical','wallet.type':'Type','wallet.chip':'Chip','wallet.license':'License','wallet.caregiver':'Caregiver','wallet.vet':'Vet','wallet.emergency':'Emergency',
+  'wallet.iffound':'If found · Help me get home','wallet.reward':'Please call — reward, no questions asked.','wallet.printNote':'Print at actual size. Trim and fold. Keep in wallet.'});
+Object.assign(I18N.fr, {
+  'wallet.owner':'Propriétaire','wallet.medical':'Médical','wallet.type':'Type','wallet.chip':'Puce','wallet.license':'Licence','wallet.caregiver':'Gardien','wallet.vet':'Vétérinaire','wallet.emergency':'Urgence',
+  'wallet.iffound':'Si trouvé · Aidez-moi à rentrer','wallet.reward':'Veuillez appeler — récompense, sans questions.','wallet.printNote':'Imprimez à taille réelle. Découpez et pliez. Gardez dans votre portefeuille.'});
+Object.assign(I18N.es, {
+  'wallet.owner':'Propietario','wallet.medical':'Médico','wallet.type':'Tipo','wallet.chip':'Chip','wallet.license':'Licencia','wallet.caregiver':'Cuidador','wallet.vet':'Veterinario','wallet.emergency':'Emergencia',
+  'wallet.iffound':'Si me encuentras · Ayúdame a volver a casa','wallet.reward':'Por favor llama — recompensa, sin preguntas.','wallet.printNote':'Imprime a tamaño real. Recorta y dobla. Guárdala en la cartera.'});
+Object.assign(I18N.pt, {
+  'wallet.owner':'Dono','wallet.medical':'Médico','wallet.type':'Tipo','wallet.chip':'Chip','wallet.license':'Licença','wallet.caregiver':'Cuidador','wallet.vet':'Veterinário','wallet.emergency':'Emergência',
+  'wallet.iffound':'Se encontrado · Ajude-me a voltar para casa','wallet.reward':'Por favor ligue — recompensa, sem perguntas.','wallet.printNote':'Imprima em tamanho real. Recorte e dobre. Guarde na carteira.'});
+Object.assign(I18N.hi, {
+  'wallet.owner':'मालिक','wallet.medical':'चिकित्सा','wallet.type':'प्रकार','wallet.chip':'चिप','wallet.license':'लाइसेंस','wallet.caregiver':'देखभालकर्ता','wallet.vet':'पशु-चिकित्सक','wallet.emergency':'आपातकाल',
+  'wallet.iffound':'अगर मिलूँ · मुझे घर पहुँचाएँ','wallet.reward':'कृपया कॉल करें — इनाम, कोई सवाल नहीं।','wallet.printNote':'वास्तविक आकार में प्रिंट करें। काटें और मोड़ें। वॉलेट में रखें।'});
+Object.assign(I18N.fr, {'misc.yourPet':'votre animal'});
+Object.assign(I18N.es, {'misc.yourPet':'tu mascota'});
+Object.assign(I18N.pt, {'misc.yourPet':'o seu animal'});
+Object.assign(I18N.hi, {'misc.yourPet':'आपका पालतू'});
+Object.assign(I18N.fr, {
+  'fld.profile.owner_name.label':"Propriétaire / gardien — votre nom",'fld.profile.owner_name.sub':"Le premier contact qu'une personne qui trouve l'animal ou un secouriste devrait joindre. Figure sur la carte de portefeuille et l'en-tête du plan.",'fld.profile.owner_name.ph':"p. ex. Jordan Avery",
+  'fld.profile.owner_phone.label':"Propriétaire / gardien — téléphone",'fld.profile.owner_phone.sub':"Un numéro à appeler immédiatement si votre animal est trouvé.",'fld.profile.owner_phone.ph':"p. ex. (416) 555-0199",
+});
+Object.assign(I18N.es, {
+  'fld.profile.owner_name.label':"Propietario / tutor — tu nombre",'fld.profile.owner_name.sub':"El primer contacto al que debería llamar quien encuentre a tu mascota o un servicio de emergencia. Aparece en la tarjeta de cartera y el encabezado del plan.",'fld.profile.owner_name.ph':"p. ej. Jordan Avery",
+  'fld.profile.owner_phone.label':"Propietario / tutor — teléfono",'fld.profile.owner_phone.sub':"Un número al que llamar de inmediato si encuentran a tu mascota.",'fld.profile.owner_phone.ph':"p. ej. (416) 555-0199",
+});
+Object.assign(I18N.pt, {
+  'fld.profile.owner_name.label':"Dono / tutor — o seu nome",'fld.profile.owner_name.sub':"O primeiro contacto que quem encontrar o animal ou um socorrista deve procurar. Consta no cartão de carteira e no cabeçalho do plano.",'fld.profile.owner_name.ph':"p. ex. Jordan Avery",
+  'fld.profile.owner_phone.label':"Dono / tutor — telefone",'fld.profile.owner_phone.sub':"Um número para ligar de imediato se o seu animal for encontrado.",'fld.profile.owner_phone.ph':"p. ex. (416) 555-0199",
+});
+Object.assign(I18N.hi, {
+  'fld.profile.owner_name.label':"मालिक / अभिभावक — आपका नाम",'fld.profile.owner_name.sub':"पालतू मिलने पर या आपात स्थिति में सबसे पहले जिससे संपर्क किया जाए। यह वॉलेट कार्ड और प्लान शीर्ष पर आता है।",'fld.profile.owner_name.ph':"जैसे Jordan Avery",
+  'fld.profile.owner_phone.label':"मालिक / अभिभावक — फ़ोन",'fld.profile.owner_phone.sub':"अगर आपका पालतू मिल जाए तो तुरंत कॉल करने के लिए एक नंबर।",'fld.profile.owner_phone.ph':"जैसे (416) 555-0199",
+});
 Object.assign(I18N.en, {'ui.startingPoints':'Starting points — click to insert, then edit to make it yours','ui.selectPlaceholder':'— select —'});
 Object.assign(I18N.fr, {'ui.startingPoints':'Points de départ — cliquez pour insérer, puis modifiez à votre guise','ui.selectPlaceholder':'— sélectionner —'});
 Object.assign(I18N.es, {'ui.startingPoints':'Puntos de partida: haz clic para insertar y luego edítalo a tu gusto','ui.selectPlaceholder':'— seleccionar —'});
@@ -2461,8 +2519,8 @@ Object.assign(I18N.fr, {
   'fld.emergency.key_holder.label': "Qui a une clé de la maison ?",
   'fld.emergency.key_holder.ph': "p. ex. Janet, la voisine du 47, le concierge de l'immeuble, ma sœur",
   'fld.emergency.building_info.label': "Accès à l'immeuble / à la propriété",
-  'fld.emergency.building_info.sub': "Codes de porte, code d'alarme, codes de barrière — tout ce qu'ils rencontreront.",
-  'fld.emergency.building_info.ph': "p. ex. Code de porte 4-7-2-9. Alarme : armer/désarmer avec 1-1-2-3-OFF.",
+  'fld.emergency.building_info.sub': "Comment un gardien entre. Évitez d'inscrire ici les vrais codes de porte/alarme si vous imprimez ou partagez ce plan — indiquez plutôt où les codes sont conservés.",
+  'fld.emergency.building_info.ph': "p. ex. Double de clé chez le voisin au n° 410. Instructions d'alarme dans le tiroir de la cuisine.",
   'fld.emergency.boarding.label': "Pension d'urgence / gardien d'animaux",
   'fld.emergency.boarding.sub': "Si le gardien ne peut pas prendre l'animal immédiatement.",
   'fld.emergency.boarding.ph': "p. ex. Wagsville Boarding — (416) 555-9090 — un dossier est déjà ouvert à mon nom",
@@ -2487,8 +2545,8 @@ Object.assign(I18N.es, {
   'fld.emergency.key_holder.label': "¿Quién tiene llave de la casa?",
   'fld.emergency.key_holder.ph': "p. ej. Janet, la vecina del 47, el conserje del edificio, mi hermana",
   'fld.emergency.building_info.label': "Información de acceso al edificio / la propiedad",
-  'fld.emergency.building_info.sub': "Códigos de puerta, código de alarma, códigos del portón — todo lo que se van a encontrar.",
-  'fld.emergency.building_info.ph': "p. ej. Código de la puerta 4-7-2-9. Alarma: activar/desactivar con 1-1-2-3-OFF.",
+  'fld.emergency.building_info.sub': "Cómo entra un cuidador. Evita escribir aquí los códigos reales de puerta/alarma si vas a imprimir o compartir este plan — indica mejor dónde se guardan los códigos.",
+  'fld.emergency.building_info.ph': "p. ej. Llave de repuesto con el vecino del #410. Instrucciones de la alarma en el cajón de la cocina.",
   'fld.emergency.boarding.label': "Guardería de emergencia / cuidador de mascotas",
   'fld.emergency.boarding.sub': "Por si el cuidador no puede hacerse cargo de la mascota de inmediato.",
   'fld.emergency.boarding.ph': "p. ej. Wagsville Boarding — (416) 555-9090 — ya tienen mi perfil registrado",
@@ -2513,8 +2571,8 @@ Object.assign(I18N.pt, {
   'fld.emergency.key_holder.label': "Quem tem a chave de casa?",
   'fld.emergency.key_holder.ph': "p. ex. A vizinha Janet do n.º 47, o porteiro do prédio, a minha irmã",
   'fld.emergency.building_info.label': "Informações de acesso ao prédio / à propriedade",
-  'fld.emergency.building_info.sub': "Códigos da porta, código do alarme, códigos do portão — tudo o que vão encontrar.",
-  'fld.emergency.building_info.ph': "p. ex. Código da porta 4-7-2-9. Alarme: armar/desarmar com 1-1-2-3-OFF.",
+  'fld.emergency.building_info.sub': "Como um cuidador entra. Evite escrever aqui os códigos reais de porta/alarme se for imprimir ou partilhar este plano — diga antes onde os códigos estão guardados.",
+  'fld.emergency.building_info.ph': "p. ex. Chave suplente com o vizinho do n.º 410. Instruções do alarme na gaveta da cozinha.",
   'fld.emergency.boarding.label': "Alojamento de emergência / pet sitter",
   'fld.emergency.boarding.sub': "Caso o cuidador não possa ficar com o animal de imediato.",
   'fld.emergency.boarding.ph': "p. ex. Wagsville Boarding — (416) 555-9090 — já têm a minha ficha registada",
@@ -2539,8 +2597,8 @@ Object.assign(I18N.hi, {
   'fld.emergency.key_holder.label': "घर की चाबी किसके पास है?",
   'fld.emergency.key_holder.ph': "जैसे #47 वाली पड़ोसी Janet, बिल्डिंग का केयरटेकर, मेरी बहन",
   'fld.emergency.building_info.label': "बिल्डिंग / प्रॉपर्टी में प्रवेश की जानकारी",
-  'fld.emergency.building_info.sub': "दरवाज़े के कोड, अलार्म कोड, गेट कोड — जो भी उनके सामने आएगा।",
-  'fld.emergency.building_info.ph': "जैसे दरवाज़े का कोड 4-7-2-9। अलार्म: 1-1-2-3-OFF से चालू/बंद करें।",
+  'fld.emergency.building_info.sub': "देखभालकर्ता अंदर कैसे आएगा। अगर आप यह प्लान प्रिंट या साझा करेंगे तो असली दरवाज़ा/अलार्म कोड यहाँ न लिखें — बल्कि बताएं कि कोड कहाँ रखे हैं।",
+  'fld.emergency.building_info.ph': "जैसे पड़ोसी (#410) के पास अतिरिक्त चाबी। अलार्म निर्देश रसोई की दराज़ में।",
   'fld.emergency.boarding.label': "आपातकालीन बोर्डिंग / पेट सिटर",
   'fld.emergency.boarding.sub': "अगर देखभालकर्ता पालतू को तुरंत न ले जा सके।",
   'fld.emergency.boarding.ph': "जैसे Wagsville Boarding — (416) 555-9090 — मेरी प्रोफ़ाइल पहले से उनके पास है",
@@ -3214,6 +3272,8 @@ const SECTIONS = [
    intro:'Start with the essentials so anyone stepping in can identify your pet, find them in a registry, and verify they\'re yours. This is also what goes on the wallet card.',
    tip:'<b>Be exact.</b> Microchip number, registration tag, and full breed go a long way if your pet is ever lost or in someone else\'s care.',
    fields:[
+     {key:'owner_name', type:'text', label:'Owner / guardian — your name', required:true, sub:'The first contact a finder or first-responder should reach. Goes on the wallet card and the plan header.', placeholder:'e.g. Jordan Avery'},
+     {key:'owner_phone', type:'text', label:'Owner / guardian — phone', required:true, sub:'A number someone can call immediately if your pet is found.', placeholder:'e.g. (416) 555-0199'},
      {key:'name', type:'text', label:'Pet\'s name', required:true, placeholder:'e.g. Carrot'},
      {key:'species', type:'radio', label:'Species', required:true, options:['Dog','Cat','Bird','Rabbit / small mammal','Reptile','Fish','Horse','Other (specify in notes)']},
      {key:'breed', type:'text', label:'Breed (or mix)', placeholder:'e.g. Golden Retriever / Mixed — likely Lab + Hound'},
@@ -3415,7 +3475,7 @@ const SECTIONS = [
    fields:[
      {key:'first_call', type:'text', label:'First person to call if I don\'t come home', sub:'Local — someone who can be at your door within hours.', placeholder:'e.g. Maria Chen (primary caregiver) — same as Section B'},
      {key:'key_holder', type:'text', label:'Who has a key to the house?', placeholder:'e.g. Neighbour Janet at #47, building super, my sister'},
-     {key:'building_info', type:'text', label:'Building / property access info', sub:'Door codes, alarm code, gate codes — anything they\'ll hit.', placeholder:'e.g. Door code 4-7-2-9. Alarm: arm/disarm with 1-1-2-3-OFF.'},
+     {key:'building_info', type:'text', label:'Building / property access', sub:'How a caregiver gets in. Avoid writing real door/alarm codes here if you\'ll print or share this plan — say where the codes are kept instead.', placeholder:'e.g. Spare key with neighbour at #410. Alarm instructions in the kitchen drawer.'},
      {key:'boarding', type:'text', label:'Emergency boarding / pet sitter', sub:'If the caregiver can\'t take the pet immediately.', placeholder:'e.g. Wagsville Boarding — (416) 555-9090 — already have a profile on file'},
      {key:'first_steps', type:'textarea', label:'First-24-hour priorities', rows:5,
       prompts:[
@@ -3528,13 +3588,16 @@ function saveState(){
 // ============================================================
 // PROGRESS
 // ============================================================
+// Optional media uploads (voice/video/photo) do NOT count toward completion, so a
+// plan can reach 100% without them (QA §6.3 — was permanently stuck at 99%).
+function countsTowardCompletion(f){ return f.type !== 'media'; }
 function sectionFillRate(sec){
   const sd = state.sections[sec.id] || {};
-  const fields = sec.fields;
+  const fields = sec.fields.filter(countsTowardCompletion);
   let filled = 0;
   fields.forEach(f => {
     const val = sd[f.key];
-    if (f.type === 'check' || f.type === 'media') {
+    if (f.type === 'check') {
       if (Array.isArray(val) && val.length > 0) filled++;
     } else {
       if (val && String(val).trim().length > 0) filled++;
@@ -3546,10 +3609,10 @@ function overallProgress(){
   let totalFields = 0, filledFields = 0;
   SECTIONS.forEach(sec => {
     const sd = state.sections[sec.id] || {};
-    sec.fields.forEach(f => {
+    sec.fields.filter(countsTowardCompletion).forEach(f => {
       totalFields++;
       const val = sd[f.key];
-      if (f.type === 'check' || f.type === 'media') {
+      if (f.type === 'check') {
         if (Array.isArray(val) && val.length > 0) filledFields++;
       } else {
         if (val && String(val).trim().length > 0) filledFields++;
@@ -3567,6 +3630,10 @@ function updateProgress(){
   // dial arc
   const C = 364; // 2*PI*58 ~= 364
   document.getElementById('dialArc').style.strokeDashoffset = C * (1 - pct/100);
+  // concrete "N of 10 sections done" label (QA §6.4) — sections at 100%
+  const doneCount = SECTIONS.filter(s => sectionFillRate(s) >= 1).length;
+  const ds = document.getElementById('dialSections');
+  if (ds) ds.textContent = tf('ui.sectionsDone', {done: doneCount, total: SECTIONS.length});
   // checklist
   renderChecklist();
   // rt meta message
@@ -3735,9 +3802,12 @@ function renderSection(){
   main.innerHTML = html;
   if (sec.id === 'vet') loadMedRecords();
 
-  // scroll to top
+  // scroll to top — handle both the scroll container AND window scroll (QA §6.3),
+  // so the new section heading + progress are always in view after navigation.
   const mainEl = document.querySelector('.main');
   if (mainEl) mainEl.scrollTop = 0;
+  if (main && typeof main.scrollIntoView === 'function') main.scrollIntoView({ block: 'start' });
+  try { window.scrollTo({ top: 0, behavior: 'auto' }); } catch(_) { window.scrollTo(0, 0); }
 
   // wire drag-and-drop on any upload zones in this section
   wireDragAndDrop();
@@ -3778,13 +3848,24 @@ function toggleCheck(secId, fieldKey, opt, checked){
   updateProgress();
   renderSection(); // re-render to update opt-row visual state
 }
+// Replace sample/placeholder tokens with the real pet name at insert time (QA §6.3):
+// the snippet sources contain [pet name]/[Pet name] tokens and the sample name
+// "Carrot" (also kept verbatim in the translated snippets), which must never land
+// in a user's heartfelt letter or emergency instructions unedited.
+function substitutePetName(s){
+  const pn = (state.sections?.profile?.name || '').trim() || t('misc.yourPet');
+  return String(s)
+    .replace(/\[\s*pet\s*name\s*\]/gi, pn)   // [pet name], [Pet name]
+    .replace(/\bCarrot\b/g, pn);             // the sample pet name in snippets
+}
 function insertPrompt(secId, fieldKey, promptIdx){
   const sec = SECTIONS.find(s => s.id === secId);
   if (!sec) return;
   const field = sec.fields.find(f => f.key === fieldKey);
   if (!field || !field.prompts) return;
-  // Insert the prompt in the user's current language (falls back to English).
-  const text = ti('fld.'+secId+'.'+fieldKey+'.prm.'+promptIdx, field.prompts[promptIdx]);
+  // Insert the prompt in the user's current language (falls back to English),
+  // with sample tokens swapped for the real pet name.
+  const text = substitutePetName(ti('fld.'+secId+'.'+fieldKey+'.prm.'+promptIdx, field.prompts[promptIdx]));
   if (!text) return;
   if (!state.sections[secId]) state.sections[secId] = {};
   const cur = state.sections[secId][fieldKey] || '';
@@ -4377,8 +4458,12 @@ function buildPrintDoc(){
   html += '<div class="pd-cover">';
   html += '<div class="pd-cover-eb">Pet Protection Promise™</div>';
   html += '<h1>' + escapeHtml(petName) + '</h1>';
-  html += '<h2>Care plan &amp; protection program</h2>';
-  html += '<div class="pd-cover-meta">Prepared via iFinallyWill · ' + today + '</div>';
+  html += '<h2>' + escapeHtml(t('pdf.subtitle')) + '</h2>';
+  const ownerName = (profile.owner_name || '').trim();
+  const preparedBy = ownerName
+    ? tf('pdf.preparedByOwner', {owner: escapeHtml(ownerName)}) + ' · '
+    : '';
+  html += '<div class="pd-cover-meta">' + preparedBy + escapeHtml(t('pdf.preparedVia')) + ' · ' + today + '</div>';
   html += '</div>';
 
   SECTIONS.forEach(sec => {
@@ -4433,58 +4518,68 @@ function buildPrintDoc(){
 function exportWalletCard(){
   openModal('wallet');
 }
-function renderWalletPreview(){
+// Shared wallet-card data: owner FIRST (primary lost-pet contact), then a
+// critical-medical line, then ID/contacts. Empty rows are omitted so the card
+// never prints broken-looking dashes (QA §6.2). Secrets stay off the card.
+function walletData(){
   const profile = state.sections.profile || {};
   const cg = state.sections.caregivers || {};
   const vet = state.sections.vet || {};
-  const c = document.getElementById('wallet-content');
-
-  c.innerHTML = `
+  const meds = state.sections.meds || {};
+  const petName = (profile.name || '').trim() || t('misc.yourPet');
+  const rows = [];
+  const join = (...parts) => parts.map(x => (x || '').trim()).filter(Boolean).join(' · ');
+  const push = (label, val) => { if (val && String(val).trim()) rows.push({ label, val: String(val).trim() }); };
+  push(t('wallet.owner'), join(profile.owner_name, profile.owner_phone));
+  const med = join((vet.allergies || '').split('\n')[0], (meds.med_list || '').split('\n')[0]);
+  push(t('wallet.medical'), med.length > 90 ? med.slice(0, 88) + '…' : med);
+  push(t('wallet.type'), join(profile.species, profile.breed));
+  const chip = profile.microchip ? profile.microchip + (profile.chip_registry && profile.chip_registry !== 'other' ? ' · ' + String(profile.chip_registry).replace(/_/g, ' ') : '') : '';
+  push(t('wallet.chip'), chip);
+  push(t('wallet.license'), profile.registration);
+  push(t('wallet.caregiver'), join(cg.primary_name, cg.primary_phone));
+  push(t('wallet.vet'), join(vet.vet_clinic, vet.vet_phone));
+  push(t('wallet.emergency'), vet.er_clinic);
+  return { petName, rows };
+}
+function renderWalletPreview(){
+  const { petName, rows } = walletData();
+  document.getElementById('wallet-content').innerHTML = `
     <div class="wallet-preview">
       <div class="wp-h">
-        <div class="wp-title">${escapeHtml(profile.name || '[Pet name]')}</div>
-        <div class="wp-title-mute">If found · Help me get home</div>
+        <div class="wp-title">${escapeHtml(petName)}</div>
+        <div class="wp-title-mute">${escapeHtml(t('wallet.iffound'))}</div>
       </div>
-      <div class="wp-row"><b>Type</b><span>${escapeHtml(profile.species || '—')} · ${escapeHtml(profile.breed || '—')}</span></div>
-      <div class="wp-row"><b>Microchip</b><span>${escapeHtml(profile.microchip || '—')}${profile.chip_registry && profile.chip_registry !== 'other' ? ' <small style="opacity:.7">· ' + escapeHtml(profile.chip_registry.replace(/_/g,' ')) + '</small>' : ''}</span></div>
-      <div class="wp-row"><b>Caregiver</b><span>${escapeHtml(cg.primary_name || '—')} · ${escapeHtml(cg.primary_phone || '')}</span></div>
-      <div class="wp-row"><b>Vet</b><span>${escapeHtml(vet.vet_clinic || '—')} · ${escapeHtml(vet.vet_phone || '')}</span></div>
-      <div class="wp-row"><b>Emergency</b><span>${escapeHtml(vet.er_clinic || '—')}</span></div>
-    </div>
-  `;
+      ${rows.map(r => `<div class="wp-row"><b>${escapeHtml(r.label)}</b><span>${escapeHtml(r.val)}</span></div>`).join('')}
+      <div class="wp-row" style="margin-top:8px"><span style="opacity:.85;font-style:italic">${escapeHtml(t('wallet.reward'))}</span></div>
+    </div>`;
 }
 function printWalletCard(){
-  // Build a print-only wallet
-  const profile = state.sections.profile || {};
-  const cg = state.sections.caregivers || {};
-  const vet = state.sections.vet || {};
-
+  const { petName, rows } = walletData();
   const win = window.open('', '_blank', 'width=480,height=320');
   win.document.write(`
-    <html><head><title>Pet Wallet Card — ${escapeHtml(profile.name || 'My pet')}</title>
+    <html><head><title>Pet Wallet Card — ${escapeHtml(petName)}</title>
     <style>
       body{font-family:'Helvetica Neue',Arial,sans-serif;padding:20px;color:#0E1A2E}
-      .card{width:340px;height:215px;background:linear-gradient(135deg,#0A2A4A,#071E38);color:#fff;border-radius:14px;padding:18px;font-size:11px;line-height:1.45;box-shadow:0 6px 18px rgba(0,0,0,.2)}
+      .card{width:340px;min-height:215px;background:linear-gradient(135deg,#0A2A4A,#071E38);color:#fff;border-radius:14px;padding:18px;font-size:11px;line-height:1.45;box-shadow:0 6px 18px rgba(0,0,0,.2)}
       .h{display:flex;justify-content:space-between;border-bottom:1px solid rgba(255,255,255,.15);padding-bottom:8px;margin-bottom:10px}
       .t{font-weight:900;font-size:14px}
       .m{color:rgba(255,255,255,.72);font-size:9px;letter-spacing:.1em;text-transform:uppercase}
       .r{display:flex;gap:8px;margin-bottom:5px}
       .r b{color:#F5B400;min-width:60px;font-size:9px;text-transform:uppercase;letter-spacing:.04em;font-weight:800}
+      .reward{margin-top:8px;font-style:italic;color:rgba(255,255,255,.85);font-size:10px}
       @media print { body{padding:0} .card{box-shadow:none} }
     </style></head>
     <body>
       <div class="card">
         <div class="h">
-          <div class="t">${escapeHtml(profile.name || '[Pet name]')}</div>
-          <div class="m">If found · Help me home</div>
+          <div class="t">${escapeHtml(petName)}</div>
+          <div class="m">${escapeHtml(t('wallet.iffound'))}</div>
         </div>
-        <div class="r"><b>Type</b><span>${escapeHtml(profile.species || '—')} · ${escapeHtml(profile.breed || '—')}</span></div>
-        <div class="r"><b>Chip</b><span>${escapeHtml(profile.microchip || '—')}${profile.chip_registry && profile.chip_registry !== 'other' ? ' · ' + escapeHtml(profile.chip_registry.replace(/_/g,' ')) : ''}</span></div>
-        <div class="r"><b>Cgvr</b><span>${escapeHtml(cg.primary_name || '—')} · ${escapeHtml(cg.primary_phone || '')}</span></div>
-        <div class="r"><b>Vet</b><span>${escapeHtml(vet.vet_clinic || '—')} · ${escapeHtml(vet.vet_phone || '')}</span></div>
-        <div class="r"><b>ER</b><span>${escapeHtml(vet.er_clinic || '—')}</span></div>
+        ${rows.map(r => `<div class="r"><b>${escapeHtml(r.label)}</b><span>${escapeHtml(r.val)}</span></div>`).join('')}
+        <div class="reward">${escapeHtml(t('wallet.reward'))}</div>
       </div>
-      <p style="font-size:10px;color:#5A6B82;margin-top:10px">Print at actual size. Trim and fold. Keep in wallet.</p>
+      <p style="font-size:10px;color:#5A6B82;margin-top:10px">${escapeHtml(t('wallet.printNote'))}</p>
       <script>setTimeout(()=>window.print(),250)<\/script>
     </body></html>
   `);
@@ -4554,28 +4649,49 @@ function buildVetInviteHtml(){
 </div>`;
 }
 
-async function generateVetInvite(){
-  if (!state.planId){
-    alert(t('toast.saveFirst'));
-    return;
+// Fetch with a hard timeout so a slow/cold server can never hang the UI (QA §6.3).
+async function fetchWithTimeout(url, opts, ms){
+  const ctrl = new AbortController();
+  const timer = setTimeout(() => ctrl.abort(), ms || 15000);
+  try { return await fetch(url, { ...opts, signal: ctrl.signal }); }
+  finally { clearTimeout(timer); }
+}
+// Persist the working plan server-side (no caregiver needed) so server features work.
+async function ensurePlanSaved(){
+  const shareState = JSON.parse(JSON.stringify(state));
+  if (shareState.sections?.letter?.letter_media) {
+    shareState.sections.letter.letter_media = (shareState.sections.letter.letter_media || []).map(
+      ({ kind, name:n, duration, sizeKB, ts }) => ({ kind, name:n, duration, sizeKB, ts }));
   }
+  const res = await fetchWithTimeout('/api/plan/' + encodeURIComponent(state.planId) + '/save', {
+    method:'POST', headers:{'Content-Type':'application/json'},
+    body: JSON.stringify({ state: shareState, clinicSlug: state.clinicSlug }),
+  }, 15000);
+  if (!res.ok) throw new Error('save_failed');
+}
+
+async function generateVetInvite(){
+  if (!state.planId){ showToast(t('toast.saveFirst')); return; }
   const btn = document.querySelector('#vet-invite-ui button');
-  if (btn) { btn.disabled = true; btn.textContent = 'Generating…'; }
+  const orig = btn ? btn.innerHTML : '';
+  if (btn) { btn.disabled = true; btn.textContent = t('toast.generating'); }
   const vetName = document.getElementById('vi-vet-name')?.value?.trim() || '';
   const clinicName = document.getElementById('vi-clinic')?.value?.trim() || '';
   const message = document.getElementById('vi-message')?.value?.trim() || '';
   try {
-    const res = await fetch('/api/plan/' + encodeURIComponent(state.planId) + '/vet-invite', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+    await ensurePlanSaved();   // make sure the plan exists on the server first
+    const res = await fetchWithTimeout('/api/plan/' + encodeURIComponent(state.planId) + '/vet-invite', {
+      method: 'POST', headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ vetName, clinicName, message }),
-    });
-    const data = await res.json();
-    if (!data.success) throw new Error(data.error || 'Failed to generate link');
-    showVetInviteLink(data.url, vetName, clinicName, message);
+    }, 15000);
+    const data = await res.json().catch(() => ({}));
+    if (!res.ok || !data.success) throw new Error(data.error || ('HTTP ' + res.status));
+    showVetInviteLink(data.url, vetName, clinicName, message);   // success state shows the real link
   } catch(e) {
-    alert(tf('toast.inviteFail', {error: e.message}));
-    if (btn) { btn.disabled = false; btn.textContent = '🔗 Generate invite link'; }
+    const msg = e.name === 'AbortError' ? t('toast.timeout') : tf('toast.inviteFail', {error: e.message});
+    showToast(msg);
+  } finally {
+    if (btn) { btn.disabled = false; btn.innerHTML = orig; }   // ALWAYS restore — never freeze
   }
 }
 
