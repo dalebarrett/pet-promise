@@ -2271,6 +2271,27 @@ app.get('/', requireSitePassword, (_req, res) => {
 });
 
 // ── Plan: share + retrieve ────────────────────────────────────────────────────
+// Lightweight plan upsert — persists the working plan server-side WITHOUT
+// requiring caregiver details. Lets features that need a server-side plan (vet
+// invite, QR/emergency) work before the owner shares, and is the groundwork for
+// durable cross-device persistence (QA memo §3.1). Media data-URLs stripped.
+app.post('/api/plan/:id/save', async (req, res) => {
+  const { state, clinicSlug, ownerEmail } = req.body || {};
+  if (!state || typeof state !== 'object') return res.status(400).json({ error: 'state required' });
+  const id = req.params.id;
+  const cleanState = stripMediaDataUrls(state);
+  const ownerEmailClean = ownerEmail && ownerEmail.includes('@') ? ownerEmail.trim() : null;
+  await db.prepare(`
+    INSERT INTO plans (id, state_json, clinic_slug, owner_email, created_at)
+    VALUES (?, ?, ?, ?, extract(epoch from now())::integer)
+    ON CONFLICT (id) DO UPDATE SET
+      state_json = EXCLUDED.state_json,
+      clinic_slug = COALESCE(EXCLUDED.clinic_slug, plans.clinic_slug),
+      owner_email = COALESCE(EXCLUDED.owner_email, plans.owner_email)
+  `).run(id, JSON.stringify(cleanState), clinicSlug || null, ownerEmailClean);
+  res.json({ success: true, id });
+});
+
 app.post('/api/share', async (req, res) => {
   const { name, email, state, planId, clinicSlug, ownerEmail } = req.body;
   if (!name || !email || !state) {
