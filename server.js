@@ -86,7 +86,7 @@ const db = {
 };
 
 // ── DB initialisation (runs once; awaited by middleware before first request) ──
-const dbReady = (async () => {
+function initDb(){ return (async () => {
   const tables = [
     `CREATE TABLE IF NOT EXISTS plans (
       id              TEXT PRIMARY KEY,
@@ -320,10 +320,22 @@ const dbReady = (async () => {
        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?) ON CONFLICT (key) DO NOTHING`
     ).run(uuidv4(), p.key, p.name, p.desc, p.kind, p.interval, p.amount, p.active, p.sort);
   }
-})();
+})(); }
+let dbReady = initDb();
 
-// Ensure DB is initialised before handling any request
-app.use(async (_req, _res, next) => { try { await dbReady; next(); } catch (e) { next(e); } });
+// Ensure DB is initialised before handling DB-backed requests. Resilient to a
+// transient serverless cold-start DB blip: if the first attempt rejected, retry
+// a fresh init once, and never let it 500 the static homepage (QA §2.3 — root
+// must not return raw 500 JSON). Requests proceed regardless; routes that truly
+// need the DB will surface their own error if it's genuinely down.
+app.use(async (_req, _res, next) => {
+  try { await dbReady; }
+  catch (e) {
+    dbReady = initDb();
+    try { await dbReady; } catch (e2) { console.error('DB init still failing:', e2.message); }
+  }
+  next();
+});
 
 // ── Helpers ───────────────────────────────────────────────────────────────────
 function esc(s) {
@@ -4152,6 +4164,14 @@ app.use((err, req, res, next) => {
     return res.status(400).json({ error: err.message });
   }
   console.error('Unhandled error:', err);
+  // Branded page for browser/HTML requests; JSON only for API/XHR (QA §2.3 —
+  // never surface raw {"error":...} JSON on a page load).
+  const wantsHtml = (req.headers.accept || '').includes('text/html') && !req.path.startsWith('/api/');
+  if (wantsHtml) {
+    return res.status(500).send(`<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Pet Protection Promise™</title>
+<style>body{margin:0;min-height:100vh;display:flex;align-items:center;justify-content:center;font-family:'Helvetica Neue',Arial,sans-serif;background:#F7F4ED;color:#0A2A4A;text-align:center;padding:24px}.b{max-width:420px}.b h1{font-size:20px;margin:0 0 10px}.b p{color:#5A6B82;font-size:14px;line-height:1.6;margin:0 0 18px}.b a{display:inline-block;background:#F5B400;color:#0A2A4A;font-weight:800;text-decoration:none;padding:11px 22px;border-radius:10px}</style></head>
+<body><div class="b"><h1>🐾 We hit a snag</h1><p>Something went wrong loading this page. Your plan is saved — please try again in a moment.</p><a href="${esc(req.originalUrl || '/')}">Try again</a></div></body></html>`);
+  }
   res.status(500).json({ error: 'Internal server error' });
 });
 
