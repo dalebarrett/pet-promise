@@ -401,14 +401,18 @@ async function requireClinicAuth(req, res, next) {
 function calcCompletion(stateJson) {
   try {
     const s = JSON.parse(stateJson);
+    // Multi-pet: average completion across all pets (fall back to legacy sections).
+    const petSections = Array.isArray(s.pets) && s.pets.length ? s.pets.map(p => p.sections || {}) : [s.sections || {}];
     let total = 0, filled = 0;
-    for (const sec of SECTIONS_META) {
-      for (const f of sec.fields) {
-        total++;
-        const val = s.sections?.[sec.id]?.[f.key];
-        if (f.isMedia) { if (Array.isArray(val) && val.length) filled++; }
-        else if (typeof val === 'string' && val.trim()) filled++;
-        else if (Array.isArray(val) && val.length) filled++;
+    for (const sections of petSections) {
+      for (const sec of SECTIONS_META) {
+        for (const f of sec.fields) {
+          total++;
+          const val = sections?.[sec.id]?.[f.key];
+          if (f.isMedia) { if (Array.isArray(val) && val.length) filled++; }
+          else if (typeof val === 'string' && val.trim()) filled++;
+          else if (Array.isArray(val) && val.length) filled++;
+        }
       }
     }
     return total > 0 ? Math.round((filled / total) * 100) : 0;
@@ -865,7 +869,10 @@ const SECTIONS_META = [
 ];
 
 function buildViewerHtml(planId, state, row, medRecords) {
-  const petName = state.sections?.profile?.name || 'Your pet';
+  const _pets = Array.isArray(state.pets) && state.pets.length ? state.pets : null;
+  const petName = _pets
+    ? (_pets.length > 1 ? _pets.map((p, i) => p.sections?.profile?.name || `Pet ${i + 1}`).join(', ') : (_pets[0].sections?.profile?.name || 'Your pet'))
+    : (state.sections?.profile?.name || 'Your pet');
   const sharedDate = fmtDate(row.created_at);
   const nowSec = Math.floor(Date.now() / 1000);
   const ageDays = Math.floor((nowSec - row.created_at) / 86400);
@@ -943,21 +950,35 @@ function buildViewerHtml(planId, state, row, medRecords) {
 </section>`;
   }
 
-  const filledSections = SECTIONS_META.filter(sec => {
-    const secData = state.sections?.[sec.id] || {};
-    return sec.id === 'vet' || sec.fields.some(f => {
-      const v = secData[f.key];
-      return v && (typeof v === 'string' ? v.trim() : Array.isArray(v) ? v.length : false);
+  // Multi-pet aware: render every pet's sections (fall back to legacy single).
+  const pets = Array.isArray(state.pets) && state.pets.length ? state.pets : [{ sections: state.sections || {} }];
+  const multi = pets.length > 1;
+
+  let tocHtml, sectionsHtml;
+  if (multi) {
+    // TOC jumps to each pet group (avoids duplicate section anchor ids).
+    tocHtml = pets.map((pet, pi) => {
+      const nm = pet.sections?.profile?.name || `Pet ${pi + 1}`;
+      return `<a class="tp" href="#pet-${pi}">🐾 ${esc(nm)}</a>`;
+    }).join('');
+    sectionsHtml = pets.map((pet, pi) => {
+      const nm = pet.sections?.profile?.name || `Pet ${pi + 1}`;
+      const inner = SECTIONS_META.map(sec => renderSecHtml(sec, pet.sections?.[sec.id] || {})).filter(Boolean).join('\n');
+      if (!inner) return '';
+      return `<div id="pet-${pi}" style="margin-top:18px"><h2 style="font-family:Georgia,serif;color:#0A2A4A;border-bottom:2px solid #C84B30;padding-bottom:6px;margin:0 0 12px">🐾 ${esc(nm)}</h2>${inner}</div>`;
+    }).filter(Boolean).join('\n');
+  } else {
+    const sections = pets[0].sections || {};
+    const filledSections = SECTIONS_META.filter(sec => {
+      const secData = sections[sec.id] || {};
+      return sec.id === 'vet' || sec.fields.some(f => {
+        const v = secData[f.key];
+        return v && (typeof v === 'string' ? v.trim() : Array.isArray(v) ? v.length : false);
+      });
     });
-  });
-
-  const tocHtml = filledSections.map(s =>
-    `<a class="tp" href="#sec-${s.id}">${s.icon} ${esc(s.title)}</a>`
-  ).join('');
-
-  const sectionsHtml = SECTIONS_META.map(sec =>
-    renderSecHtml(sec, state.sections?.[sec.id] || {})
-  ).filter(Boolean).join('\n');
+    tocHtml = filledSections.map(s => `<a class="tp" href="#sec-${s.id}">${s.icon} ${esc(s.title)}</a>`).join('');
+    sectionsHtml = SECTIONS_META.map(sec => renderSecHtml(sec, sections[sec.id] || {})).filter(Boolean).join('\n');
+  }
 
   return `<!DOCTYPE html>
 <html lang="en">
