@@ -271,6 +271,16 @@ button{cursor:pointer;border:none;background:none}
   background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 14 14' fill='none' stroke='white' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='3,7 6,10 11,4'/%3E%3C/svg%3E") center/12px no-repeat;
 }
 .opt-text{flex:1}
+/* Multi-pet switcher bar */
+.pet-bar{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-bottom:16px;padding-bottom:14px;border-bottom:1px solid var(--line)}
+.pet-tab{display:inline-flex;align-items:center;gap:6px;padding:7px 13px;border-radius:999px;border:1.5px solid var(--line-2,rgba(10,42,74,.18));background:#fff;font-family:'Nunito',sans-serif;font-weight:800;font-size:13px;color:var(--i2,#2C3E50);cursor:pointer;transition:all .12s}
+.pet-tab:hover{border-color:var(--navy)}
+.pet-tab.on{background:var(--navy);color:#fff;border-color:var(--navy)}
+.pet-x{font-weight:900;opacity:.55;padding:0 2px;border-radius:4px}
+.pet-x:hover{opacity:1;color:var(--terra,#C84B30)}
+.pet-tab.on .pet-x:hover{color:#fff;background:rgba(255,255,255,.2)}
+.pet-add{padding:7px 13px;border-radius:999px;border:1.5px dashed var(--line-2,rgba(10,42,74,.3));background:transparent;font-weight:800;font-size:13px;color:var(--terra,#C84B30);cursor:pointer}
+.pet-add:hover{background:var(--terra-tint,#FCEAE6)}
 /* Instant selected-state via :has() — radios/checks light up on click without
    waiting for a re-render (QA §6.3 — feedback was delayed until scroll/nav). */
 .opt-row:has(input:checked){border-color:var(--terra);background:var(--terra-tint)}
@@ -1549,6 +1559,11 @@ Object.assign(I18N.fr, {'pdf.subtitle':'Plan de soins et programme de protection
 Object.assign(I18N.es, {'pdf.subtitle':'Plan de cuidados y programa de protección','pdf.preparedVia':'Preparado mediante iFinallyWill','pdf.preparedByOwner':'Preparado por {owner}'});
 Object.assign(I18N.pt, {'pdf.subtitle':'Plano de cuidados e programa de proteção','pdf.preparedVia':'Preparado via iFinallyWill','pdf.preparedByOwner':'Preparado por {owner}'});
 Object.assign(I18N.hi, {'pdf.subtitle':'देखभाल योजना और सुरक्षा कार्यक्रम','pdf.preparedVia':'iFinallyWill के माध्यम से तैयार','pdf.preparedByOwner':'{owner} द्वारा तैयार'});
+Object.assign(I18N.en, {'pet.add':'Add a pet','pet.defaultLabel':'Pet {n}','pet.removeConfirm':"Remove this pet and all its answers? This can't be undone."});
+Object.assign(I18N.fr, {'pet.add':'Ajouter un animal','pet.defaultLabel':'Animal {n}','pet.removeConfirm':'Supprimer cet animal et toutes ses réponses ? Action irréversible.'});
+Object.assign(I18N.es, {'pet.add':'Añadir mascota','pet.defaultLabel':'Mascota {n}','pet.removeConfirm':'¿Eliminar esta mascota y todas sus respuestas? No se puede deshacer.'});
+Object.assign(I18N.pt, {'pet.add':'Adicionar animal','pet.defaultLabel':'Animal {n}','pet.removeConfirm':'Remover este animal e todas as suas respostas? Não pode ser anulado.'});
+Object.assign(I18N.hi, {'pet.add':'पालतू जोड़ें','pet.defaultLabel':'पालतू {n}','pet.removeConfirm':'इस पालतू और इसके सभी उत्तरों को हटाएँ? इसे पूर्ववत नहीं किया जा सकता।'});
 Object.assign(I18N.en, {'misc.yourPet':'your pet',
   'wallet.owner':'Owner','wallet.medical':'Medical','wallet.type':'Type','wallet.chip':'Chip','wallet.license':'License','wallet.caregiver':'Caregiver','wallet.vet':'Vet','wallet.emergency':'Emergency',
   'wallet.iffound':'If found · Help me get home','wallet.reward':'Please call — reward, no questions asked.','wallet.printNote':'Print at actual size. Trim and fold. Keep in wallet.'});
@@ -3567,7 +3582,17 @@ function loadState(){
     if (raw) s = JSON.parse(raw);
   } catch(e){}
   if (!s) s = {};
-  s.sections = s.sections || {};
+  // ── Multi-pet model ("everything per pet"): a household holds an array of
+  // pets, each with its own full set of section answers. We migrate any legacy
+  // single-pet plan into pets[0]. `s.sections` is kept as a LIVE POINTER to the
+  // current pet's sections so all existing code (state.sections[...]) keeps
+  // working unchanged; pets[] is the canonical store that gets persisted.
+  if (!Array.isArray(s.pets)) {
+    s.pets = [{ id: (crypto.randomUUID ? crypto.randomUUID() : 'p'+Date.now()), sections: s.sections || {} }];
+  }
+  s.pets.forEach(p => { if (!p.id) p.id = (crypto.randomUUID ? crypto.randomUUID() : 'p'+Math.random()); if (!p.sections) p.sections = {}; });
+  s.currentPet = (typeof s.currentPet === 'number' && s.currentPet >= 0 && s.currentPet < s.pets.length) ? s.currentPet : 0;
+  s.sections = s.pets[s.currentPet].sections;   // live pointer to current pet
   s.reminders = s.reminders || (() => {
     const r = {};
     REMINDERS.forEach(x => r[x.key] = x.defOn);
@@ -3581,8 +3606,37 @@ function loadState(){
   s.lang = s.lang || null;
   return s;
 }
+let _serverSaveTimer = null;
 function saveState(){
-  try { localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); } catch(e){}
+  // `sections` is a derived pointer to pets[currentPet] — don't double-store it.
+  const toSave = {}; for (const k in state) if (k !== 'sections') toSave[k] = state[k];
+  try { localStorage.setItem(STORAGE_KEY, JSON.stringify(toSave)); } catch(e){}
+  scheduleServerSave();
+}
+// Durability (QA §3.1): debounced autosave to the server so the plan survives
+// browser-clear and is recoverable cross-device — not just trapped in this browser.
+function scheduleServerSave(){
+  if (!state.planId) return;
+  const isLocalDev = ['localhost','127.0.0.1'].includes(location.hostname);
+  clearTimeout(_serverSaveTimer);
+  _serverSaveTimer = setTimeout(() => {
+    const toSave = {}; for (const k in state) if (k !== 'sections') toSave[k] = state[k];
+    // strip media data-urls to keep the payload small
+    try {
+      const clone = JSON.parse(JSON.stringify(toSave));
+      (clone.pets || []).forEach(p => {
+        const m = p.sections?.letter?.letter_media;
+        if (Array.isArray(m)) p.sections.letter.letter_media = m.map(({kind,name,duration,sizeKB,ts}) => ({kind,name,duration,sizeKB,ts}));
+      });
+      // Back-compat: server viewer / calcCompletion still read `sections`; expose
+      // the primary pet there until the server pages get multi-pet rendering.
+      clone.sections = (clone.pets && clone.pets[0] && clone.pets[0].sections) || {};
+      fetch('/api/plan/' + encodeURIComponent(state.planId) + '/save', {
+        method:'POST', headers:{'Content-Type':'application/json'},
+        body: JSON.stringify({ state: clone, clinicSlug: state.clinicSlug }),
+      }).catch(() => {});  // best-effort; localStorage remains the working copy
+    } catch(_){}
+  }, isLocalDev ? 800 : 1500);
 }
 
 // ============================================================
@@ -3606,20 +3660,56 @@ function sectionFillRate(sec){
   return fields.length > 0 ? filled / fields.length : 0;
 }
 function overallProgress(){
+  // Spans EVERY pet — the plan is only "complete" when all pets are done.
   let totalFields = 0, filledFields = 0;
-  SECTIONS.forEach(sec => {
-    const sd = state.sections[sec.id] || {};
-    sec.fields.filter(countsTowardCompletion).forEach(f => {
-      totalFields++;
-      const val = sd[f.key];
-      if (f.type === 'check') {
-        if (Array.isArray(val) && val.length > 0) filledFields++;
-      } else {
-        if (val && String(val).trim().length > 0) filledFields++;
-      }
+  (state.pets || [{ sections: state.sections }]).forEach(pet => {
+    SECTIONS.forEach(sec => {
+      const sd = pet.sections[sec.id] || {};
+      sec.fields.filter(countsTowardCompletion).forEach(f => {
+        totalFields++;
+        const val = sd[f.key];
+        if (f.type === 'check') {
+          if (Array.isArray(val) && val.length > 0) filledFields++;
+        } else {
+          if (val && String(val).trim().length > 0) filledFields++;
+        }
+      });
     });
   });
   return totalFields > 0 ? filledFields / totalFields : 0;
+}
+// ── Multi-pet switcher ────────────────────────────────────────────────────────
+function petLabel(p, i){ return (p.sections && p.sections.profile && (p.sections.profile.name || '').trim()) || tf('pet.defaultLabel', {n: i + 1}); }
+function buildPetBar(){
+  let h = '<div class="pet-bar">';
+  state.pets.forEach((p, i) => {
+    h += '<button class="pet-tab' + (i === state.currentPet ? ' on' : '') + '" onclick="switchPet(' + i + ')">🐾 ' + escapeHtml(petLabel(p, i));
+    if (state.pets.length > 1) h += ' <span class="pet-x" title="Remove" onclick="event.stopPropagation();removePet(' + i + ')">×</span>';
+    h += '</button>';
+  });
+  h += '<button class="pet-add" onclick="addPet()">+ ' + escapeHtml(t('pet.add')) + '</button>';
+  h += '</div>';
+  return h;
+}
+function switchPet(i){
+  if (i < 0 || i >= state.pets.length) return;
+  state.currentPet = i;
+  state.sections = state.pets[i].sections;   // repoint the live pointer
+  saveState(); renderSectionList(); renderSection(); updateProgress();
+}
+function addPet(){
+  const id = crypto.randomUUID ? crypto.randomUUID() : 'p' + Date.now();
+  state.pets.push({ id, sections: {} });
+  currentSection = 0; state.currentSection = 0;
+  switchPet(state.pets.length - 1);
+}
+function removePet(i){
+  if (state.pets.length <= 1) return;
+  if (!confirm(t('pet.removeConfirm'))) return;
+  state.pets.splice(i, 1);
+  if (state.currentPet >= state.pets.length) state.currentPet = state.pets.length - 1;
+  state.sections = state.pets[state.currentPet].sections;
+  saveState(); renderSectionList(); renderSection(); updateProgress();
 }
 function updateProgress(){
   const pct = Math.round(overallProgress() * 100);
@@ -3678,6 +3768,7 @@ function renderSection(){
   const sd = state.sections[sec.id] || {};
 
   let html = '';
+  html += buildPetBar();   // multi-pet switcher (each pet has its own full plan)
   const secTitle = escapeHtml(ti('sec.'+sec.id+'.title', sec.title));
   html += '<div class="crumb"><b>' + t('ui.section') + ' ' + sec.n + '</b><span>· ' + secTitle + ' ·</span><span>' + tf('ui.progress', {n: currentSection+1, total: SECTIONS.length}) + '</span></div>';
   html += '<h2><span class="sec-icon">' + sec.icon + '</span>' + secTitle + '</h2>';
