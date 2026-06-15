@@ -667,7 +667,61 @@ function buildAckEmailHtml({ caregiverName, petName, viewUrl, ackDate }) {
 }
 
 // ── Emergency card HTML ──────────────────────────────────────────────────────
-function buildEmergencyCardHtml(planId, state, qrSvg) {
+// ════════════════════════════════════════════════════════════════════════════
+// SERVER-SIDE i18n (en·fr·es·pt·hi). Pages resolve locale from ?lang →
+// Accept-Language (the VIEWER's browser); emails pass the owner's saved lang.
+// AI first-pass translations — flag for native review before launch.
+// ════════════════════════════════════════════════════════════════════════════
+const SUPPORTED_LANGS = ['en', 'fr', 'es', 'pt', 'hi'];
+function serverLang(req) {
+  const q = String((req.query && req.query.lang) || '').slice(0, 2).toLowerCase();
+  if (SUPPORTED_LANGS.includes(q)) return q;
+  const al = String(req.headers['accept-language'] || '').toLowerCase();
+  for (const part of al.split(',')) { const c = part.trim().slice(0, 2); if (SUPPORTED_LANGS.includes(c)) return c; }
+  return 'en';
+}
+const ST = {
+  en: {
+    'ec.title':"Emergency — {name}'s Care",'ec.eyebrow':'🚨 Emergency care info','ec.planTitle':"{name}'s Plan",
+    'ec.owner':'Owner / guardian','ec.caregiver':'Primary caregiver','ec.caregiverRole':'Caregiver','ec.call':'Call {name}',
+    'ec.vet':'Veterinarian','ec.vetFallback':'Vet','ec.erClinic':'24-hr Emergency Clinic','ec.firstCall':'First call if owner unreachable',
+    'ec.keyMeds':'Key medications','ec.first24':'First 24-hour priorities','ec.viewFull':'View full care plan →',
+    'ec.scanShare':'Scan or share this card','ec.printNote':"Print this page and keep it with {name}'s carrier, collar tag, or fridge",
+  },
+  fr: {
+    'ec.title':'Urgence — soins de {name}','ec.eyebrow':"🚨 Infos de soins d'urgence",'ec.planTitle':'Plan de {name}',
+    'ec.owner':'Propriétaire / gardien','ec.caregiver':'Gardien principal','ec.caregiverRole':'Gardien','ec.call':'Appeler {name}',
+    'ec.vet':'Vétérinaire','ec.vetFallback':'Vétérinaire','ec.erClinic':"Clinique d'urgence 24 h",'ec.firstCall':'Premier appel si le propriétaire est injoignable',
+    'ec.keyMeds':'Médicaments importants','ec.first24':'Priorités des premières 24 heures','ec.viewFull':'Voir le plan de soins complet →',
+    'ec.scanShare':'Scannez ou partagez cette carte','ec.printNote':'Imprimez cette page et gardez-la avec la cage, la médaille ou sur le frigo de {name}',
+  },
+  es: {
+    'ec.title':'Emergencia — cuidado de {name}','ec.eyebrow':'🚨 Información de cuidados de emergencia','ec.planTitle':'Plan de {name}',
+    'ec.owner':'Propietario / tutor','ec.caregiver':'Cuidador principal','ec.caregiverRole':'Cuidador','ec.call':'Llamar a {name}',
+    'ec.vet':'Veterinario','ec.vetFallback':'Veterinario','ec.erClinic':'Clínica de urgencias 24 h','ec.firstCall':'Primera llamada si no localizas al propietario',
+    'ec.keyMeds':'Medicamentos importantes','ec.first24':'Prioridades de las primeras 24 horas','ec.viewFull':'Ver el plan de cuidados completo →',
+    'ec.scanShare':'Escanea o comparte esta tarjeta','ec.printNote':'Imprime esta página y guárdala con el transportín, la placa o en la nevera de {name}',
+  },
+  pt: {
+    'ec.title':'Emergência — cuidados de {name}','ec.eyebrow':'🚨 Informação de cuidados de emergência','ec.planTitle':'Plano de {name}',
+    'ec.owner':'Dono / tutor','ec.caregiver':'Cuidador principal','ec.caregiverRole':'Cuidador','ec.call':'Ligar para {name}',
+    'ec.vet':'Veterinário','ec.vetFallback':'Veterinário','ec.erClinic':'Clínica de urgência 24 h','ec.firstCall':'Primeiro contacto se o dono estiver indisponível',
+    'ec.keyMeds':'Medicamentos importantes','ec.first24':'Prioridades das primeiras 24 horas','ec.viewFull':'Ver o plano de cuidados completo →',
+    'ec.scanShare':'Digitalize ou partilhe este cartão','ec.printNote':'Imprima esta página e guarde-a com a caixa de transporte, a chapa ou no frigorífico de {name}',
+  },
+  hi: {
+    'ec.title':'आपातकाल — {name} की देखभाल','ec.eyebrow':'🚨 आपातकालीन देखभाल जानकारी','ec.planTitle':'{name} की योजना',
+    'ec.owner':'मालिक / अभिभावक','ec.caregiver':'मुख्य देखभालकर्ता','ec.caregiverRole':'देखभालकर्ता','ec.call':'{name} को कॉल करें',
+    'ec.vet':'पशु-चिकित्सक','ec.vetFallback':'पशु-चिकित्सक','ec.erClinic':'24-घंटे आपातकालीन क्लिनिक','ec.firstCall':'मालिक से संपर्क न होने पर पहला कॉल',
+    'ec.keyMeds':'मुख्य दवाएँ','ec.first24':'पहले 24 घंटे की प्राथमिकताएँ','ec.viewFull':'पूरा देखभाल प्लान देखें →',
+    'ec.scanShare':'इस कार्ड को स्कैन या साझा करें','ec.printNote':'इस पेज को प्रिंट करें और {name} के कैरियर, कॉलर टैग या फ्रिज पर रखें',
+  },
+};
+function st(key, lang) { const L = ST[lang] || ST.en; return L[key] != null ? L[key] : (ST.en[key] != null ? ST.en[key] : key); }
+function stf(key, lang, vars) { let s = st(key, lang); if (vars) for (const k in vars) s = s.split('{' + k + '}').join(vars[k]); return s; }
+
+function buildEmergencyCardHtml(planId, state, qrSvg, lang) {
+  lang = lang || 'en';
   const profile = state.sections?.profile || {};
   const caregivers = state.sections?.caregivers || {};
   const vet = state.sections?.vet || {};
@@ -692,10 +746,10 @@ function buildEmergencyCardHtml(planId, state, qrSvg) {
   }
 
   return `<!DOCTYPE html>
-<html lang="en">
+<html lang="${lang}">
 <head>
 <meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>🚨 Emergency — ${esc(petName)}'s Care</title>
+<title>🚨 ${esc(stf('ec.title',lang,{name:petName}))}</title>
 <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@700;800;900&family=Nunito+Sans:wght@400;600;700&display=swap" rel="stylesheet">
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
@@ -734,34 +788,43 @@ body{font-family:'Nunito Sans',-apple-system,sans-serif;background:#0A2A4A;min-h
   <div class="hdr">
     <div class="hdr-emoji">${petEmoji}</div>
     <div>
-      <div class="hdr-em">🚨 Emergency care info</div>
-      <h1>${esc(petName)}'s Plan</h1>
+      <div class="hdr-em">${esc(st('ec.eyebrow',lang))}</div>
+      <h1>${esc(stf('ec.planTitle',lang,{name:petName}))}</h1>
     </div>
   </div>
 
+  ${profile.owner_name ? `
+  <div class="section">
+    <div class="sec-label">${esc(st('ec.owner',lang))}</div>
+    <div class="sec-body">
+      <div class="sec-name">${esc(profile.owner_name)}</div>
+      ${phoneBtn(profile.owner_phone, stf('ec.call',lang,{name: profile.owner_name.split(' ')[0]}))}
+    </div>
+  </div>` : ''}
+
   ${caregivers.primary_name ? `
   <div class="section">
-    <div class="sec-label">Primary caregiver</div>
+    <div class="sec-label">${esc(st('ec.caregiver',lang))}</div>
     <div class="sec-body">
       <div class="sec-name">${esc(caregivers.primary_name)}</div>
-      <div class="sec-role">${esc(caregivers.primary_rel || 'Caregiver')} ${caregivers.primary_address ? '· ' + caregivers.primary_address.split('\n')[0] : ''}</div>
-      ${phoneBtn(caregivers.primary_phone, 'Call ' + caregivers.primary_name.split(' ')[0])}
+      <div class="sec-role">${esc(caregivers.primary_rel || st('ec.caregiverRole',lang))} ${caregivers.primary_address ? '· ' + caregivers.primary_address.split('\n')[0] : ''}</div>
+      ${phoneBtn(caregivers.primary_phone, stf('ec.call',lang,{name: caregivers.primary_name.split(' ')[0]}))}
     </div>
   </div>` : ''}
 
   ${vet.vet_name || vet.vet_clinic ? `
   <div class="section">
-    <div class="sec-label">Veterinarian</div>
+    <div class="sec-label">${esc(st('ec.vet',lang))}</div>
     <div class="sec-body">
       <div class="sec-name">${esc(vet.vet_name || vet.vet_clinic)}</div>
       <div class="sec-role">${esc(vet.vet_clinic && vet.vet_name ? vet.vet_clinic : '')}${vet.vet_address ? ' · ' + vet.vet_address.split('\n')[0] : ''}</div>
-      ${phoneBtn(vet.vet_phone, 'Call ' + (vet.vet_clinic || 'Vet'))}
+      ${phoneBtn(vet.vet_phone, stf('ec.call',lang,{name: (vet.vet_clinic || st('ec.vetFallback',lang))}))}
     </div>
   </div>` : ''}
 
   ${vet.er_clinic ? `
   <div class="section">
-    <div class="sec-label">24-hr Emergency Clinic</div>
+    <div class="sec-label">${esc(st('ec.erClinic',lang))}</div>
     <div class="sec-body">
       <div class="sec-name" style="color:#C84B30">${esc(vet.er_clinic)}</div>
     </div>
@@ -769,13 +832,13 @@ body{font-family:'Nunito Sans',-apple-system,sans-serif;background:#0A2A4A;min-h
 
   ${emergency.first_call ? `
   <div class="section">
-    <div class="sec-label">First call if owner unreachable</div>
+    <div class="sec-label">${esc(st('ec.firstCall',lang))}</div>
     <div class="sec-body" style="font-size:14px;font-weight:600;color:#0A2A4A">${esc(emergency.first_call)}</div>
   </div>` : ''}
 
   ${medLines.length ? `
   <div class="section">
-    <div class="sec-label">Key medications</div>
+    <div class="sec-label">${esc(st('ec.keyMeds',lang))}</div>
     <div class="sec-body">
       ${medLines.map(m => `<div class="med-item">💊 ${esc(m.trim())}</div>`).join('')}
       ${(meds.where_kept) ? `<div style="font-size:11px;color:#5A6B82;margin-top:8px">📍 ${esc(meds.where_kept)}</div>` : ''}
@@ -784,7 +847,7 @@ body{font-family:'Nunito Sans',-apple-system,sans-serif;background:#0A2A4A;min-h
 
   ${firstSteps.length ? `
   <div class="section">
-    <div class="sec-label">First 24-hour priorities</div>
+    <div class="sec-label">${esc(st('ec.first24',lang))}</div>
     <div class="sec-body">
       <ol class="steps-list">
         ${firstSteps.map(s => `<div class="step">${esc(s.replace(/^[-\d.•]+\s*/, '').trim())}</div>`).join('')}
@@ -792,12 +855,12 @@ body{font-family:'Nunito Sans',-apple-system,sans-serif;background:#0A2A4A;min-h
     </div>
   </div>` : ''}
 
-  <a class="full-link" href="${viewUrl}">View full care plan →</a>
+  <a class="full-link" href="${viewUrl}?lang=${lang}">${esc(st('ec.viewFull',lang))}</a>
 
   <div class="qr-section">
-    <div class="qr-lbl">Scan or share this card</div>
+    <div class="qr-lbl">${esc(st('ec.scanShare',lang))}</div>
     ${qrSvg ? `<div class="qr-box">${qrSvg}</div>` : ''}
-    <div class="print-note">Print this page and keep it with ${esc(petName)}'s carrier, collar tag, or fridge</div>
+    <div class="print-note">${esc(stf('ec.printNote',lang,{name:petName}))}</div>
   </div>
 
 </div>
@@ -3266,7 +3329,7 @@ app.get('/emergency/:id', async (req, res) => {
     });
   } catch (_) {}
 
-  res.send(buildEmergencyCardHtml(req.params.id, state, qrSvg));
+  res.send(buildEmergencyCardHtml(req.params.id, state, qrSvg, serverLang(req)));
 });
 
 // ── Caregiver acknowledgment ──────────────────────────────────────────────────
