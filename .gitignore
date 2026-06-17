@@ -8,6 +8,10 @@ plans.db-wal
 uploads/
 server.js.bak
 
+# Test artifacts
+playwright-report/
+test-results/
+
 # Vercel
 .vercel/
 
